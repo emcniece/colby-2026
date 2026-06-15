@@ -141,6 +141,32 @@
   --text-counter-size: 60px;
   --text-counter-lh:  72px;
 
+  /* ── Section body/heading token overrides ───────────────── */
+  --section-1-heading: var(--color-blue-900);
+  --section-1-body:    var(--color-blue-900);
+  --section-2-heading: var(--color-blue-900);
+  --section-2-body:    var(--color-blue-900);
+  --section-3-body:    #cfdbff;
+  --section-4-heading: var(--color-white);
+  --section-4-body:    var(--color-pink-50);
+
+  /* ── Header / footer ─────────────────────────────────────── */
+  --header-bg:         rgba(255, 234, 245, 0);
+  --footer-bg:         var(--color-blue-900);
+  --footer-text:       #cfdbff;
+
+  /* ── Typography — additional scales ─────────────────────── */
+  --text-h1-size:  60px;
+  --text-h1-lh:    72px;
+  --text-h2-size:  48px;
+  --text-h2-lh:    64px;
+  --text-kicker-size: 14px;
+  --text-kicker-lh:   24px;
+
+  /* ── Section spacing ─────────────────────────────────────── */
+  --section-pad-v:   96px;
+  --page-pad-h:      64px;
+
   /* ── Layout ──────────────────────────────────────────────── */
   --container-wide:   1440px;
   --container-std:    1280px;
