@@ -1,0 +1,147 @@
+/* Design tokens extracted from Figma — "resources and components" section */
+:root {
+
+  /* ── Colors ─────────────────────────────────────────────── */
+  --color-pink-50:   #ffeaf5;
+  --color-pink-100:  #ffcce6;
+  --color-pink-500:  #dd147a;
+  --color-pink-600:  #bb0b64;
+  --color-pink-700:  #9e0452;
+  --color-blue-500:  #2354e3;
+  --color-blue-600:  #1a49d4;
+  --color-blue-700:  #113ec4;
+  --color-blue-900:  #0c2c8b;
+  --color-yellow-300: #efc30c;
+  --color-white:     #ffffff;
+
+  /* ── Section backgrounds ─────────────────────────────────── */
+  --section-1-bg:    var(--color-pink-50);    /* light pink */
+  --section-2-bg:    var(--color-yellow-300); /* yellow */
+  --section-3-bg:    var(--color-blue-700);   /* blue */
+  --section-4-bg:    var(--color-pink-500);   /* pink */
+  --section-3-heading: var(--color-white);
+  --section-3-accent:  var(--color-yellow-300);
+  --section-2-body:  var(--color-blue-900);
+
+  /* ── Buttons — Variant 1 (pink solid / pink outline) ────── */
+  --btn-v1-solid-bg:           var(--color-pink-500);
+  --btn-v1-solid-text:         var(--color-pink-50);
+  --btn-v1-solid-bg-hover:     var(--color-pink-600);
+  --btn-v1-solid-text-hover:   var(--color-white);
+  --btn-v1-solid-bg-pressed:   var(--color-pink-700);
+  --btn-v1-solid-text-pressed: var(--color-white);
+  --btn-v1-outline-border:         var(--color-pink-500);
+  --btn-v1-outline-text:           var(--color-pink-500);
+  --btn-v1-outline-border-hover:   var(--color-pink-600);
+  --btn-v1-outline-text-hover:     var(--color-pink-600);
+  --btn-v1-outline-border-pressed: var(--color-pink-700);
+  --btn-v1-outline-text-pressed:   var(--color-pink-700);
+
+  /* ── Buttons — Variant 2 (blue solid / blue outline) ────── */
+  --btn-v2-solid-bg:           var(--color-blue-700);
+  --btn-v2-solid-text:         var(--color-yellow-300);
+  --btn-v2-solid-bg-hover:     #0a33ab;
+  --btn-v2-solid-text-hover:   #ffdf5a;
+  --btn-v2-solid-bg-pressed:   var(--color-blue-900);
+  --btn-v2-solid-text-pressed: #ffeda2;
+  --btn-v2-outline-border:         var(--color-blue-700);
+  --btn-v2-outline-text:           var(--color-blue-700);
+  --btn-v2-outline-border-hover:   #0a33ab;
+  --btn-v2-outline-text-hover:     #0a33ab;
+  --btn-v2-outline-border-pressed: var(--color-blue-900);
+  --btn-v2-outline-text-pressed:   var(--color-blue-900);
+
+  /* ── Buttons — Variant 3 (yellow solid / yellow outline) ── */
+  --btn-v3-solid-bg:           var(--color-yellow-300);
+  --btn-v3-solid-text:         var(--color-blue-700);
+  --btn-v3-solid-bg-hover:     #d8ae00;
+  --btn-v3-solid-text-hover:   #0a33ab;
+  --btn-v3-solid-bg-pressed:   #c19c03;
+  --btn-v3-solid-text-pressed: var(--color-blue-900);
+  --btn-v3-outline-border:         var(--color-yellow-300);
+  --btn-v3-outline-text:           var(--color-yellow-300);
+  --btn-v3-outline-border-hover:   #ffdf5a;
+  --btn-v3-outline-text-hover:     #ffdf5a;
+  --btn-v3-outline-border-pressed: #ffeda2;
+  --btn-v3-outline-text-pressed:   #ffeda2;
+
+  /* ── Buttons — Variant 4 (pale pink solid / pale outline) ─ */
+  --btn-v4-solid-bg:           var(--color-pink-50);
+  --btn-v4-solid-text:         var(--color-pink-500);
+  --btn-v4-solid-bg-hover:     var(--color-white);
+  --btn-v4-solid-text-hover:   var(--color-pink-500);
+  --btn-v4-solid-bg-pressed:   var(--color-white);
+  --btn-v4-solid-text-pressed: var(--color-pink-500);
+  --btn-v4-outline-border:         var(--color-pink-50);
+  --btn-v4-outline-text:           var(--color-pink-50);
+  --btn-v4-outline-border-hover:   var(--color-white);
+  --btn-v4-outline-text-hover:     var(--color-white);
+  --btn-v4-outline-border-pressed: var(--color-white);
+  --btn-v4-outline-text-pressed:   var(--color-white);
+
+  /* ── Menu ────────────────────────────────────────────────── */
+  --menu-color:         var(--color-pink-50);
+  --menu-color-hover:   var(--color-white);
+  --menu-color-pressed: var(--color-white);
+
+  /* ── Form inputs ─────────────────────────────────────────── */
+  --input-bg:             var(--color-pink-50);
+  --input-bg-hover:       var(--color-white);
+  --input-bg-active:      var(--color-white);
+  --input-border:         var(--color-blue-500);
+  --input-text:           var(--color-blue-900);
+  --input-placeholder:    var(--color-blue-500);
+  --input-message:        var(--color-blue-900);
+  --input-message-reverse: var(--color-white);
+
+  /* ── Feedback ────────────────────────────────────────────── */
+  --feedback-error:           #cb320f;
+  --feedback-error-subdued:   #ffdcd4;
+  --feedback-success:         #007a66;
+  --feedback-success-subdued: #e5edeb;
+
+  /* ── Checkbox ────────────────────────────────────────────── */
+  --checkbox-unchecked-bg:    var(--color-pink-50);
+  --checkbox-checked-bg:      var(--color-yellow-300);
+  --checkbox-checked-bg-hover: #c19c03;
+  --checkbox-checkmark:       var(--color-blue-500);
+
+  /* ── Sizes / spacing ─────────────────────────────────────── */
+  --size-half:         8px;
+  --size-three-quarters: 12px;
+  --size-base:         16px;
+  --size-one-half:     24px;
+  --size-triple:       48px;
+
+  /* ── Border radii ────────────────────────────────────────── */
+  --radius-pill:   999px;
+  --radius-card:   10px;
+  --radius-input:  100px;
+  --radius-textarea: 20px;
+  --radius-checkbox: 6px;
+
+  /* ── Typography scale ────────────────────────────────────── */
+  --font-outfit:      'Outfit', sans-serif;
+  --font-lexend:      'Lexend', sans-serif;
+  --font-quattrocento: 'Quattrocento', serif;
+  --font-questrial:   'Questrial', sans-serif;
+
+  --text-btn-size:    16px;
+  --text-btn-lh:      24px;
+  --text-menu-size:   14px;
+  --text-menu-lh:     24px;
+  --text-body-size:   16px;
+  --text-body-lh:     22px;
+  --text-body-sm-size: 14px;
+  --text-body-sm-lh:  18px;
+  --text-body-lg-size: 18px;
+  --text-body-lg-lh:  28px;
+  --text-h4-size:     24px;
+  --text-h4-lh:       32px;
+  --text-counter-size: 60px;
+  --text-counter-lh:  72px;
+
+  /* ── Layout ──────────────────────────────────────────────── */
+  --container-wide:   1440px;
+  --container-std:    1280px;
+}
