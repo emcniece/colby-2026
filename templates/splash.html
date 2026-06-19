@@ -1,0 +1,148 @@
+{% include "translation" %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
+
+    <link href="theme.scss" rel="stylesheet" />
+
+    <!-- start of content for header -->
+    {{ content_for_header }}
+    <!-- end of content for header -->
+
+    <script>
+      NB.appConfig.userIsLoggedIn = {{ request.logged_in? }};
+    </script>
+
+    <!-- Pre-loaded popular Google Fonts for theme customization -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,700|Roboto:400,400i,700,700i|Open+Sans:400,400i,700,700i|Raleway:400,700|Poppins:400,700|Merriweather:400,400i,700,700i|Playfair+Display:400,700|Lora:400,400i,700,700i|Source+Serif+Pro:400,700&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=NodeList.prototype.forEach%2CMap%2CObject.values%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CMutationObserver"></script>
+
+    <!-- VCS dependencies -->
+    <script src="simple-scrollbar.js"></script>
+    <script src="lodash.custom.min.js"></script>
+    <!--/-->
+
+    <!-- VCS main scripts -->
+    <script src="vcs-helper.js"></script>
+    <script src="vcs-media.js"></script>
+    <!--/-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
+  </head>
+  <body class="bootstrap-theme v3-theme {{ page.page_class_name }} js">
+    {% comment %}Get homepage tags for logo sizing{% endcomment %}
+    {% assign homepage_tags_list = "" %}
+    {% for tag in site.homepage.tags %}
+      {% assign homepage_tags_list = tag.name | downcase | append: ", " | append: homepage_tags_list %}
+    {% endfor %}
+    {{ content_for_notifications }}
+
+    <main id="content"
+      {% if site.has_background_image? %}
+        class="position-relative pt-4 pb-5 splash"
+      {% else %}
+        class="py-3 mb-5 splash"
+      {% endif %}
+
+      role="main">
+
+      {% if site.has_background_image? %}
+        <div class="background-image" style="background-image: url('{{ site.background_image_url }}');"></div>
+      {% endif %}
+
+      <div class="container splash-container card shadow px-3 px-md-5 py-5">
+        <div class="row">
+          <div class="col d-flex flex-wrap align-items-center mb-5">
+            <div class="navbar-brand-container flex-grow-1">
+              <h1 class="h3 mb-0">
+                <a class="navbar-brand text-color-2" href="/">
+                  {% if site.has_meta_image? %}
+                    {% comment %}Determine logo size class based on homepage tags{% endcomment %}
+                    {% assign logo_size_class = "navbar-brand-image" %}
+                    {% if homepage_tags_list contains "site: navbar logo large" %}
+                      {% assign logo_size_class = "navbar-brand-image-large" %}
+                    {% elsif homepage_tags_list contains "site: navbar logo medium" %}
+                      {% assign logo_size_class = "navbar-brand-image-medium" %}
+                    {% endif %}
+                    <img src="{{ site.meta_image_url }}" class="{{ logo_size_class }}" alt="{{ site.long_name }}"/>
+                  {% else %}
+                    {{ site.long_name }}
+                  {% endif %}
+                </a>
+              </h1>
+            </div>
+
+            <div class="d-flex flex-column">
+              <a href="/">{{ t_general_continue_to_site }}</a>
+
+              {% if request.is_intern? and page.is_editing_available? %}
+                <a href="{{ page.admin_edit_url }}" class="small">{{ t_general_edit_this_page }}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4">
+          <div class="col">
+            <h1 class="headline mb-0 text-center">{{ page.headline }}</h1>
+          </div>
+        </div>
+
+        {% yield %}
+      </div>
+    </main>
+
+    <script src="vcs-components.js"></script>
+
+    {% if request.template contains "signups_edit"
+      or request.template contains "profiles_show_wide"
+      or request.template contains "profiles_show"
+      or page.show_stream?
+      or page.show_social_slider?
+      or request.template contains "recruiting"
+      or request.template contains "activity_stream"
+    %}
+      <script src="adjust-activity-stream.js"></script>
+    {% endif %}
+
+    {% if page.type_slug == "blog" or page.type_slug == "calendar" %}
+      <script src="adjust-pattern.js"></script>
+    {% endif %}
+
+    {{ content_for_footer }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="bs-custom-file-input.min.js"></script>
+    <script>
+      ;$(document).ready(function () {
+        bsCustomFileInput.init()
+
+        $('#flash-share').modal('show');
+      });
+    </script>
+
+    <!-- VCS Form related scripts -->
+    <script src="vcs-slider.js"></script>
+
+    <script src="exif.js"></script>
+    <script src="vcs-dropzone.js"></script>
+
+    <script src="vcs-custom-controls.js"></script>
+
+    <script src="init-forms.js"></script>
+    <!--/-->
+
+    <script>
+      ;(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+      })();
+    </script>
+  </body>
+</html>

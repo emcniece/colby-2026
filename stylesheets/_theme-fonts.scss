@@ -1,0 +1,80 @@
+//
+// -- Theme Font System --
+//
+// This file makes it easy to customize your theme fonts. Simply change the
+// font names below to any of the available options. That's it!
+//
+// -----------------------------------------------------------------------------
+//
+// ## Available Fonts
+//
+// We've pre-loaded these popular Google Fonts for you to choose from:
+//
+// **Sans-Serif Fonts:**
+// - "Lato" - Clean and modern, great for body text
+//   Preview: https://fonts.google.com/specimen/Lato
+// - "Montserrat" - Strong and geometric, perfect for headings
+//   Preview: https://fonts.google.com/specimen/Montserrat
+// - "Roboto" - Google's signature font, very readable
+//   Preview: https://fonts.google.com/specimen/Roboto
+// - "Open Sans" - Friendly and neutral, works everywhere
+//   Preview: https://fonts.google.com/specimen/Open+Sans
+// - "Raleway" - Elegant with thin weight options
+//   Preview: https://fonts.google.com/specimen/Raleway
+// - "Poppins" - Rounded and approachable
+//   Preview: https://fonts.google.com/specimen/Poppins
+//
+// **Serif Fonts:**
+// - "Merriweather" - Designed for reading, great for body text
+//   Preview: https://fonts.google.com/specimen/Merriweather
+// - "Playfair Display" - Elegant and sophisticated, beautiful for headings
+//   Preview: https://fonts.google.com/specimen/Playfair+Display
+// - "Lora" - Contemporary with calligraphic roots
+//   Preview: https://fonts.google.com/specimen/Lora
+// - "Source Serif Pro" - Adobe's serif, professional and readable
+//   Preview: https://fonts.google.com/specimen/Source+Serif+Pro
+//
+// -----------------------------------------------------------------------------
+//
+// ## How to Use
+//
+// 1. Choose your fonts from the list above
+// 2. Replace the font names in the variables below
+// 3. Save the file - that's it! No need to touch any other files.
+//
+// **Important:** Use the exact font names as shown above (in quotes).
+// For fonts with spaces like "Open Sans", keep the spaces in the name.
+//
+// -----------------------------------------------------------------------------
+//
+// ## Examples
+//
+// Classic combination:
+// $theme-font-body: "Lato", sans-serif;
+// $theme-font-heading: "Montserrat", sans-serif;
+//
+// Modern tech look:
+// $theme-font-body: "Roboto", sans-serif;
+// $theme-font-heading: "Roboto", sans-serif;
+//
+// Editorial/blog style:
+// $theme-font-body: "Merriweather", serif;
+// $theme-font-heading: "Playfair Display", serif;
+//
+// Clean and friendly:
+// $theme-font-body: "Open Sans", sans-serif;
+// $theme-font-heading: "Poppins", sans-serif;
+//
+// -----------------------------------------------------------------------------
+
+// CUSTOMIZE YOUR FONTS HERE
+// Change these to any fonts from the "Available Fonts" list above
+$theme-font-body: "Zilla Slab", serif !default;
+$theme-font-heading: "Lexend", sans-serif !default;
+
+// System fonts - DO NOT MODIFY
+$font-family-sans-serif: $theme-font-body !default;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+$font-family-headline: $theme-font-heading !default;
+$font-family-awesome: "Font Awesome 5 Free" !default;
+$font-family-base: $font-family-sans-serif !default;

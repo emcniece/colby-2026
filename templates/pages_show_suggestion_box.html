@@ -1,0 +1,264 @@
+{% include "translation" %}
+
+{% if page.suggestion_box.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.suggestion_box.content }}
+  </div>
+{% endif %}
+
+{% if request.logged_in? %}
+  <h2 class="h5">{{ t_general_add_your_suggestion }}</h2>
+
+  <div class="card mb-5">
+    <div class="card-body p-0">
+      {% form_for suggestion_page %}
+        <div class="form-errors" role="alert">{% error_messages_for suggestion_page %}</div>
+
+        <div class="form-group d-flex align-items-md-center">
+          <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+            {% include "avatar" signup: request.current_signup, size: 72 %}
+          </div>
+
+          <div id="suggestion-page-page-headline-input" class="suggestion-page-page-headline-input form-group flex-grow-1 mb-0">
+            <div class="form-control-material">
+              <label for="suggestion_page_page_headline" class="floating-label floating-label--float-above">{{ t_general_your_suggestion_headline }}*</label>
+              {% text_field "page_headline", class:"form-control text" required: "required" %}
+            </div>
+          </div>
+        </div>
+
+        <div id="suggestion-page-form-expanded" class="hide suggestion-page-form-expanded">
+          <div class="form-group">
+            <label for="mceu_13">{{ t_forms_add_some_details_about_your_suggestion_below }}</label>
+            {% text_area "content_editable", class:"form-control textarea-tinymce" %}
+          </div>
+
+          {% if page.suggestion_box.is_image? %}
+            <div class="form-group">
+              {% if page.suggestion_box.require_image? %}
+                {% file_field "image", class:"custom-file-input file sr-only", required:"required" %}
+              {% else %}
+                {% file_field "image", class:"custom-file-input file sr-only" %}
+              {% endif %}
+              <label for="suggestion_page_image" class="dropzone w-100">
+                <span class="d-inline-block mb-2">{{ t_general_upload_a_picture }}{% if page.suggestion_box.require_image? %}*{% endif %}</span>
+
+                <span class="dropzone-container d-flex flex-column align-items-center p-4">
+                  <span class="dropzone-error mb-2"></span>
+                  <span class="dropzone-thumbnails d-flex mb-2"></span>
+                  <i class="dropzone-icon fas fa-upload mb-1" aria-hidden="true"></i>
+                  <span class="dropzone-message text-center">{{ t_drop_picture_here_or_click_to_upload }}</span>
+                </span>
+              </label>
+            </div>
+          {% endif %}
+
+
+
+          {% if page.show_consent_form? %}
+            {% include "consent_form" %}
+          {% endif %}
+
+          <div class="mt-4">
+            {% submit_tag t_post, class:"btn btn-primary submit-button" %}
+            <div class="form-submit"></div>
+          </div>
+        </div>
+
+        <script>
+          ;(function() {
+            var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+            var headline = previous.previousElementSibling.querySelector('#suggestion_page_page_headline');
+
+            headline.addEventListener('focusin', onFocus);
+
+            function onFocus() {
+              previous.classList.remove('hide');
+
+              headline.removeEventListener('focusin', onFocus);
+            }
+          })();
+        </script>
+      {% endform_for %}
+
+      {% unless request.logged_in? %}
+        <div class="user-session-form-container hide">
+          {% include "user_session_form" %}
+        </div>
+      {% endunless %}
+    </div>
+  </div>
+{% else %}
+  <div class="form-wrap mb-5">
+    <div class="form">
+      <h2 class="h5">{{ t_auth_sign_in_to_add_your_suggestion }}</h2>
+
+      {% form_for suggestion_page %}
+        <div class="form-errors" role="alert">{% error_messages_for suggestion_page %}</div>
+
+        <div class="form-group d-flex align-items-md-center">
+          <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+            {% include "avatar" signup: nil, anon: true, size: 72 %}
+          </div>
+
+          <div id="suggestion-page-page-headline-input" class="suggestion-page-page-headline-input form-group flex-grow-1 mb-0">
+            <div class="form-control-material">
+              <label for="suggestion_page_page_headline" class="floating-label floating-label--float-above">{{ t_general_your_suggestion_headline }}*</label>
+              {% text_field "page_headline", class:"form-control text" required: "required" %}
+            </div>
+          </div>
+        </div>
+
+        <div id="suggestion-page-form-expanded" class="hide suggestion-page-form-expanded">
+          <div class="form-group">
+            <label for="mceu_13">{{ t_forms_add_some_details_about_your_suggestion_below }}</label>
+            {% text_area "content_editable", class:"form-control textarea-tinymce" %}
+          </div>
+
+          {% if page.suggestion_box.is_image? %}
+            <div class="form-group">
+              {% if page.suggestion_box.require_image? %}
+                {% file_field "image", class:"custom-file-input file sr-only", required:"required" %}
+              {% else %}
+                {% file_field "image", class:"custom-file-input file sr-only" %}
+              {% endif %}
+              <label for="suggestion_page_image" class="dropzone w-100">
+                <span class="d-inline-block mb-2">{{ t_general_upload_a_picture }}{% if page.suggestion_box.require_image? %}*{% endif %}</span>
+
+                <span class="dropzone-container d-flex flex-column align-items-center p-4">
+                  <span class="dropzone-error mb-2"></span>
+                  <span class="dropzone-thumbnails d-flex mb-2"></span>
+                  <i class="dropzone-icon fas fa-upload mb-1" aria-hidden="true"></i>
+                  <span class="dropzone-message text-center">{{ t_drop_picture_here_or_click_to_upload }}</span>
+                </span>
+              </label>
+            </div>
+          {% endif %}
+
+          {% if page.show_consent_form? %}
+            {% include "consent_form" %}
+          {% endif %}
+
+        </div>
+        <script>
+          ;(function() {
+            var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+            var headline = previous.previousElementSibling.querySelector('#suggestion_page_page_headline');
+
+            headline.addEventListener('focusin', onFocus);
+
+            function onFocus() {
+              previous.classList.remove('hide');
+
+              headline.removeEventListener('focusin', onFocus);
+            }
+          })();
+        </script>
+      {% endform_for %}
+
+      <div class="user-session-form-container">
+        {% include "user_session_form" %}
+      </div>
+
+    </div>
+  </div>
+{% endif %}
+
+<h6 class="mb-1">{{ t_ui_sort_posts_by }}</h6>
+<ul class="list-unstyled mb-4 ">
+  <li class="d-inline-block">
+    <a class="btn {% if request.url_path == page.url or request.url_path == '/' + page.slug %}btn-color-2 btn-sm{% else %}btn-outline-color-2 btn-sm{% endif %} px-3 my-2" href="{{ page.url }}">{{ t_general_most_recent }}</a>
+  </li>
+  {% capture alphabetical_url %}/{{ page.slug }}/alphabetical{% endcapture %}
+  <li class="d-inline-block">
+    <a class="btn {% if request.url_path == alphabetical_url %}btn-color-2 btn-sm{% else %}btn-outline-color-2 btn-sm{% endif %} px-3 my-2 " href="{{ alphabetical_url }}">{{ t_general_alphabetical }}</a>
+  </li>
+</ul>
+
+{% if page.suggestion_box.tag_names != blank %}
+  <h6 class="mb-1">{{ t_ui_or_filter_for_posts_tagged_with }}</h6>
+  <ul class="list-unstyled mb-4 ">
+    {% for tag_name in page.suggestion_box.tag_names %}
+      {% capture tag_url %}/{{ page.slug }}/tags/{{ tag_name | downcase | escape | replace: ' ', '_' }}{% endcapture %}
+      <li class="d-inline-block">
+        <a class="btn {% if request.url_path == tag_url %}btn-color-2 btn-sm{% else %}btn-outline-color-2 btn-sm{% endif %} px-3 my-2 " href="{{ tag_url }}">{{ tag_name | capitalize }}</a>
+      </li>
+    {% endfor %}
+      <li class="d-inline-block">
+        <a class="btn {% if request.url_path == page.url or request.url_path == alphabetical_url %}btn-color-2 btn-sm{% else %}btn-outline-color-2 btn-sm{% endif %} px-3 my-2 " href="{{ page.url }}">{{ t_see_all }}</a>
+      </li>
+  </ul>
+{% endif %}
+
+<hr/>
+
+<div class="suggestion-box content-list" id="suggestion-box-page-{{ page.id }}">
+  {% if request.url_path == page.url or request.url_path == '/' + page.slug %}
+    <!-- show most recent -->
+    {% assign suggestions = page.suggestion_box.most_recent_suggestions %}
+  {% elsif request.url_path == alphabetical_url %}
+    <!-- show alphabetical -->
+    {% assign suggestions = page.suggestion_box.alphabetical_suggestions %}
+  {% else %}
+    <!-- show tagged -->
+    {% assign suggestions = page.suggestion_box.tagged_suggestion_pages %}
+  {% endif %}
+
+  {% if suggestions.size > 0 %}
+
+    <ul class="list-unstyled mb-4">
+      {% for post in suggestions %}
+        <li class="page-excerpt py-3" id="suggestion-page-{{ post.id }}">
+          <header class="{% if post.suggestion.content.size > 0 %}mb-3{% else %}mb-0{% endif %}">
+            <h3 class="mt-0 mb-1"><a href="{{ post.url }}">{{ post.headline }}</a></h3>
+            <div class="byline text-muted small">
+              {{ t_general_posted_by }} {{ post.author.published_name_linked }} {{ t_general_on_date }} {{ post.published_at | format_datetime }}
+              {% if post.show_stream? and post.public_activities_count > 0 %}
+                &middot; <a href="{{ post.url }}#reactions">{{ post.public_activities_count }} {{ t_general_reaction }}{% if post.public_activities_count > 1 %}s{% endif %}</a>
+              {% endif %}
+            </div>
+          </header>
+
+          {% if post.suggestion.content.size > 0 %}
+            <div class="excerpt truncate-500" data-truncate="500">
+              {{ post.suggestion.content }}
+            </div>
+          {% endif %}
+
+          {% if post.suggestion.is_answered? %}
+            <div class="answer bg-light p-5 rounded">
+              <h5>{{ t_general_official_response }}{% if post.suggestion.answer_author.published_name_linked != blank %} from {{ post.suggestion.answer_author.published_name_linked }}{% endif %}{% if post.suggestion.is_answer_type? %}<span class="ml-3 badge badge-secondary text-capitalize">{{ post.suggestion.answer_type_html }}</span>{% endif %}</h5>
+              {% if post.suggestion.answer.size > 0 %}
+                <div class="answer-wrap truncate-500" data-truncate="500">{{ post.suggestion.answer }}</div>
+              {% endif %}
+            </div>
+          {% endif %}
+        </li>
+        {% unless forloop.last == true %}
+          <hr/>
+        {% endunless %}
+      {% endfor %}
+    </ul>
+
+    {% if request.url_path == page.url %} <!-- show most recent -->
+      {% include "pagination" source: page.suggestion_box.most_recent_suggestions %}
+    {% elsif request.url_path == alphabetical_url %}
+      {% include "pagination" source: page.suggestion_box.alphabetical_suggestions %}
+    {% else %}
+      {% include "pagination" source: page.suggestion_box.tagged_suggestions %}
+    {% endif %}
+
+    {% else %}
+          <p>{{ t_no_posts_yet }}</p>
+    {% endif %}
+
+</div>
+
+{% include "like_page" %}
+
+<script src="/assets/liquid/suggestions.js"></script>
+<script>
+  ;$(function(){
+    new NB.Liquid.Suggestions();
+  });
+</script>

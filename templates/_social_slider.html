@@ -1,0 +1,141 @@
+{% comment %}
+  Display social slider
+
+  @param {boolean} [preserveLinkToPage=false] - Preserve a link to activity page
+  @param {string} [class] - Additional CSS classes
+{% endcomment %}
+
+{% include "translation" %}
+
+{% if page.activities.size > 0 %}
+  {% if page.type_name == "Donation" or page.type_name == "Donation (v2)" %}
+    {% assign activity_type = "Donation" %}
+    {% assign ignore_types = "Donation Cancel|Donation Deleted" | split: "|" %}
+    {% assign activity_title = t_social_look_whos_donating %}
+  {% elsif page.type_name == "Endorsement" %}
+    {% assign activity_type = "Endorsement" %}
+    {% assign ignore_types = "" %}
+    {% assign activity_title = t_social_look_whos_endorsing %}
+  {% elsif page.type_name == "Event" %}
+    {% assign activity_type = "Event RSVP" %}
+    {% assign ignore_types = "Event RSVP Cancel" %}
+    {% assign activity_title = t_social_look_whos_rsvping %}
+  {% elsif page.type_name == "Moneybomb" %}
+    {% assign activity_type = "Pledge" %}
+    {% assign ignore_types = "Pledge Cancel" %}
+    {% assign activity_title = t_social_look_whos_pledging %}
+  {% elsif page.type_name == "Petition" %}
+    {% assign activity_type = "Petition Signature" %}
+    {% assign ignore_types = "" %}
+    {% assign activity_title = t_social_look_whos_signing %}
+  {% elsif page.type_name == "Signup" %}
+    {% assign activity_type = "Signup" %}
+    {% assign ignore_types = "" %}
+    {% assign activity_title = t_social_look_whos_signing_up %}
+  {% elsif page.type_name == "Volunteer Signup" %}
+    {% assign activity_type = "Volunteer Signup" %}
+    {% assign ignore_types = "Volunteer Quit" %}
+    {% assign activity_title = t_social_look_whos_volunteering %}
+  {% elsif page.type_name == "Vote Pledge" %}
+    {% assign activity_type = "Supporter Pledge Yes" %}
+    {% assign ignore_types = "Supporter Pledge Yes Cancel" %}
+    {% assign activity_title = t_social_look_whos_pledging %}
+  {% endif %}
+
+  {% if activity_type %}
+
+    {% assign show_slider_cards = nil %}
+    {% for activity in page.activities %}
+      {% if activity.type_name == activity_type %}
+        {% assign show_slider_cards = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if show_slider_cards %}
+      {% assign ignore_list = "" %}
+
+      <div id="social-slider" class="slider {{ class | default: '' }} carousel slide mb-4">
+        <div class="slider-gradient"></div>
+
+        <div class="carousel-inner">
+          {% assign isFirst = true %}
+
+          {% for activity in page.activities %}
+            {% if activity.type_name == activity_type %}
+              {% for ignore_type in ignore_types %}
+                {% if ignore_type == activity.type_name %}
+                  {% capture ignore_list %}{{ ignore_list }}{{ activity.signup.id | append: "|" }}{% endcapture %}
+                {% endif %}
+              {% endfor %}
+              {% capture current_signup %}{{ activity.signup.id | append: "|" }}{% endcapture %}
+              {% unless ignore_list contains current_signup and activity.is_private? %}
+                {% if activity_type == activity.type_name %}
+                  <div class="carousel-item {% if isFirst %}{% assign isFirst = false %}active{% endif %}">
+                    <div class="slider-item d-flex overflow-hidden align-items-center pb-2" {% if site.show_public_profiles? and activity.signup.is_profile_published? %}data-profile="true"{% endif %}>
+                      {% if site.show_public_profiles? and activity.signup.is_profile_published? %}
+                        <a href="{{ activity.signup.profile_url }}" class="flex-shrink-0 mr-2">
+                          {% include "avatar", signup: activity.signup, size: 30 %}
+                        </a>
+
+                        <div class="flex-grow-1">
+                          {% include "activity_show" %}
+                        </div>
+                      {% else %}
+                        <div class="flex-shrink-0 mr-2">
+                          {% include "avatar", signup: activity.signup, size: 30 %}
+                        </div>
+
+                        <div class="flex-grow-1">
+                          {% include "activity_show" %}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endunless %}
+            {% endif %}
+          {% endfor %}
+        </div><!--/.carousel-inner -->
+      </div><!--/.social-slider -->
+
+      <script>
+        ;(function() {
+          var slider = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+          var signupLinks = slider.querySelectorAll('.slider-item:not([data-profile="true"]) .activity-oneliner a.linked-signup-name');
+
+          // Remove profile links for people that don't have one
+          signupLinks.forEach(function(signupLink) {
+            var span = document.createElement('span');
+            span.innerText = signupLink.innerText;
+
+            signupLink.parentElement.insertBefore(span, signupLink);
+            signupLink.parentElement.removeChild(signupLink);
+          });
+
+          {% unless preserveLinkToPage %}
+          var pageLinks = slider.querySelectorAll('.slider-item .activity-oneliner a:not(.linked-signup-name');
+
+          // Remove a link to a activity page
+          pageLinks.forEach(function(pageLink) {
+            pageLink.parentElement.removeChild(pageLink);
+          });
+
+          var activityOneLiners = slider.querySelectorAll('.activity-oneliner').forEach(function(oneLiner) {
+            if (oneLiner) {
+              oneLiner.innerHTML = oneLiner.innerHTML.replace(/\b(on)\b/g, '');
+            }
+          });
+          {% endunless %}
+
+          // Remove activity content elements
+          slider.querySelectorAll('.slider-item .activity-content').forEach(function(content) {
+            content.parentElement.removeChild(content);
+          });
+        })();
+      </script>
+
+    {% endif %}
+  {% endif %}
+{% endif %}

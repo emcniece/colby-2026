@@ -1,0 +1,37 @@
+<div class="share">
+  <p>{{ t_general_recruit_your_friends_ }}<span id="face_tweet_content_charsleft"></span> {{ t_general_chars_left }}</p>
+
+  <div class="form">
+    {% form_for face_tweet %}
+
+      {% hidden_field_tag "face_tweet[page_id]", page.id %}
+
+      <div class="form_errors">{% error_messages_for face_tweet %}</div>
+
+      <div class="form-group">
+        {% text_field "content", class:"share_url text" %}
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-auto">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_twitter", id:"face-tweet-twitter", class:"checkbox" %}
+            <label for="face-tweet-twitter" class="custom-control-label">{{ t_tweet }}</label>
+          </div>
+        </div>
+
+        <div class="form-group col-auto">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_facebook", id:"face-tweet-facebook", class:"checkbox" %}
+            <label for="face-tweet-facebook" class="custom-control-label">{{ t_social_post_on_facebook }}</label>
+          </div>
+        </div>
+
+        <div class="form-group col">
+          {% submit_tag t_post, class:"btn btn-primary submit-button" %}
+        </div>
+      </div>
+
+    {% endform_for %}
+  </div>
+</div>

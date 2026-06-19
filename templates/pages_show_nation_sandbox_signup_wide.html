@@ -1,0 +1,67 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+
+    {% if page.nation_sandbox_signup.content.size > 0 %}
+      {{ page.nation_sandbox_signup.content }}
+    {% endif %}
+
+    <div class="form">
+      {% if request.sorta_logged_in? %}
+        <h2 class="headline">{{ t_general_hi_user }} {{ request.current_signup.name_or_email }}{{ t_general_start_your_new_nation }}</h2>
+        {% if request.logged_in? == false %}
+          <p>{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>.</p>
+        {% endif %}
+      {% else %}
+        <h2 class="headline">{{ t_general_start_your_sandbox_nation }}</h2>
+      {% endif %}
+
+      {% form_for nation_sandbox_signup %}
+
+        <div class="form_errors">{% error_messages_for nation_sandbox_signup %}</div>
+
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <div class="form-control-material">
+              <label for="nation_sandbox_signup_first_name" class="floating-label floating-label--float-above">{{ t_first_name }}*</label>
+              {% text_field "first_name", class:"form-control", required:"required" %}
+            </div>
+          </div>
+          <div class="form-group col col-md-6">
+            <div class="form-control-material">
+              <label for="nation_sandbox_signup_last_name" class="floating-label floating-label--float-above">{{ t_last_name }}*</label>
+              {% text_field "last_name", class:"form-control", required:"required" %}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <div class="form-control-material">
+              <label for="nation_sandbox_signup_email" class="floating-label floating-label--float-above">{{ t_email }}*</label>
+              {% email_field "email", class:"form-control", required:"required" %}
+            </div>
+          </div>
+          <div class="form-group col col-md-6">
+            <div class="form-control-material">
+              <label for="nation_sandbox_signup_phone" class="floating-label floating-label--float-above">{{ t_phone_number }}</label>
+              {% text_field "phone", class:"form-control" %}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+          {% check_box "accept_tos", class:"custom-control-input" %}
+          <label class="custom-control-label">{{ t_general_i_agree_to_the }} <a href="https://nationbuilder.com/tos" target="_blank">{{ t_general_nationbuilder_terms_of_service }}</a></label>
+        </div>
+
+        <div class="form-group ">
+          {% submit_tag "{{ t_general_start_your_sandbox_nation }}", class:"btn btn-primary submit-button" %}
+        </div>
+        <div class="form_submit"></div>
+      {% endform_for %}
+    </div>
+  </div>
+</div>

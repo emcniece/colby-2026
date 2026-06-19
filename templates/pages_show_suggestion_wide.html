@@ -1,0 +1,39 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+
+    {% if page.suggestion.has_image? %}
+      <div class="my-3">
+        <img src="{{ page.suggestion.image_url }}" class="mx-auto d-block">
+      </div>
+    {% endif %}
+
+    <div id="content">
+      <div id="intro" class="intro">
+        {% if page.suggestion.content.size > 0 %}
+          {{ page.suggestion.content }}
+        {% endif %}
+      </div>
+
+      {% if page.suggestion.is_answered? %}
+        <div class="my-4 bg-light p-5 rounded">
+          <h5>{{ t_general_official_response }}{% if page.suggestion.answer_author.published_name_linked != blank %} from {{ page.suggestion.answer_author.published_name_linked }}{% endif %}{% if page.suggestion.is_answer_type? %}<span class="ml-3 badge badge-secondary text-capitalize">{{ page.suggestion.answer_type_html }}</span>{% endif %}</h5>
+          
+          {% if page.suggestion.answer.size > 0 %}
+            <div>{{ page.suggestion.answer }}</div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      {% if page.tags_count > 0 %}
+        <div id="page-tags" class="page-tags">
+          {% include "page_tags" with page %}
+        </div>
+      {% endif %}
+
+      {% include "like_page" %}
+    </div>
+
+  </div><!--/.col-12 -->
+</div><!--/.row -->

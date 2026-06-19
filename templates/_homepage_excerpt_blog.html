@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    {% if page.headline.size > 0 %}
+      {% if page.is_homepage? and page.features_count == 0 %}
+        <h1 class="headline">{{ page.headline }}</h1>
+      {% else %}
+        <h2 class="headline">{{ page.headline }}</h2>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12">
+    <div id="blog-page-{{ page.id }}" class="row">
+      {% for post in page.blog.most_recent_blog_posts limit: 3 %}
+        <div class="col-md-6 col-lg-4 mb-4 {% if forloop.last %}d-md-none d-lg-block{% endif %}">
+          {% include "blog_excerpt" page: post %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 text-center">
+    <a href="{{ page.slug }}" class="btn btn-primary">{{ t_general_see_more_posts }}</a>
+  </div>
+</div>

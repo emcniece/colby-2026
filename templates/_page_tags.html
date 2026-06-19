@@ -1,0 +1,63 @@
+{% if page.is_homepage? == false and page_tags.tags_count > 0 %}
+  {% assign tags_length = 0 %}
+
+  {% for tag in page_tags.tags %}
+    {% assign tag_name = tag.name | downcase %}
+
+    {% case tag_name %}
+
+      {% when "homepage" %}
+      {% when "nav button" %}
+      {% when "sitemap" %}
+      {% when "hide like page" %}
+      {% when "site: disable sticky nav"%}
+      {% when "disable sticky nav" %}
+      {% when "include hero slider" %}
+      {% when "include split address fields" %}
+      {% when "disable ab template" %}
+
+      {% else %}
+        {% assign tags_length = tags_length | plus: 1 %}
+
+    {% endcase %}
+  {% endfor %}
+
+
+  {% assign tags_html = "" %}
+  {% assign tags_count = 0 %}
+
+  {% for tag in page_tags.tags %}
+    {% assign tag_name = tag.name | downcase %}
+
+    {% case tag_name %}
+
+      {% when "homepage" %}
+      {% when "nav button" %}
+      {% when "sitemap" %}
+      {% when "hide like page" %}
+      {% when "site: disable sticky nav"%}
+      {% when "disable sticky nav" %}
+      {% when "include hero slider" %}
+      {% when "include split address fields" %}
+      {% when "disable ab template" %}
+
+      {% else %}
+        {% assign tags_count = tags_count | plus: 1 %}
+
+        {% capture tags_html %}
+          {{ tags_html }}
+          <li class="list-inline-item"><a href="{{ tag.url }}" class="mr-1">{{ tag.name }}{% unless tags_count == tags_length %},{% endunless %}</a></li>
+        {% endcapture %}
+
+    {% endcase %}
+  {% endfor %}
+
+  {% if tags_html != blank %}
+    <div class="{% unless as_text %}mb-4 {% endunless %}d-flex align-items-center">
+      <i class="fas fa-hashtag mr-2 mb-1 text-color-2"></i>
+      <ul class="list-inline mb-1">
+        {{ tags_html }}
+      </ul>
+    </div>
+  {% endif %}
+{% endif %}

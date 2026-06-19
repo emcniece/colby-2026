@@ -1,0 +1,7 @@
+{% comment %}
+	Return unpaginated most recent published pages for a given tag
+
+	@returns {Object[]} tagged_pages	- An array of tagged most recent published pages with no pagination (max. 500 will be returned)
+{% endcomment %}
+
+{% assign tagged_pages = tag.most_recent_published_pages_no_pagination %}

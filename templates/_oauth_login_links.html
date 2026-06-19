@@ -1,0 +1,27 @@
+{% comment %}
+  @param {boolean} inline
+  @param {boolean} perform_check
+  @param {boolean} small
+  @param {string} facebook_label
+  @param {string} classes             - Additional HTML classes for login link
+{% endcomment %}
+
+{% if perform_check %}
+  {% if request.current_signup.has_facebook_info? %}
+    <a href="{{ request.facebook_connect_url }}" aria-label="Facebook" class="btn btn-facebook {% if inline %}d-inline-flex{% else %}btn-block d-flex{% endif %} {% if small %}btn-sm{% endif %} justify-content-center align-items-center mb-1 login-button-facebook {% if classes %}{{ classes }}{% endif %}">
+      {% if facebook_label %}
+        <span class="small font-weight-bold">{{ facebook_label }}</span>
+      {% else %}
+        <i class="fab fa-facebook-f"></i>
+      {% endif %}
+    </a>
+  {% endif %}
+{% else %}
+  <a href="{{ request.facebook_connect_url }}" aria-label="Facebook" class="btn btn-facebook {% if inline %}d-inline-flex{% else %}btn-block d-flex{% endif %} justify-content-center {% if small %}btn-sm{% endif %} align-items-center mb-1 login-button-facebook {% if classes %}{{ classes }}{% endif %}">
+    {% if facebook_label %}
+      <span class="small font-weight-bold">{{ facebook_label }}</span>
+    {% else %}
+      <i class="fab fa-facebook-f"></i>
+    {% endif %}
+  </a>
+{% endif %}

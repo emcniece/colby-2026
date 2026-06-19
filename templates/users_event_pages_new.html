@@ -1,0 +1,261 @@
+{% include "translation" %}
+
+{% if page %}
+  <h2 class="mb-3">{{ t_event_post_your }} {{ page.calendar.event_name | downcase }}</h2>
+{% else %}
+  <h2 class="mb-3">{{ t_event_post_your_event }}</h2>
+{% endif %}
+
+{% form_for event_page %}
+  <div class="form-wrap">
+    <div class="form">
+
+      <div class="form-errors" role="alert">{% error_messages_for event_page %}</div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material">
+            <label for="event_page_page_headline" class="floating-label floating-label--float-above">{{ t_event_event_headline }}*</label>
+            {% text_field "page_headline", class:"form-control", required:"required" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_start_at_chronic" class="floating-label floating-label--float-above">{{ t_event_when }}</label>
+            {% text_field "start_at_chronic", class:"form-control", required:"required" %}
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_duration_chronic" class="floating-label floating-label--float-above">{{ t_length }}</label>
+            {% text_field "duration_chronic", class:"form-control", required:"required" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="form-control-material form-control-material-custom-select">
+            <label for="event_page_time_zone" class="floating-label floating-label-select floating-label--float-above">{{ t_timezone }}</label>
+            {% select_field "time_zone", event_page.time_zones, class:"custom-select" %}
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_capacity_count" class="floating-label floating-label--float-above">{{ t_forms_maximum_capacity }}</label>
+            {% text_field "capacity_count", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      {% if event_page.page_parent_id.size > 0 %}
+        {% hidden_field_tag "event_page[page_parent_id]", event_page.page_parent_id %}
+      {% else %}
+        <div class="form-row">
+          <div class="form-group col">
+            <div class="form-control-material form-control-material-custom-select">
+              <label for="event_page_page_parent_id" class="floating-label floating-label-select floating-label--float-above">{{ t_event_post_in }}</label>
+              {% select_field "page_parent_id", event_page.calendars_available, class:"custom-select" %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      <hr/>
+
+      <h4 class="my-4 pt-4">{{ t_general_contact_info }}</h4>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material">
+            <label for="event_page_contact_name" class="floating-label floating-label--float-above">{{ t_name }}</label>
+            {% text_field "contact_name", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_contact_email" class="floating-label floating-label--float-above">{{ t_email }}</label>
+            {% text_field "contact_email", class:"form-control" %}
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_contact_phone_number" class="floating-label floating-label--float-above">{{ t_phone_number }}</label>
+            {% text_field "contact_phone_number", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_contact_email_private", class: "custom-control-input" %}
+            <label for="event_page_is_contact_email_private" class="custom-control-label">{{ t_dont_publish_email_address }}</label>
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_contact_phone_private", class:"custom-control-input" %}
+            <label for="event_page_is_contact_phone_private" class="custom-control-label">{{ t_dont_publish_phone_number }}</label>
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <h4 class="my-4 pt-4">{{ t_location }}</h4>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material">
+            <label for="event_page_venue_name" class="floating-label floating-label--float-above">{{ t_general_venue_name }}</label>
+            {% text_field "venue_name", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material mb-2">
+            <label for="event_page_venue_address_address1" class="floating-label floating-label--float-above">{{ t_address }}</label>
+            {% text_field "venue_address.address1", class:"form-control" %}
+          </div>
+
+          <div class="form-control-material">
+            <label for="event_page_venue_address_address2" class="floating-label floating-label--float-above">{{ t_address_2 }}</label>
+            {% text_field "venue_address.address2", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-4">
+          <div class="form-control-material">
+            <label for="event_page_venue_address_city" class="floating-label floating-label--float-above">{{ t_city }}</label>
+            {% text_field "venue_address.city", class:"form-control", required:"required" %}
+          </div>
+        </div>
+
+        {% if settings.has_states? %}
+          <div class="form-group col-md-4">
+            <div class="form-control-material">
+              <label for="event_page_venue_address_state" class="floating-label floating-label--float-above">{{ t_state }}</label>
+              {% text_field "venue_address.state", class:"form-control" %}
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="form-group col-md-4">
+          <div class="form-control-material">
+            <label for="event_page_venue_address_zip" class="floating-label floating-label--float-above">{{ t_zip }}</label>
+            {% text_field "venue_address.zip", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material form-control-material-custom-select">
+            <label for="event_page_country_code" class="floating-label floating-label-select floating-label--float-above">{{ t_country }}</label>
+            {% select_field "venue_address.country_code", event_page.countries, "code", "name", class:"custom-select" %}
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <h4 class="mt-4 mb-2 pt-4">{{ t_event_ticket_price }}</h4>
+
+      <div class="form-row">
+        <div class="form-group col text-secondary">{{ t_event_if_free_just_leave_at_zero }}</div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <div class="form-control-material">
+            <label for="event_page_user_ticket_price" class="floating-label floating-label--float-above">{{ t_amount }}</label>
+            {% text_field "user_ticket_price", class:"form-control" %}
+          </div>
+        </div>
+
+        <div class="form-group col-md-6">
+          <div class="form-control-material form-control-material-custom-select">
+            <label for="event_page_user_ticket_currency" class="floating-label floating-label-select floating-label--float-above">{{ t_currency }}</label>
+            {% select_field "user_ticket_currency", event_page.currencies_available, class:"custom-select" %}
+          </div>
+        </div>
+      </div>
+
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="form-control-material">
+            <label for="event_page_user_ticket_purchase_url" class="floating-label floating-label--float-above">{{ t_event_ticket_purchase_url }}</label>
+            {% text_field "user_ticket_purchase_url", class:"form-control" %}
+          </div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <h4 class="my-4 pt-4">{{ t_event_description_include_directions }}</h4>
+
+      <div class="form-row">
+        <div class="form-group col">
+          {% text_area "content_editable", class:"textarea-tinymce" %}
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="custom-control custom-checkbox">
+            {% check_box "accept_rsvps", class:"custom-control-input" %}
+            <label for="event_page_accept_rsvps" class="custom-control-label">{{ t_event_allow_people_to_rsvp }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="custom-control custom-checkbox">
+            {% check_box "allow_guests", class:"custom-control-input" %}
+            <label for="event_page_allow_guests" class="custom-control-label">{{ t_event_allow_people_to_bring_guests }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="custom-control custom-checkbox">
+            {% check_box "show_guests", class:"custom-control-input" %}
+            <label for="event_page_show_guests" class="custom-control-label">{{ t_ui_show_who_is_coming }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_private", class:"custom-control-input" %}
+            <label for="event_page_is_private" class="custom-control-label">{{ t_event_keep_the_rsvp_page_hidden_from_the_rest_of_the_site }}</label>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        {% submit_tag t_event_save_and_post, class:"btn btn-primary submit-button" %}
+        <div class="form-submit"></div>
+      </div>
+    </div>
+  </div>
+{% endform_for %}

@@ -1,0 +1,17 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    <div class="my-4 iframe-wrapper">
+      <iframe src="https://register.rockthevote.com/registrants/new?partner={{ page.voter_registration.rtv_id }}&source=embed-rtv234x60v1" width="100%" height="800" frameBorder="0"></iframe>
+    </div>
+
+    {% if page.tags_count > 0 %}
+      <div id="page-tags" class="page-tags">
+        {% include "page_tags" with page %}
+      </div>
+    {% endif %}
+
+    {% include "like_page" %}
+  </div><!--/.col-12 -->
+</div><!--/.row -->

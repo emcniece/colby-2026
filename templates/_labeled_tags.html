@@ -1,0 +1,19 @@
+<fieldset>
+  <div class="form-group labeled-tags-container">
+    {% for labeled_tag in page.signup.labeled_tags %}
+      <div class="form-group mb-1">
+        {% if page.signup.use_multiple_select_labeled_tags? %}
+          <div class="custom-control custom-checkbox">
+            <input type="checkbox" name="signup[labeled_tags][]" class="custom-control-input" id="checkbox_{{ labeled_tag.id }}" value="{{ labeled_tag.id }}" {{ labeled_tag.checked }} >
+            <label class="custom-control-label" for="checkbox_{{ labeled_tag.id }}">{{ labeled_tag.name }}</label>
+          </div>
+        {% else %}
+          <div class="custom-control custom-radio">
+            <input type="radio" name="signup[labeled_tags][]" class="custom-control-input" id="checkbox_{{ labeled_tag.id }}" value="{{ labeled_tag.id }}" {{ labeled_tag.checked }} >
+            <label class="custom-control-label" for="checkbox_{{ labeled_tag.id }}">{{ labeled_tag.name }}</label>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</fieldset>

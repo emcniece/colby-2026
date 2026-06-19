@@ -1,0 +1,40 @@
+{% comment %}
+  Display the consent form
+
+  @param {string} [headline_class='h6']
+{% endcomment %}
+
+<section class="consent-form-container mb-4" aria-label="Consent form">
+
+  {% if page.consent_form.headline.size > 0 %}
+    <h1 class="{{ headline_class | default: 'h6' }}">{{ page.consent_form.headline }}</h1>
+  {% endif %}
+
+  {% if page.consent_form.content.size > 0 %}
+    <div class="consent-form__content small">
+      {{ page.consent_form.content }}
+    </div>
+  {% endif %}
+
+  {% for consent_option in page.consent_form.consent_options %}
+    <div class="consent-form__option">
+      <div class="form-group">
+        <p class="mb-1 option-heading">{{ consent_option.description }}</p>
+        <div class="custom-control custom-radio custom-control-inline">
+          <input class="custom-control-input" type="radio" name="consents[{{consent_option.input_id}}]" id="{{consent_option.yes_radio_name}}" value="1"/>
+          <label class="custom-control-label radio" for="{{consent_option.yes_radio_name}}">
+            {{ t_yes }}
+          </label>
+        </div>
+
+        <div class="custom-control custom-radio custom-control-inline">
+          <input class="custom-control-input" type="radio" name="consents[{{consent_option.input_id}}]" id="{{consent_option.no_radio_name}}" value="0"/>
+          <label class="custom-control-label radio" for="{{consent_option.no_radio_name}}">
+            {{ t_no }}
+          </label>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+
+</section>

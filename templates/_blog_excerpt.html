@@ -1,0 +1,60 @@
+{% comment %}
+  Displays a blog excerpt
+
+  @param {Object} page - Page blog object
+  @returns {void}
+{% endcomment %}
+
+{% include "translation" %}
+
+{% assign mime_image_types = "image/jpeg,image/png" | split:"," %}
+
+{% assign card_img = nil %}
+{% for attachment in page.attachments %}
+  {% assign file_name = attachment.file_name | downcase | split:"." | first %}
+
+  {% if mime_image_types contains attachment.content_type and file_name == "thumbnail" %}
+    {% assign card_img = attachment.url %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+
+<article
+  class="blog-excerpt card card-with-cover rounded overflow-hidden text-white h-100 {% unless card_img or page.event.has_meta_image? %}pattern bg-color-2{% endunless %}"
+  {% unless card_img or page.event.has_meta_image? %}
+    style="background-image: url('data:image/svg+xml,%3Csvg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;80&quot; height=&quot;80&quot; viewBox=&quot;0 0 80 80&quot;%3E%3Cg fill=&quot;%23ffffff&quot; fill-opacity=&quot;0.15&quot;%3E%3Cpath fill-rule=&quot;evenodd&quot; d=&quot;M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z&quot;/%3E%3C/g%3E%3C/svg%3E');"
+  {% endunless %}
+>
+  {% if card_img or page.has_meta_image? %}
+    <img src="{{ card_img | default: page.meta_image_url }}" class="card-img" />
+    <div class="card-img-overlay position-absolute"></div>
+  {% endif %}
+
+  <div class="card-body d-flex flex-column mt-auto px-3 py-4">
+    <h2>
+      <a href="{{ page.url }}" class="text-white">{{ page.headline }}</a>
+    </h2>
+
+    <span class="d-flex flex-wrap align-items-center mb-2">
+      {% if page.has_author? %}
+        {% if site.show_public_profiles? and page.author.is_profile_published? %}
+          <a href="{{ page.author.profile_url }}" class="flex-shrink-0 text-white mr-2">
+            {% include "avatar" signup: page.author, size: 34 %}
+          </a>
+
+          <a href="{{ page.author.profile_url }}" class="text-white">{{ page.author.published_name }}</a>
+        {% else %}
+          <span class="flex-shrink-0 mr-2">
+            {% include "avatar" signup: page.author, size: 34 %}
+          </span>
+
+          <span>{{ page.author.published_name }}</span>
+        {% endif %}
+      {% endif %}
+    </span>
+
+    <span>
+      {{ t_published_at_short }}
+    </span>
+  </div>
+</article>

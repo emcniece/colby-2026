@@ -1,0 +1,5 @@
+{% assign words = page.blog_post.content_full | number_of_words | minus:250 %}
+
+<div class="byline text-muted small d-flex align-items-center flex-wrap my-3">
+  {{ t_general_by }} <img src="{{ page.author.profile_image_url }}" class="flex-shrink-0 rounded-circle ml-1" width="{{ size | default: 30 }}" height="{{ size | default: 30 }}" /> <span class="mx-1">{{ page.author.published_name_linked }}</span><div class="d-flex align-items-center flex-wrap">{{ t_general_on }} {{ page.published_at | date: '%B %d, %Y' }}<i class="fas fa-clock ml-4 mr-1"></i> {% if words < 0 %}{{ t_general_1_min_read }}{% else %}{{ words | plus: 250 | divided_by: 180 | append: " " | append: t_general_min_read }}{% endif %}</div>
+</div>

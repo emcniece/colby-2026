@@ -1,0 +1,150 @@
+{% include "translation" %}
+
+{% if page.feedback.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.feedback.content }}
+  </div>
+{% endif %}
+
+<div class="form">
+
+  {% form_for feedback %}
+    <div class="form-errors" role="alert">{% error_messages_for feedback %}</div>
+
+    <div class="form-group d-flex align-items-md-center">
+      {% if request.sorta_logged_in? %}
+        <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+          {% include "avatar" signup: request.current_signup, size: 72 %}
+        </div>
+      {% endif %}
+
+      {% if page.feedback.is_content? %}
+        <div id="blog-post-page-page-headline-input" class="blog-post-page-page-headline-input form-group flex-grow-1 mb-0">
+          <div class="form-control-material form-control-material-textarea">
+            <label for="feedback_content" class="floating-label floating-label-textarea floating-label--float-above">{{ page.feedback.content_name }}</label>
+            {% text_area "content", class:"form-control textarea autogrow overflow-hidden" %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    {% if page.feedback.is_content? and site.ask_to_publish_to_stream? %}
+      <div class="form-group">
+        <div class="custom-control custom-checkbox">
+          {% check_box "is_private", class:"custom-control-input checkbox" %}
+          <label class="custom-control-label checkbox" for="feedback_is_private">{{ t_general_dont_post_this_publicly }}</label>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="form-control-material">
+            <label for="feedback_first_name" class="floating-label floating-label--float-above">{{ t_first_name }}*</label>
+            {% text_field "first_name", class:"form-control text", required:"required" %}
+          </div>
+        </div>
+
+        <div class="form-group col-sm-6">
+          <div class="form-control-material">
+            <label for="feedback_last_name" class="floating-label floating-label--float-above">{{ t_last_name }}*</label>
+            {% text_field "last_name", class:"form-control text", required:"required" %}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if request.sorta_logged_in? == false or request.current_signup.has_mobile? == false %}
+      <div class="form-row">
+        <div class="form-group col-sm-6">
+          <div class="form-control-material">
+            <label for="feedback_email" class="floating-label floating-label--float-above">{{ t_email }}*</label>
+            {% email_field "email", class:"form-control text", required:"required" %}
+          </div>
+        </div>
+
+        {% if site.ask_for_mobiles? %}
+          <div class="form-group col-sm-6">
+            <div class="form-control-material">
+              <label for="feedback_mobile_number" class="floating-label floating-label--float-above">{{ t_forms_mobile_phone }}</label>
+              {% phone_field "mobile_number", class:"form-control text" %}
+            </div>
+          </div>
+        {% endif %}
+      </div>
+
+      {% unless page.show_consent_form? %}
+        <div class="form-row">
+          <div class="form-group col-sm-6">
+            <div class="custom-control custom-checkbox">
+              {% check_box "email_opt_in", class:"custom-control-input checkbox" %}
+              <label class="custom-control-label checkbox" for="feedback_email_opt_in">{{ t_forms_send_me_email_updates }}</label>
+            </div>
+          </div>
+
+          {% if site.ask_for_mobiles? %}
+            <div class="form-group col-sm-6">
+              <div class="custom-control custom-checkbox">
+                {% check_box "mobile_opt_in", class:"custom-control-input checkbox" %}
+                <label class="custom-control-label checkbox" for="feedback_mobile_opt_in">{{ t_forms_send_me_text_messages }}</label>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endunless %}
+    {% endif %}
+
+
+    {% if request.sorta_logged_in? == false or request.current_signup.has_full_address? == false %}
+      {% assign has_split_address_tag = false %}
+      {% for tag in page.tags %}
+        {% assign tag_name_lower = tag.name | downcase %}
+        {% if tag_name_lower == "include split address fields" %}
+          {% assign has_split_address_tag = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {% if has_split_address_tag %}
+        {% include "split_address_fields" with prefix: "feedback", required: page.feedback.require_address?, sidebar: true %}
+      {% else %}
+        <div class="form-group">
+          <div class="form-control-material">
+            {% if page.feedback.require_address? %}
+              <label for="feedback_submitted_address" class="floating-label floating-label--float-above">{{ t_address_street_city_state_zip }}*</label>
+              {% text_field "submitted_address", class:"form-control text", required: "required" %}
+            {% else %}
+              <label for="feedback_submitted_address" class="floating-label floating-label--float-above">{{ t_address_street_city_state_zip }}</label>
+              {% text_field "submitted_address", class:"form-control text" %}
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if page.feedback.is_volunteers? and site.ask_for_volunteers? %}
+      {% if request.logged_in? == false or request.current_signup.is_volunteer == false %}
+        <div class="form-group">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_volunteer", class:"custom-control-input checkbox" %}
+            <label class="custom-control-label checkbox" for="feedback_is_volunteer">{{ t_i_want_to_volunteer }}</label>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if page.show_consent_form? %}
+      {% include "consent_form" %}
+    {% endif %}
+
+    {% submit_tag page.feedback.submit_button_name, class:"btn btn-primary submit-button" %}
+    <div class="form-submit"></div>
+  {% endform_for %}
+</div><!--/.form -->
+
+{% if page.tags_count > 0 %}
+  <div id="page-tags" class="page-tags">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}

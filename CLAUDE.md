@@ -76,6 +76,58 @@ Fonts (load via Google Fonts in layout template `<head>`):
 - Laptop: `1280–1920px`
 - Desktop: `> 1920px`
 
+## Source file organisation
+
+```
+downloaded-from-nb/   READ-ONLY reference — the original theme as downloaded from NationBuilder
+templates/            Modified HTML/Liquid templates (partials use _ prefix)
+stylesheets/          theme.scss (NB raise base + our Colby 2026 CSS appended at bottom)
+javascripts/          JS files
+files/                Images, fonts, SVGs
+upload-to-nb/         Deploy target — populated by deploy.sh, drag-and-drop into NB
+```
+
+Do not edit files in `downloaded-from-nb/`. Copy the file you want to change into the appropriate source directory, edit it there, then run `deploy.sh`.
+
+### Key templates
+
+| File | Role |
+|---|---|
+| `templates/layout.html` | Master layout — for homepage renders `_homepage.html` only; for all other pages uses NB's standard header/footer/content flow |
+| `templates/_homepage.html` | **Full custom homepage** — owns everything from nav to footer |
+| `templates/_header.html` | NB site header (used on non-homepage pages) |
+| `templates/_footer.html` | NB site footer (used on non-homepage pages) |
+
+The homepage detection in `layout.html` is `{% if page.is_homepage? and page.type_slug == 'basic' %}`.
+
+## Deploying to NationBuilder
+
+NationBuilder admin: `https://langford2026electioncampaign.nationbuilder.com/admin/themes`
+
+### Prepare a deploy
+
+Update the datestamp comment in `stylesheets/theme.scss` (the `COLBY 2026 CUSTOM STYLES — DATE` line near the bottom), then run:
+
+```bash
+bash deploy.sh
+```
+
+This seeds `upload-to-nb/` with the complete NB theme baseline, then overwrites with all our modified files.
+
+### CRITICAL: Two separate upload paths
+
+**Template files** (all `.html` files) → paste into the **NationBuilder template code editor** (admin → Theme → Edit → click the file in the left-hand list). Drag-and-drop uploads `.html` as a static asset — NationBuilder ignores those as templates.
+
+**Static assets** (`theme.scss`, JS files, images, fonts) → drag-and-drop from `upload-to-nb/` into the NationBuilder theme file manager.
+
+### File reference rules (NationBuilder Liquid)
+
+- CSS in `<link>`: `href="theme.scss"` (bare filename — NB rewrites to CDN URL)
+- JS in `<script>`: bare filename — e.g. `src="vcs-nav.js"`
+- Images in templates: `{{ theme['filename.ext'] }}` — e.g. `{{ theme['hero-background.png'] }}`
+- Do **not** use `| asset_url`, `| theme_stylesheet_url`, or `| theme_javascript_url` — not valid NB filters
+- Do **not** use `{% extends %}` / `{% block %}` — Django/Jinja2 syntax, invalid in NB Liquid
+
 ## Figma MCP Usage
 
 Use these tools to read the design before implementing anything:

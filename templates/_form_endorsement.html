@@ -1,0 +1,259 @@
+{% if page.endorsement.is_signed? %}
+
+  {% form_for endorsement %}
+
+    <h3>{{ t_auth_thank_you_for_signing }}</h3>
+
+    <div class="form-errors" role="alert">{% error_messages_for endorsements %}</div>
+
+    {% if page.is_commentable? %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_content">{{ t_endorsement_change_your_comment }}</label>
+          {% text_area "content", class:"form-control" %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.endorsement.is_image? %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_image">{% if page.endorsement.require_organization? %}{{ t_general_upload_a_logo }}{% else %}{{ t_general_upload_a_picture }}{% endif %} (140x140)</label>
+          <div class="custom-file">
+            {% file_field "image", class:"custom-file-input file" %}
+            <label for="endorsement_image" class="custom-file-label">{{ t_general_choose_your_file }}</label>
+          </div>
+        </div>
+      </div>
+      {% if endorsement.has_image? %}
+        <div class="form-row">
+          <div class="form-group col">
+            <img src="{{ endorsement.large_square_image_url }}" width="140" height="140" class="border p-1 rounded"/>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if page.is_commentable? %}
+      {% submit_tag t_endorsement_update_endorsement, class:"btn btn-block btn-lg btn-primary" %}
+    {% endif %}
+
+    {{ page.endorsement.current_endorsement | delete_link message: t_endorsement_remove_endorsement class_name: "small" }}
+
+    <div class="form-submit"></div>
+
+  {% endform_for %}
+
+{% else %}
+
+  {% form_for endorsement %}
+
+    {% if request.sorta_logged_in? %}
+      <h4>{{ t_general_hi }} {{ request.current_signup.name_or_email }}, {% if page.endorsement.require_organization? %}{{ t_endorsement_will_your_organization_endorse }}{% else %}{{ t_endorsement_will_you_endorse }}{% endif %}</h4>
+      {% if request.logged_in? == false %}
+        <p>{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>.</p>
+      {% endif %}
+    {% else %}
+      <h4>{% if page.endorsement.require_organization? %}{{ t_endorsement_will_your_organization_endorse }}{% else %}{{ t_endorsement_will_you_endorse }}{% endif %}</h4>
+    {% endif %}
+
+    <div class="form-errors" role="alert">{% error_messages_for endorsement %}</div>
+
+    {% if page.endorsement.require_organization? %}
+      {% if page.endorsement.is_organization? %}
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <label for="endorsement_employer">{{ t_endorsement_organization_company }}</label>
+            {% text_field "employer", class:"form-control" %}
+          </div>
+          <div class="form-group col col-md-6">
+            <label for="endorsement_occupation">{{ t_endorsement_your_title }}</label>
+            {% text_field "occupation", class:"form-control" %}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col">
+            <div class="custom-control custom-checkbox">
+              {% check_box "is_organization", class:"custom-control-input" %}
+              <label for="endorsement_is_organization" class="custom-control-label">{{ t_endorsement_my_organization_is_making }}</label>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <label for="endorsement_first_name">{{ t_first_name }}*</label>
+            {% text_field "first_name", class:"form-control", required:"required" %}
+          </div>
+          <div class="form-group col col-md-6">
+            <label for="endorsement_last_name">{{ t_last_name }}*</label>
+            {% text_field "last_name", class:"form-control", required:"required" %}
+          </div>
+        </div>
+      {% endif %}
+
+    {% else %}
+
+      {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <label for="endorsement_first_name">{{ t_first_name }}*</label>
+            {% text_field "first_name", class:"form-control", required:"required" %}
+          </div>
+          <div class="form-group col col-md-6">
+            <label for="endorsement_last_name">{{ t_last_name }}*</label>
+            {% text_field "last_name", class:"form-control", required:"required" %}
+          </div>
+        </div>
+      {% endif %}
+
+    {% endif %}
+
+    {% if request.sorta_logged_in? == false %}
+      <div class="form-row">
+        <div class="form-group col col-md-6">
+          <label for="endorsement_email">{{ t_email }}*</label>
+          {% email_field "email", class:"form-control", required:"required" %}
+        </div>
+        {% if site.ask_for_mobiles? %}
+          <div class="form-group col col-md-6">
+            <label for="endorsement_mobile_number">{{ t_forms_mobile_phone }}</label>
+            {% phone_field "mobile_number", class:"form-control" %}
+          </div>
+        {% endif %}
+      </div>
+      {% unless page.show_consent_form? %}
+        <div class="form-row">
+          <div class="form-group col col-md-6">
+            <div class="custom-control custom-checkbox">
+              {% check_box "email_opt_in", class:"custom-control-input" %}
+              <label for="endorsement_email_opt_in" class="custom-control-label">{{ t_forms_send_me_email_updates }}</label>
+            </div>
+          </div>
+          {% if site.ask_for_mobiles? %}
+            <div class="form-group col col-md-6">
+              <div class="custom-control custom-checkbox">
+                {% check_box "mobile_opt_in", class:"custom-control-input" %}
+                <label for="endorsement_mobile_opt_in" class="custom-control-label">{{ t_forms_send_me_text_messages }}</label>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      {% endunless %}
+    {% endif %}
+
+    {% if page.endorsement.is_organization? and page.endorsement.require_organization? == false %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_employer">{{ t_endorsement_organization_company_optional }}</label>
+          {% text_field "employer", class:"form-control" %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_occupation">{{ t_endorsement_your_title_optional }}</label>
+          {% text_field "occupation", class:"form-control" %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col">
+          <div class="custom-control custom-checkbox">
+            {% check_box "is_organization", class:"custom-control-input" %}
+            <label for="endorsement_is_organization" class="custom-control-label">{{ t_endorsement_my_organization_is_making }}</label>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.endorsement.is_phone? %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_phone_number">{{ t_phone_number }}</label>
+          {% phone_field "phone_number", class:"form-control" %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.endorsement.is_address? %}
+      {% if request.sorta_logged_in? == false or request.current_signup.has_full_address? == false %}
+
+        {% assign has_split_address_tag = false %}
+        {% for tag in page.tags %}
+          {% assign tag_name_lower = tag.name | downcase %}
+          {% if tag_name_lower == "include split address fields" %}
+            {% assign has_split_address_tag = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        {% if has_split_address_tag %}
+          {% include "split_address_fields" with prefix: "endorsement", required: page.endorsement.require_address?, style: "basic" %}
+        {% else %}
+          <div class="form-row">
+            <div class="form-group col">
+              <label for="endorsement_submitted_address">{{ t_address }} <small class="text-muted">{{ t_forms_street_city_state_postal_code }}</small>{% if page.endorsement.require_address? %}*{% endif %}</label>
+              {% if page.endorsement.require_address? %}
+                {% text_field "submitted_address", class:"form-control", required:"required" %}
+              {% else %}
+                {% text_field "submitted_address", class:"form-control" %}
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if page.is_commentable? %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_content">{{ t_general_comments }}</label>
+          {% text_area "content", class:"form-control" %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.endorsement.is_image? %}
+      <div class="form-row">
+        <div class="form-group col">
+          <label for="endorsement_image">{% if page.endorsement.require_organization? %}{{ t_general_upload_a_logo }}{% else %}{{ t_general_upload_a_picture }}{% endif %} (140x140){% if page.endorsement.require_image? %}*{% endif %}</label>
+          <div class="custom-file">
+            {% if page.endorsement.require_image? %}
+              {% file_field "image", class:"custom-file-input file", required:"required" %}
+            {% else %}
+              {% file_field "image", class:"custom-file-input file" %}
+            {% endif %}
+            <label for="endorsement_image" class="custom-file-label">{{ t_general_choose_your_file }}</label>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if page.endorsement.is_volunteer? and site.ask_for_volunteers? %}
+      {% if request.sorta_logged_in? == false or request.current_signup.is_volunteer == false %}
+        <div class="form-row">
+          <div class="form-group col">
+            <div class="custom-control custom-checkbox">
+              {% check_box "is_volunteer", class:"custom-control-input" %}
+              <label for="endorsement_is_volunteer" class="custom-control-label">{{ t_i_want_to_volunteer }}</label>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% if page.show_consent_form? %}{% include "consent_form" %}{% endif %}
+
+    <div class="form-group">
+      {% submit_tag t_endorsement_add_endorsement, class:"btn btn-block btn-lg btn-primary" %}
+      <div class="form-submit"></div>
+    </div>
+
+  {% endform_for %}
+
+  {% if page.text_keyword_instructions.size > 0 %}
+    <p>{{ t_general_or }} {{ page.text_keyword_instructions }}</p>
+  {% endif %}
+
+{% endif %}

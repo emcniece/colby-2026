@@ -1,0 +1,42 @@
+  {% if page.survey.is_next_question? %}
+
+    {% if request.sorta_logged_in? %}
+      {% include "form_greeting" greeting: t_survey_next_question %}
+    {% endif %}
+
+    <div class="mt-4">
+
+      {% form_for survey_question_response %}
+        <div class="form-errors" role="alert">{% error_messages_for survey_question_response %}</div>
+
+        {% hidden_field_tag 'survey_question_response[survey_question_id]', page.survey.next_question.id %}
+
+        <h3 class="h4">{{ page.survey.next_question.content }}</h3>
+
+        {% if page.survey.next_question.intro.size > 0 %}
+          <div class="form-group">{{ page.survey.next_question.intro | new_line_to_br }}</div>
+        {% endif %}
+
+        <div class="form-group">
+          {% if page.survey.next_question.is_multiple_choice? %}
+            {% for possible_response in page.survey.next_question.possible_responses %}
+              <div class="custom-control custom-radio">
+                <input type="radio" name="survey_question_response[survey_question_possible_response_id]" class="custom-control-input" id="survey-choice-{{ possible_response.id }}" value="{{ possible_response.id }}"/>
+                <label for="survey-choice-{{ possible_response.id }}" class="custom-control-label">{{ possible_response.name }}</label>
+              </div>
+            {% endfor %}
+          {% elsif page.survey.next_question.is_text? %}
+            <label for="survey_question_response_content">{{ t_general_leave_a_comment }}</label>
+            {% text_area "content", class:"form-control" %}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {% submit_tag t_submit, class:"btn btn-primary submit-button" %}
+          <div class="form_submit"></div>
+        </div>
+      {% endform_for %}
+    </div>
+  {% else %}
+    {% include "form_greeting" greeting: t_survey_thanks_for_answering %}
+  {% endif %}

@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    {% if page.headline.size > 0 %}
+      {% if page.is_homepage? and page.features_count == 0 %}
+        <h1 class="headline">{{ page.headline }}</h1>
+      {% else %}
+        <h2 class="headline">{{ page.headline }}</h2>
+      {% endif %}
+    {% endif %}
+
+    <div class="press-release">
+      <header class="header mb-3">
+        <div class="released-at">
+          {{ page.published_at | date: '%B %d, %Y' }}
+        </div>
+
+        {% if page.has_author? %}
+          <div class="contact vcard">
+            <div class="contact-name">
+              Contact: <span class="n">{{ page.author.published_name }}</span>
+            </div>
+
+            {% if page.author.has_phone? %}
+              <div class="tel">
+                {{ page.author.phone_number }}
+              </div>
+            {% endif %}
+
+            {% if page.author.has_email? %}
+              <div class="email">
+                {{ page.author.email | enkode_email }}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </header>
+    </div>
+
+    <div id="intro" class="intro">
+      {{ page.press_release.content }}
+    </div>
+  </div><!--/.col-12 -->
+</div><!--/.row -->

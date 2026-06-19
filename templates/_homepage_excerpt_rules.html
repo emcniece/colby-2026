@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    {% if page.headline.size > 0 %}
+      {% if page.is_homepage? and page.features_count == 0 %}
+        <h1 class="headline">{{ page.headline }}</h1>
+      {% else %}
+        <h2 class="headline">{{ page.headline }}</h2>
+      {% endif %}
+    {% endif %}
+
+    {% if page.rule.content.size > 0 %}
+      <div id="intro" class="intro">
+        {{ page.rule.content }}
+      </div>
+    {% endif %}
+
+    <dl class="my-4">
+      {% for rule in page.rule.rules %}
+        <dt>{{ rule.name }}</dt>
+        <dd>{{ rule.content }}</dd>
+      {% endfor %}
+    </dl>
+  </div><!--./col-12 -->
+</div><!--/.row -->
+
+    

@@ -1,0 +1,67 @@
+{% include "translation" %}
+
+{% if request.logged_in? %}
+
+  <div class="my-4 card-group">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.capital_amount_format }}</h4>
+        <span class="text-muted">{{ t_general_balance }}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.received_capital_amount_format }}</h4>
+        <span class="text-muted">{{ t_general_earned }}</span>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.spent_capital_amount_format }}</h4>
+        <span class="text-muted">{{ t_general_spent }}</span>
+      </div>
+    </div>
+  </div>
+
+  {% if request.current_signup.capitals.size > 0 %}
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">{{ t_general_description }}</th>
+          <th scope="col">{{ t_amount }}</th>
+          <th scope="col"><span class="desktop-visible nowrap">{{ t_general_date }}</span></th>
+        </tr>
+      </thead>
+      {% for capital in request.current_signup.capitals %}
+        {% if capital.receiver_id == request.current_signup.id %}
+          <tr>
+            <td>{{ capital.activity.show_oneliner_view }}</td>
+            <td>{{ capital.amount_format }}</td>
+            <td><div class="desktop-visible nowrap">{{ capital.created_at | date_to_string }}</div></td>
+          </tr>
+        {% elsif capital.spender_id == request.current_signup.id %}
+          <tr>
+            <td>{{ capital.activity.show_oneliner_view }}</td>
+            <td>{{ capital.amount_spent_format }}</td>
+            <td><div class="desktop-visible nowrap">{{ capital.created_at | date_to_string }}</div></td>
+          </tr>
+        {% endif %}
+      {% endfor %}
+    </table>
+  {% endif %}
+
+  {% include "pagination" source: request.current_signup.capitals %}
+
+{% else %}
+
+  <h2 class="h4">
+    {{ t_auth_sign_in_to_view_political_capital }}
+  </h2>
+
+  <div class="user-session-form-container mt-4 mt-md-0">
+    {% include "user_session_form" %}
+  </div>
+
+{% endif %}

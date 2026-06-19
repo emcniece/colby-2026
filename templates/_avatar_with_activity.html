@@ -1,0 +1,97 @@
+{% comment %}
+	Display the avatar with activity icon
+	
+	@param {Object} signup					- User object
+	@param {number} size						- Image size
+	@param {string} activity_name 	- Activity name
+	@returns {void}
+{% endcomment %}
+
+{% assign name = activity_name | downcase %}
+
+{% assign icon_type = "fas" %}
+
+{% if name contains "comment" %}
+	{% assign icon = "comment" %}
+	{% assign bg_color = "warning" %}
+
+{% elsif name contains "donation" %}
+	{% assign icon = "dollar-sign" %}
+	{% assign bg_color = "success" %}
+
+{% elsif name contains "tweet" or name contains "twitter" %}
+	{% assign icon = "twitter" %}
+	{% assign icon_type = "fab" %}
+	{% assign bg_color = "twitter" %}
+
+{% elsif name contains "follow" %}
+	{% assign icon = "check" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name contains "signature" %}
+	{% assign icon = "signature" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "volunteer signup" %}
+	{% assign icon = "hands-helping" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name contains "signup" %}
+	{% assign icon = "envelope" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name contains "endorsement" %}
+	{% assign icon = "thumbs-up" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "event rsvp" %}
+	{% assign icon = "calendar-plus" %}
+	{% assign bg_color ="info" %}
+
+{% elsif name == "event rsvp cancel" %}
+	{% assign icon = "calendar-times" %}
+	{% assign bg_color = "danger" %}
+
+{% elsif name == "event host" %}
+	{% assign icon = "calendar" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "pledge" %}
+	{% assign icon = "check-square" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "page user tag" %}
+	{% assign icon = "tag" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "page published" %}
+	{% assign icon = "sticky-note" %}
+	{% assign bg_color = "info" %}
+
+{% elsif name == "suggestion answer type" %}
+	{% assign icon = "reply" %}
+	{% assign bg_color = "info" %}
+
+{% else %}
+	{% assign icon = "info" %}
+	{% assign bg_color = "info" %}
+
+{% endif %}
+
+{% if signup.profile_image_url contains "profile-avatar.png" %}
+	{% assign avatar_url = theme['profile-avatar.png'] %}
+{% else %}
+	{% assign avatar_url = signup.profile_image_url %}
+{% endif %}
+
+<div class="d-none">{{ name }}</div>
+
+<div class="avatar-container d-inline position-relative">
+	<img src="{{ avatar_url }}" alt="{{ signup.full_name_or_friend }}" class="avatar flex-shrink-0 rounded-circle" width="{{ size | default: 48 }}" height="{{ size | default: 48 }}" />
+
+	{% if icon %}
+    <div class="activity-icon position-absolute d-flex align-items-center justify-content-center rounded-circle bg-{{ bg_color }}">
+      <i class="{{ icon_type }} fa-{{ icon }}"></i>
+    </div>
+	{% endif %}
+</div>

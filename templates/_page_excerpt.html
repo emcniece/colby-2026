@@ -1,0 +1,35 @@
+<div class="page-excerpt page-{{ page_excerpt.id }} p-5 bg-light rounded position-relative"{% if page_excerpt.has_meta_image? %} style="background-image: url('{{ page_excerpt.meta_image_url }}');"{% endif %}>
+
+  {% if page_excerpt.has_meta_image? %}
+    <div class="hero-overlay position-absolute rounded"></div>
+  {% endif %}
+
+  <div class="position-relative">
+    <div class="mb-2 {% if page_excerpt.has_meta_image? %}text-white{% else %}text-muted{% endif %}"><span class="mr-1">{% include "show_page_icon" slug: page_excerpt.type_slug %}</span>{{ page_excerpt.type_name }}</div>
+
+    <h3 class="mb-2">
+      <a href="{{ page_excerpt.url }}"{% if page_excerpt.has_meta_image? %} class="text-white{% endif %}">{{ page_excerpt.headline }}</a>
+    </h3>
+
+    {% if page_excerpt.type_name == 'Blog Post' %}
+      {% if page_excerpt.published_at != blank and page_excerpt.has_author? %}
+        {% assign words = page_excerpt.blog_post.content_full | number_of_words | minus:250 %}
+
+        <div class="byline text-muted small d-flex align-items-center flex-wrap my-3">
+          {{ t_general_by }} <img src="{{ page_excerpt.author.profile_image_url }}" class="flex-shrink-0 rounded-circle ml-1" width="{{ size | default: 30 }}" height="{{ size | default: 30 }}" /> <span class="mx-1">{{ page_excerpt.author.published_name_linked }}</span><div class="d-flex align-items-center flex-wrap">{{ t_general_on }} {{ page_excerpt.published_at | date: '%B %d, %Y' }}<i class="fas fa-clock ml-4 mr-1"></i> {% if words < 0 %}{{ t_general_1_min_read }}{% else %}{{ words | plus: 250 | divided_by: 180 | append: " " | append: t_general_min_read }}{% endif %}</div>
+        </div>
+      {% endif %}
+    {% endif %}
+
+    {% unless page_excerpt.excerpt == empty %}
+      <div class="mt-2 mb-3 {% if page_excerpt.has_meta_image? %}text-white{% else %}text-muted{% endif %}">
+        {{ page_excerpt.excerpt }}
+      </div>
+    {% endunless %}
+
+    <div class="d-flex flex-wrap align-items-center">
+      <a href="{{ page_excerpt.url }}" class="btn btn-primary mr-2">{{ t_general_go_to_page }}</a>
+    </div>
+  </div>
+
+</div>

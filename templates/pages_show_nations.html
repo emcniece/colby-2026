@@ -1,0 +1,56 @@
+{% include "translation" %}
+
+{% if page.headline.size > 0 %}
+  <h2 class="mb-3">{{ page.headline }}</h2>
+{% endif %}
+
+<table class="">
+  <thead>
+    <tr>
+      <td class="tnation">{{ t_general_nation }}</td>
+      <td class="tplan">{{ t_general_plan }}</td>
+      <td class="temail">{{ t_auth_email_blasting }}</td>
+      <td class="ttext">{{ t_general_text_messaging }}</td>
+    </tr>
+  </thead>
+  <tbody>
+    {% for nation in current_signup.nations %}
+      <tr>
+        <td class="tnationname"><a href="{{ nation.admin_url }}">{{ nation.slug }}</a></td>
+        <td>{{ nation.signup_plan_name }}</td>
+        <td>{% if nation.is_email? %}{{ nation.email_plan_name }}{% endif %}</td>
+        <td>{% if nation.is_text? %}{{ nation.text_plan_name }}{% endif %}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="my-4"><a href="{{ site.nation_signup_page.url }}">{{ t_general_start_a_new_nation }}</a></div>
+
+<hr class="my-4">
+
+<div class="form">
+  <h4>{{ t_auth_sign_in_to_your_nation }}</h4>
+
+  {% form_for nation_signin %}
+
+    <div class="form_errors">{% error_messages_for nation_signin %}</div>
+
+    <div class="form-group">
+      <label for="nation_slug">{{ t_general_your_nationbuilder_url }}</label>
+      <div class="input-group">
+        {% text_field "slug", class:"form-control" %}
+        <div class="input-group-append">
+          <div class="input-group-text">{{ t_general_nationbuildercom }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      {% submit_tag "{{ t_auth_sign_in_to_your_nation }}", class:"btn btn-primary submit-button" %}
+      <div class="form_submit"></div>
+    </div>
+
+  {% endform_for %}
+
+</div>

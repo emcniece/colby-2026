@@ -1,0 +1,61 @@
+{% if page.public_activities_count > 0 or page.is_commentable? %}
+
+	<div id="stream" class="mt-4">
+    <div class="card">
+      <div id="comment" class="card-body">
+
+        {% if page.is_commentable? and page.type_name != 'Petition' %}
+          <div class="form">
+            {% form_for comment %}
+              <div class="form_errors">{% error_messages_for comment %}</div>
+
+              <div class="form-group face_comment">
+                {% text_area "content", class:"textarea" %}
+              </div>
+
+              <div class="form-row">
+                <div class="form-group col face_comment">
+                  <div class="update">
+                    {% submit_tag t_post_your_comment, class:"btn btn-primary fbbuttonConfirm fbbuttonConfirmb" %}
+                  </div>
+                </div>
+
+                <div class="form-group col-auto">
+                  {% if site.has_rule_page? %}
+                    <div class="remove">
+                      <a href="{{ site.rule_page.url }}">{{ t_review_site_rules }}</a>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+
+              <div class="form_submit"></div>
+            {% endform_for %}
+          </div>
+        {% endif %}
+
+      </div>
+
+      <div id="reactions" class="card-body bg-light border-top rounded-bottom content-list">
+        <ul id="page-stream" class="list-unstyled mb-0 activities">
+          {% for activity in page.activities %}
+            <li class="activity {% unless forloop.last == true %}mb-3{% endunless %}">
+              <div class="media">
+                <div class="mr-3">
+                  {% include "avatar" signup: activity.signup, size: 24 %}
+                </div>
+                
+                <div class="media-body">
+                  {{ activity.show_page_view }}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% include "pagination" source: page.activities %}
+      </div>
+	  </div>
+  </div>
+
+{% endif %}

@@ -1,0 +1,159 @@
+{% include "translation" %}
+
+{% if page.public_activities_count > 0 or page.is_commentable? %}
+
+  {% unless hide_form %}
+    {% assign hide_form = false %}
+  {% endunless %}
+
+  <section id="page-stream" class="page-stream mt-4" aria-label="Page stream">
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-lg-9 mx-auto">
+          {% if page.is_commentable? and hide_form == false %}
+            <section class="page-stream-form" aria-label="Page comment section">
+
+              <h1 class="h6 mb-4">
+                {% if request.logged_in? %}
+                  {{ t_general_leave_a_comment }}
+                {% else %}
+                  {{ t_general_sign_in_to_leave_a_comment }}
+                {% endif %}
+              </h1>
+
+              <div class="mb-5">
+                {% form_for comment %}
+
+                  {% if page.type_name == 'Suggestion' %}
+                    {% if page.suggestion.suggestion_box_tag_names.size > 0 %}
+                      <div class="form-group">
+                        <div class="tag-page">
+                          <strong class="d-block mb-1">{{ t_general_how_would_you_tag_this_suggestion }}</strong>
+
+                          {% include "suggestion_tag_list" %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  {% endif %}
+
+                  <div class="form-errors" role="alert">{% error_messages_for comment %}</div>
+
+                  <div class="form-group d-flex align-items-md-center">
+                    <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+                      {% if request.logged_in? or request.sorta_logged_in? %}
+                        {% include "avatar" signup: request.current_signup, size: 72 %}
+                      {% else %}
+                        {% include "avatar" signup: nil, anon: true, size: 72 %}
+                      {% endif %}
+                    </div>
+
+                    <div class="flex-grow-1">
+                      <input type="hidden" class="text" id="pending_object_id" name="pending_object_id" value="{{ request.pending_object_id }}"/>
+
+                      <div class="input-group">
+                        {% if request.logged_in? %}
+                          <div class="form-control-material form-control-material-textarea mb-2 mb-md-0">
+                            <label for="comment_content" class="floating-label floating-label-textarea floating-label--float-above">{{ t_general_leave_a_comment }}</label>
+                            {% text_area "content", class:"form-control textarea autogrow" %}
+                          </div>
+                        {% else %}
+                          <div class="form-control-material form-control-material-textarea mb-2 mb-md-0 disabled">
+                            <label for="comment_content" class="floating-label floating-label-textarea floating-label--float-above">{{ t_general_leave_a_comment }}</label>
+                            {% text_area "content", class:"form-control textarea autogrow", disabled: "disabled" %}
+                          </div>
+                        {% endif %}
+
+                        <div class="input-group-append">
+                          {% if request.logged_in? %}
+                            {% submit_tag t_post, class:"btn btn-primary submit-button px-3" %}
+                          {% else %}
+                            {% submit_tag t_post, class:"btn btn-primary submit-button d-block px-3", disabled: "disabled" %}
+                          {% endif %}
+                        </div>
+                      </div>
+
+                      <div class="form-submit"></div>
+                    </div>
+                  </div>
+
+                  {% if request.logged_in? and site.has_rule_page? %}
+                    <div class="form-group">
+                      <div class="review-rules mt-1 mt-md-0"><a href="{{ site.rule_page.url }}">{{ t_review_site_rules }}</a></div>
+                    </div>
+                  {% endif %}
+
+                {% endform_for %}
+
+                {% unless request.logged_in? %}
+                  <div class="user-session-form-container mt-4 mt-md-0">
+                    {% include "user_session_form" %}
+                  </div>
+                {% endunless %}
+              </div>
+
+            </section>
+          {% endif %}
+        </div><!--/.col-12 -->
+
+        <div class="col-12 col-lg-9 mx-auto">
+          <section class="activities-stream" aria-label="Activities stream">
+            <header class="d-flex flex-column flex-md-row align-items-md-center justify-content-md-between mb-4">
+              <h1 class="h6 mb-2 mb-md-0">{{ t_general_recent_activity }}</h1>
+
+              <div class="page-follow" id="page_follow_{{ page.id }}">
+                {% include "page_follow" %}
+              </div>
+            </header>
+
+            {% if page.public_activities_count > 0 %}
+
+              <div id="reactions" class="content-list my-3">
+                <ul class="list-unstyled mb-0 activities">
+                  {% for activity in page.activities %}
+                    <li class="activity d-block w-100 position-relative {% unless forloop.last %}pb-5 pb-md-4{% endunless %}">
+                      {% unless forloop.last %}
+                        <div class="activity-vertical-hr d-none d-md-block position-absolute"></div>
+                      {% endunless %}
+
+                      <div class="d-flex flex-column flex-md-row align-items-top">
+                        <div class="position-relative flex-shrink-0 text-center mb-2 mb-md-0 mr-md-3">
+                          {% include "avatar_with_activity" signup: activity.signup, size: 72, activity_name: activity.type_name %}
+                        </div>
+
+                        <div class="w-100 ml-md-3 mt-md-2">
+                          {% comment %} {{ activity.show }} {% endcomment %}
+                          {% include "activity_show" %}
+                        </div>
+                      </div>
+                    </li>
+                  {% endfor %}
+                </ul>
+
+                {% include "pagination" source: page.activities %}
+              </div>
+
+            {% else %}
+
+              <i>{{ t_general_no_recent_activity }}</i>
+
+            {% endif %}
+
+            <script>
+              ;(function() {
+                document.querySelectorAll('.activities-stream .activity-content').forEach(function(content) {
+                  if (!content.textContent.trim()) {
+                    var parent = getParents(content, '.align-items-top')[0];
+
+                    parent.classList.remove('align-items-top');
+                    parent.classList.add('align-items-center');
+                  }
+                });
+              })();
+            </script>
+          </section>
+        </div><!--/.col-12 -->
+      </div><!--/.row -->
+    </div><!--/.container -->
+  </section><!--/.page-stream -->
+
+{% endif %}

@@ -1,0 +1,93 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-md-4 pt-4 pt-md-0">
+
+    {% include "profile_card" profile: profile %}
+
+    <!-- twitter timeline -->
+    {% if profile.has_twitter_info? %}
+      <div class="my-5">
+        <h5><i class="fab fa-twitter"></i> <a href="{{ profile.twitter_profile_url }}" target="_blank">@{{ profile.twitter_login }}</a></h5>
+        <a class="twitter-timeline" href="{{ profile.twitter_profile_url }}?ref_src=twsrc%5Etfw" data-tweet-limit="1" data-chrome="noheader nofooter noborders">{{ t_social_latest_tweet }}</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+      </div>
+    {% endif %}
+    <!-- .twitter timeline -->
+
+  </div>
+
+  <div class="col-12 col-md pt-4 pt-md-0">
+
+    <!-- fundraising -->
+
+    {% if settings.is_donor? and profile.has_fundraising_goal? %}
+      <div class="card border-0 shadow-sm rounded mb-5">
+        <div class="card-header border-0">
+          <h6 class="text-muted mb-0">{{ t_general_my_fundraiser }}</h6>
+        </div>
+
+        <div class="card-body">
+          {% if profile.profile_headline.size > 0 %}
+            <h2 class="mb-3">{{ profile.profile_headline }}</h2>
+          {% endif %}
+
+          <div class="mb-3">
+            {% include "progress"
+              percent: profile.percent_of_fundraising_goal,
+              amount: profile.donations_raised_amount_format,
+              goal: profile.donations_to_raise_amount_format
+            %}
+          </div>
+
+          {% if profile.profile_content.size > 0 %}
+            <div id="intro" class="intro">
+              {{ profile.profile_content }}
+            </div>
+          {% endif %}
+
+          {% if site.has_donation_page? %}
+            <a href="{{ site.donation_page.full_url }}?recruiter_id={{ profile.id }}" class="btn btn-primary mb-3">{{ t_donate }}</a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- .fundraising -->
+
+    <section class="activities-stream" aria-label="Activities stream">
+      <h2 class="mb-5">{{ t_general_recent_activity }}</h2>
+
+      {% if profile.most_recent_posts.size > 0 %}
+        <ul class="list-unstyled mb-4 activities">
+          {% for post in profile.most_recent_posts %}
+            <li class="activity d-block w-100 position-relative {% unless forloop.last %}pb-5 pb-md-4{% endunless %}">
+              {% unless forloop.last %}
+                <div class="activity-vertical-hr d-none d-md-block position-absolute"></div>
+              {% endunless %}
+
+              <div class="d-flex flex-column flex-md-row align-items-top">
+                <div class="position-relative flex-shrink-0 text-center mb-2 mb-md-0 mr-md-3">
+                  {% include "avatar_with_activity" signup: profile, size: 72, activity_name: post.activity.type_name %}
+                </div>
+
+                <div class="w-100 ml-md-3 mt-md-2">
+                  {% include "post_activity_show" %}
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+
+        {% include "pagination" source: profile.most_recent_posts %}
+
+      {% else %}
+
+        <div class="mb-4">
+          <i>{{ t_general_no_recent_activity }}</i>
+        </div>
+
+      {% endif %}
+    </section>
+
+  </div><!--/.col-12 -->
+</div><!--/.row -->

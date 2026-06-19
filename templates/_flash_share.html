@@ -1,0 +1,46 @@
+{% include "translation" %}
+
+<section class="flash-share modal fade" id="flash-share" tabindex="-1" role="dialog" aria-label="{{ t_general_tell_all_your_friends }}">
+  <button type="button" class="position-absolute close" data-dismiss="modal" aria-label="{{ t_close }}">
+    <img src="{{ theme['fa-close.png'] }}" alt="" />
+  </button>
+
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="container-fluid">
+
+          <img class="d-block mx-auto mb-3" src="paper-plane.png" alt="" />
+
+          <h1 class="h3 mb-4">{{ flash.message }}</h1>
+
+          <p>{{ t_general_tell_all_your_friends_they_should_join_you_a_link_ }}</p>
+
+          <div class="flash-share-links mt-4">
+            <a class="btn btn-block btn-primary" href="mailto:?body={{ flash.page.full_url_with_recruiter }}" target="_blank"><i class="fas fa-envelope"></i> {{ t_email }}</a>
+            <a class="btn btn-block btn-facebook" href="https://www.facebook.com/share.php?u={{ flash.page.full_url_with_recruiter | urlencode }}" target="_blank"><i class="fab fa-facebook-f"></i> {{ t_social_facebook }}</a>
+            <a class="btn btn-block btn-twitter" href="{{ flash.page.tweet_url }}" target="_blank"><i class="fab fa-twitter"></i> {{ t_social_twitter }}</a>
+            <a class="btn btn-block btn-whatsapp" href="https://api.whatsapp.com/send?text={{ flash.page.full_url_with_recruiter | urlencode }}" target="_blank"><i class="fab fa-whatsapp"></i> {{ t_general_whatsapp }}</a>
+          </div>
+
+          <a href="#" class="flash-close d-block text-color-2 mt-3 mx-auto" role="button" data-dismiss="modal">{{ t_no_thanks }}</a>
+        </div><!--/.container-fluid -->
+      </div><!--/.modal-body -->
+
+    </div><!--/.modal-content -->
+  </div><!--/.modal-dialog -->
+
+  <script>
+    ;(function() {
+      SimpleScrollbar.initEl(document.querySelector('#flash-share .modal-body'));
+
+      var flashContainer = document.getElementById('flash_container');
+
+      flashContainer.style.zIndex = 1030;
+
+      $('#flash-share').on('hidden.bs.modal', function(e) {
+        flashContainer.style.zIndex = '';
+      });
+    })();
+  </script>
+</section>

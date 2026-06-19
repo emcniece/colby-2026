@@ -1,0 +1,541 @@
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="hero page-section">
+
+  <!-- Full-bleed photo background -->
+  <img class="hero__bg"
+       src="{{ theme['hero-background.png'] }}"
+       alt=""
+       role="presentation"
+       loading="eager" />
+
+  <!-- Pink diagonal overlay -->
+  <div class="hero__diagonal" aria-hidden="true">
+    <img src="{{ theme['hero-diagonal.svg'] }}" alt="" />
+  </div>
+
+  <!-- Transparent header nav -->
+  <header class="site-header hero__header" role="banner">
+    <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
+      <span class="colby-logo colby-logo--v2 colby-logo--default">
+        <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="{{ site.name }}" />
+      </span>
+    </a>
+
+    <nav class="site-header__nav" role="navigation" aria-label="Main navigation">
+      <ul class="site-header__nav-links" role="list">
+        <li><a href="#progress" class="menu-link">Progress</a></li>
+        <li><a href="#priorities" class="menu-link">Priorities</a></li>
+        <li><a href="#faqs" class="menu-link">FAQs</a></li>
+        <li><a href="#platform" class="menu-link">Platform</a></li>
+      </ul>
+    </nav>
+
+    <a href="/pages/donate" class="btn btn-v3">Donate</a>
+
+    <button class="btn-hamburger hide-desktop" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+      <i class="fa-solid fa-bars"></i>
+    </button>
+  </header>
+
+  <!-- Mobile nav drawer (hidden by default, toggled by hamburger) -->
+  <div id="mobile-nav" class="mobile-nav hide-desktop" hidden>
+    <nav role="navigation" aria-label="Mobile navigation">
+      <ul role="list">
+        <li><a href="#progress" class="menu-link">Progress</a></li>
+        <li><a href="#priorities" class="menu-link">Priorities</a></li>
+        <li><a href="#faqs" class="menu-link">FAQs</a></li>
+        <li><a href="#platform" class="menu-link">Platform</a></li>
+        <li><a href="/pages/donate" class="btn btn-v3">Donate</a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Hero content panel -->
+  <div class="hero__inner">
+    <div class="hero__content">
+      <!-- Spacer occupies the space where the foreground photo sits on desktop -->
+      <div class="hero__foreground-spacer" aria-hidden="true"></div>
+
+      <div class="hero__text">
+        <h1 class="heading-h1 hero__headline">Moving Langford forward, together</h1>
+
+        <!-- Sign-up form -->
+        <div class="signup-form">
+          <div class="signup-form__row">
+            <div class="form-group">
+              <label class="form-group__label" for="hero-first-name">First name</label>
+              <input class="form-group__field" id="hero-first-name" type="text" name="signup[first_name]" placeholder="Your first name" autocomplete="given-name" />
+            </div>
+            <div class="form-group">
+              <label class="form-group__label" for="hero-last-name">Last name</label>
+              <input class="form-group__field" id="hero-last-name" type="text" name="signup[last_name]" placeholder="Your last name" autocomplete="family-name" />
+            </div>
+          </div>
+          <div class="signup-form__row">
+            <div class="form-group">
+              <label class="form-group__label" for="hero-email">Email</label>
+              <input class="form-group__field" id="hero-email" type="email" name="signup[email]" placeholder="your@email.com" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <label class="form-group__label" for="hero-phone">Phone (optional)</label>
+              <input class="form-group__field" id="hero-phone" type="tel" name="signup[phone]" placeholder="(250) 555-0100" autocomplete="tel" />
+            </div>
+          </div>
+          <div class="signup-form__footer">
+            <button class="btn btn-v4" type="submit">Join the team</button>
+            <p class="signup-form__disclaimer">
+              By signing up, you agree to receive occasional campaign updates. We respect your privacy and will never share your information.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sub-hero yellow bar with quote -->
+    <div class="hero__sub">
+      <div class="hero__sub-photo" aria-hidden="true">
+        <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+      </div>
+
+      <div class="hero__sub-content">
+        <blockquote class="hero__sub-quote">
+          "Langford has always had big dreams — and the people to make them real. I'm running to make sure every neighbourhood has a voice, and every family can see a future here."
+          <cite> — Colby Harder</cite>
+        </blockquote>
+
+        <a href="/pages/about" class="btn btn-v2">About Colby</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PROGRESS SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-progress page-section" id="progress">
+  <div class="section-inner">
+
+    <div class="section-progress__text">
+      <div class="section-progress__cols">
+
+        <div class="section-progress__col-main">
+          <span class="kicker kicker--on-3">What we've built together</span>
+          <h2 class="heading-h2">Delivering results for Langford</h2>
+
+          <div class="section-progress__photo">
+            <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
+          </div>
+
+          <!-- 2×2 counter grid -->
+          <div class="section-progress__counters">
+            <div class="section-progress__counter-row">
+              <div class="progress-counter">
+                <span class="progress-counter__number">1,200+</span>
+                <span class="progress-counter__label">Families supported by new childcare spaces</span>
+              </div>
+              <div class="progress-counter">
+                <span class="progress-counter__number">47km</span>
+                <span class="progress-counter__label">Of new cycling and walking trails</span>
+              </div>
+            </div>
+            <div class="section-progress__counter-row">
+              <div class="progress-counter">
+                <span class="progress-counter__number">$82M</span>
+                <span class="progress-counter__label">In infrastructure investment secured</span>
+              </div>
+              <div class="progress-counter">
+                <span class="progress-counter__number">Zero</span>
+                <span class="progress-counter__label">Property tax increases during tenure</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Progress slider carousel -->
+          <div class="progress-slider" role="region" aria-label="Progress highlights">
+            <button class="btn-mini" aria-label="Previous highlight">
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <div class="progress-slider__item">
+              <i class="fa-solid fa-tree-city" aria-hidden="true"></i>
+              <span class="progress-slider__label">Westshore Parks &amp; Recreation expansion</span>
+            </div>
+            <button class="btn-mini" aria-label="Next highlight">
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <a href="/pages/progress" class="btn btn-v3">See more progress</a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Right photo panel (full-height, edge-to-edge) -->
+    <div class="section-progress__image-panel" aria-hidden="true">
+      <img class="section-photo"
+           src="{{ theme['progress-clinic.png'] }}"
+           alt="Langford medical clinic"
+           loading="lazy" />
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PEOPLE POWERED SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-powered page-section section-1">
+
+  <div class="section-inner">
+    <div class="section-powered__content">
+      <h2 class="heading-h2 section-powered__heading">People-powered politics</h2>
+      <p class="section-powered__body">
+        This campaign runs on small donations from everyday Langford residents — not big developers or outside money. Your support keeps the focus where it belongs: on you.
+      </p>
+
+      <!-- Donor progress bar -->
+      <div class="donor-progress">
+        <p class="donor-progress__label">
+          <strong>17 of 100</strong> goal donors this month
+        </p>
+        <div class="donor-progress__bar" role="progressbar" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100" aria-label="17 of 100 donors reached">
+          <div class="donor-progress__fill"></div>
+        </div>
+      </div>
+
+      <!-- Donation amount selector -->
+      <div class="donation-selector">
+        <p class="donation-selector__label">Choose an amount to donate:</p>
+        <div class="donation-selector__row">
+          <div class="donation-selector__amounts" role="group" aria-label="Donation amounts">
+            <button class="donation-amount" type="button" data-amount="20">$20</button>
+            <button class="donation-amount" type="button" data-amount="50">$50</button>
+            <button class="donation-amount" type="button" data-amount="100">$100</button>
+            <button class="donation-amount" type="button" data-amount="200">$200</button>
+            <button class="donation-amount" type="button" data-amount="500">$500</button>
+            <button class="donation-amount" type="button" data-amount="1429.70">$1,429.70</button>
+          </div>
+          <a href="/pages/donate" class="btn btn-v1">Donate</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right photo -->
+    <div class="section-powered__photo">
+      <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PRIORITIES / SURVEY SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-priorities page-section" id="priorities">
+
+  <!-- Left photo -->
+  <div class="section-priorities__image" aria-hidden="true">
+    <img class="section-photo"
+         src="{{ theme['priorities-photo.png'] }}"
+         alt="Langford neighbourhood"
+         loading="lazy" />
+  </div>
+
+  <!-- Right content -->
+  <div class="section-priorities__text">
+    <span class="kicker kicker--on-4">Tell us what matters</span>
+    <h2 class="heading-h2 section-priorities__heading">Your priorities shape our platform</h2>
+    <p class="section-priorities__body">
+      Take 60 seconds to tell Colby where Langford should focus next. Every response shapes the platform.
+    </p>
+
+    <!-- Survey form -->
+    <form class="survey" action="/pages/submit-priorities" method="post">
+      <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
+
+      <!-- Q1: Sentiment -->
+      <div class="survey__question">
+        <p class="survey__question-label" data-num="1">How are you feeling about the direction of Langford?</p>
+        <div class="survey__sentiment" role="group" aria-label="Sentiment options">
+          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="positive" aria-pressed="false">
+            <i class="fa-solid fa-face-smile" aria-hidden="true"></i> Positive
+          </button>
+          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="neutral" aria-pressed="false">
+            <i class="fa-solid fa-face-meh" aria-hidden="true"></i> Mixed
+          </button>
+          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="negative" aria-pressed="false">
+            <i class="fa-solid fa-face-frown" aria-hidden="true"></i> Concerned
+          </button>
+        </div>
+      </div>
+
+      <!-- Q2: Checkboxes -->
+      <div class="survey__question">
+        <p class="survey__question-label" data-num="2">Which issues matter most to you? (select all that apply)</p>
+        <div class="survey__checkboxes" role="group" aria-label="Priority issues">
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="housing" />
+            <span class="checkbox-group__label">Affordable housing</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="transit" />
+            <span class="checkbox-group__label">Transit &amp; roads</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="healthcare" />
+            <span class="checkbox-group__label">Local healthcare</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="environment" />
+            <span class="checkbox-group__label">Environment</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="business" />
+            <span class="checkbox-group__label">Local business</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="safety" />
+            <span class="checkbox-group__label">Public safety</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- Q3: Open text -->
+      <div class="survey__question">
+        <label class="survey__question-label" data-num="3" for="survey-comment">
+          Anything else you'd like Colby to know?
+        </label>
+        <div class="form-group">
+          <textarea class="form-group__field form-group__field--textarea form-group__field--bordered"
+                    id="survey-comment"
+                    name="survey[comment]"
+                    rows="3"
+                    placeholder="Your thoughts…"></textarea>
+        </div>
+      </div>
+
+      <button class="btn btn-v3" type="submit">Share my priorities</button>
+    </form>
+  </div>
+
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FAQS SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-faqs page-section" id="faqs">
+  <div class="section-inner">
+
+    <span class="kicker kicker--on-3">Common questions</span>
+
+    <div class="section-faqs__cols">
+
+      <!-- Left: heading + body + photo -->
+      <div class="section-faqs__col-intro">
+        <div>
+          <h2 class="heading-h2 section-faqs__heading">Got questions? We've got answers.</h2>
+          <p class="section-faqs__body">
+            Wondering what Colby stands for, how he plans to deliver on his commitments, or how you can get involved? Find the most common questions below.
+          </p>
+        </div>
+        <div class="section-faqs__photo">
+          <img src="{{ theme['faqs-photo.png'] }}" alt="Colby at a community event" loading="lazy" />
+        </div>
+      </div>
+
+      <!-- Right: accordion -->
+      <div class="section-faqs__col-accordion">
+        <div class="accordion" role="list">
+
+          <div class="accordion-item accordion-item--open" role="listitem">
+            <button class="accordion-item__title" aria-expanded="true" aria-controls="faq-1-body">
+              <span class="accordion-item__title-text">What are Colby's top three priorities?</span>
+              <span class="btn-mini" aria-hidden="true">
+                <i class="fa-solid fa-minus-circle"></i>
+              </span>
+            </button>
+            <div class="accordion-item__body" id="faq-1-body">
+              Colby is focused on keeping housing attainable for families, expanding transit options so more residents can leave their cars at home, and ensuring Langford's growth doesn't outpace its infrastructure.
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-2-body">
+              <span class="accordion-item__title-text">How is the campaign funded?</span>
+              <span class="btn-mini" aria-hidden="true">
+                <i class="fa-solid fa-plus-circle"></i>
+              </span>
+            </button>
+            <div class="accordion-item__body" id="faq-2-body" hidden>
+              This campaign is funded entirely by individual donations from Langford residents. No corporate donations, no developer money. The maximum individual donation under BC's Local Elections Campaign Financing Act is $1,429.70.
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-3-body">
+              <span class="accordion-item__title-text">How can I volunteer?</span>
+              <span class="btn-mini" aria-hidden="true">
+                <i class="fa-solid fa-plus-circle"></i>
+              </span>
+            </button>
+            <div class="accordion-item__body" id="faq-3-body" hidden>
+              Sign up at the top of this page and let us know you want to help. We need canvassers, phone bankers, sign crews, and event helpers — all skill levels welcome.
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-4-body">
+              <span class="accordion-item__title-text">When is election day?</span>
+              <span class="btn-mini" aria-hidden="true">
+                <i class="fa-solid fa-plus-circle"></i>
+              </span>
+            </button>
+            <div class="accordion-item__body" id="faq-4-body" hidden>
+              BC's general local elections are on Saturday, October 17, 2026. Advance voting opportunities are available in the two weeks prior. Check the City of Langford website for polling locations.
+            </div>
+          </div>
+
+          <div class="accordion-item" role="listitem">
+            <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-5-body">
+              <span class="accordion-item__title-text">What has Colby already accomplished?</span>
+              <span class="btn-mini" aria-hidden="true">
+                <i class="fa-solid fa-plus-circle"></i>
+              </span>
+            </button>
+            <div class="accordion-item__body" id="faq-5-body" hidden>
+              Colby has championed over $82M in infrastructure investment, helped create 1,200+ new childcare spaces, and added 47km of trails — all without raising property taxes.
+            </div>
+          </div>
+
+        </div>
+
+        <a href="/pages/faqs" class="btn btn-v3">See more questions</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PLATFORM SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-platform page-section" id="platform">
+
+  <!-- Left photo panel -->
+  <div class="section-platform__image" aria-hidden="true">
+    <img class="section-photo"
+         src="{{ theme['platform-photo.png'] }}"
+         alt="Langford skyline"
+         loading="lazy" />
+  </div>
+
+  <!-- Right content -->
+  <div class="section-platform__text">
+    <span class="kicker kicker--on-2">The platform</span>
+
+    <div class="section-platform__intro">
+      <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
+      <p class="section-platform__intro-body">
+        Langford is one of the fastest-growing cities in Canada. That's a gift — and a responsibility. Colby's platform is built to make sure growth works for everyone who calls this city home.
+      </p>
+    </div>
+
+    <!-- 3 priority cards -->
+    <div class="section-platform__priorities" role="list">
+
+      <article class="priority-card" role="listitem">
+        <div class="feature-icon feature-icon--lg feature-icon--c1" aria-hidden="true">
+          <i class="fa-solid fa-house-chimney"></i>
+        </div>
+        <h3 class="priority-card__heading">Housing for Everyone</h3>
+        <p class="priority-card__body">
+          More gentle density, streamlined permitting, and partnerships with non-profits to build homes people can actually afford to live in.
+        </p>
+      </article>
+
+      <article class="priority-card" role="listitem">
+        <div class="feature-icon feature-icon--lg feature-icon--c2" aria-hidden="true">
+          <i class="fa-solid fa-stethoscope"></i>
+        </div>
+        <h3 class="priority-card__heading">Local Healthcare</h3>
+        <p class="priority-card__body">
+          Advocate for the Westshore's fair share of Island Health resources and support the expansion of the new medical clinic.
+        </p>
+      </article>
+
+      <article class="priority-card" role="listitem">
+        <div class="feature-icon feature-icon--lg feature-icon--c3" aria-hidden="true">
+          <i class="fa-solid fa-tree-city"></i>
+        </div>
+        <h3 class="priority-card__heading">Green &amp; Connected</h3>
+        <p class="priority-card__body">
+          Expand the trail network, protect green corridors, and push for better transit connections to Victoria and the region.
+        </p>
+      </article>
+
+    </div>
+
+    <!-- Notify me form -->
+    <div class="section-platform__notify">
+      <p class="section-platform__notify-text">Be the first to hear when the full platform is released:</p>
+      <div class="section-platform__notify-form">
+        <div class="form-group">
+          <input class="form-group__field"
+                 type="email"
+                 name="notify[email]"
+                 placeholder="your@email.com"
+                 autocomplete="email"
+                 aria-label="Email address for platform notifications" />
+        </div>
+        <button class="btn btn-v2" type="submit">Notify me</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     LOGO + DATE SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-logo-date page-section section-1" aria-label="Vote October 17">
+  <div class="section-inner">
+    <div class="section-logo-date__logo">
+      <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="Colby Harder 2026" />
+    </div>
+    <p class="section-logo-date__date">October 17th, 2026</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════════════════ -->
+<footer class="site-footer" role="contentinfo">
+  <div class="site-footer__inner">
+    <p class="site-footer__disclaimer">
+      Authorized by the financial agent for Colby Harder, 2026 Langford City Council Campaign. Registered under the Local Elections Campaign Financing Act (BC).
+    </p>
+    <div class="site-footer__socials" aria-label="Follow Colby on social media">
+      <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        <img src="{{ theme['icon-facebook.svg'] }}" alt="Facebook" />
+      </a>
+      <a class="site-footer__social-btn" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        <img src="{{ theme['icon-instagram.svg'] }}" alt="Instagram" />
+      </a>
+      <a class="site-footer__social-btn" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        <img src="{{ theme['icon-tiktok.svg'] }}" alt="TikTok" />
+      </a>
+    </div>
+  </div>
+</footer>
+

@@ -1,0 +1,30 @@
+{% comment %}
+  Displays a form greeting
+
+  @param {string} greeting - Greeting text
+{% endcomment %}
+
+<div class="d-flex align-items-center mb-4">
+  <div class="flex-shrink-0 mr-2">{% include "avatar" signup: request.current_signup, size: 46 %}</div>
+
+  <div>
+    {% if greeting == blank %}
+      <h5 class="mb-0 mr-2">{{ t_general_hi }} {{ request.current_signup.first_name_or_friend }}.</h5>
+    {% else %}
+      <h5 class="mb-0 mr-2">{{ request.current_signup.first_name_or_friend }}, {{ greeting | downcase_first_char }}</h5>
+    {% endif %}
+
+    {% if request.sorta_logged_in? and request.logged_in? == false %}
+      <div class="text-xs"><i>{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>.</i></div>
+    {% endif %}
+  </div>
+
+  <a href="{{ request.current_signup.settings_url }}" class="mr-2">
+    <i class="fas fa-cog" aria-hidden="true"></i>
+    <span class="sr-only">{{ t_general_your_settings }}</span>
+  </a>
+  <a href="{{ request.current_signup.logout_url }}" class="mr-2">
+    <i class="fas fa-sign-out-alt" aria-hidden="true"></i>
+    <span class="sr-only">{{ t_logout }}</span>
+  </a>
+</div>

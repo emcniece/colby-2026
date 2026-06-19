@@ -1,0 +1,72 @@
+/*NOTE: Change these values to edit the theme colors */
+$primary: $primary;
+$color-1: $primary;
+$color-2: $color-2;
+$color-3: $color-3;
+
+// For reference, the theme colors for each variation are listed below
+// Raise: style_default:
+// $primary: #DE2F1B;
+// $color-1: $primary;
+// $color-2: #1E78A9;
+// $color-3: #03354F;
+
+// Raise: style_pink:
+// $primary: #f44d80;
+// $color-1: $primary;
+// $color-2: #d4af37;
+// $color-3: #484848;
+
+// Raise: style_yellow:
+// $primary: #f1c40f;
+// $color-1: $primary;
+// $color-2: #33d0b1;
+// $color-3: #2c3e50;
+
+//
+// -- More on the Theme Color System --
+//
+// This file centralizes the primary colors for the Raise theme to make them
+// easy to customize. To change the main theme colors, simply modify the
+// hex values for the variables below.
+//
+// -----------------------------------------------------------------------------
+//
+// ## Color Usage
+//
+// As described in the official Raise theme documentation, these variables
+// control the most common elements in the theme. For a visual reference,
+// see the documentation: https://support.nationbuilder.com/en/articles/9596903-raise-theme-guidelines#h_15cf592369
+//
+// - $primary: The main action color for the website.
+//   - Used for: The "buttons" on action pages. Should be a bright color.
+//
+// - $color-1: A standout color, often for the most important call to action.
+//   - Used for: The "Donate" button in the top navigation.
+//   - Note: By default, this is set to be the same as $primary.
+//
+// - $color-2: The menu hover color.
+//   - Used for: The backdrop that appears when a user hovers over a menu item.
+//
+// - $color-3: The most frequently used color, intended for text and dark backgrounds.
+//   - Used for: Top navigation font, footer background, homepage excerpt
+//     panels, and default page headlines. It should be a dark color.
+//
+// -----------------------------------------------------------------------------
+//
+// ## Accessibility Guidelines
+//
+// When modifying colors, it is crucial to maintain accessibility standards.
+// Ensure that text has sufficient contrast against its background.
+//
+// - **WCAG Requirement:** AA rating requires a contrast ratio of at least 4.5:1
+//   for normal text and 3:1 for large text.
+//
+// - **Online Tool:** Use a contrast checker to verify your color choices.
+//   - WebAIM Contrast Checker: https://webaim.org/resources/contrastchecker/
+//
+// -----------------------------------------------------------------------------
+
+// 💡 TIP: For more color options, see _variables.scss lines 6-133
+// Need to customize grays, semantic colors, or social media colors?
+// → Edit _variables.scss directly for full control over 30+ color variables

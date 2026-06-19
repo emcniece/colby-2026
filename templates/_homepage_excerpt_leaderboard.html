@@ -1,0 +1,56 @@
+{% if page.leaderboard.content.size > 0 %}
+  <div class="row">
+    <div class="col-12 col-lg-9 mx-auto">
+      {% if page.headline.size > 0 %}
+        {% if page.is_homepage? and page.features_count == 0 %}
+          <h1 class="headline">{{ page.headline }}</h1>
+        {% else %}
+          <h2 class="headline">{{ page.headline }}</h2>
+        {% endif %}
+      {% endif %}
+
+      <div id="intro" class="intro">
+        {{ page.leaderboard.content }}
+      </div>
+    </div><!--/.col-12 -->
+  </div><!--/.row -->
+{% endif %}
+
+{% for leaderboard in page.page_leaderboards %}
+  <div class="leaderboard {% unless forloop.last == true %}mb-4{% endunless %}">
+    {% if leaderboard.display_number_results > 0 %}
+
+      <div class="row">
+        <div class="col-12 col-lg-9 mx-auto">
+          <h4>{{ leaderboard.display_number_results }} {{ leaderboard.display_name }}</h4>
+
+          {% if leaderboard.has_goal? %}
+            <div class="my-4">
+              {% include "progress"
+                percent: leaderboard.percent_of_goal,
+                count: leaderboard.total,
+                goal: leaderboard.goal,
+                label: leaderboard.goal_name_short
+              %}
+            </div>
+          {% endif %}
+        </div><!--/.col-12 -->
+      </div><!--/.row -->
+
+      <div class="row mt-4">
+        {% for entry in leaderboard.entries limit: 3 %}
+          <div class="col-lg-4 col-md-6 mb-4 {% if forloop.last %}d-md-none d-lg-block{% endif %}">
+            {% include "profile_card" profile: entry.signup, rank: entry.position %}
+          </div>
+        {% endfor %}
+      </div>
+
+      <div class="row">
+        <div class="col-12 text-center">
+          <a href="{{ page.slug }}" class="btn btn-primary">{{ t_general_see_more }}</a>
+        </div>
+      </div>
+
+    {% endif %}
+  </div>
+{% endfor %}

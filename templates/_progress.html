@@ -1,0 +1,54 @@
+{% comment %}
+
+  Use this to display a progress bar.
+  -------
+  EXAMPLE
+  -------
+  {% include "progress"
+    percent: page.endorsement.percent_of_goal,
+    amount: page.endorsement.percent_of_goal,
+    count: page.endorsement.endorsements_count,
+    goal: page.endorsement.goal,
+    label: t_endorsement_endorsement
+    label_low_count: t_endorsement_endorsement_low_count
+  %}
+
+  @param {number} percent
+  @param {number} amount
+  @param {number} count
+  @param {number} goal
+  @param {string} label
+  @param {string} label_low_count
+  @param {string} [headlineClasses='d-block mb-2 h6']
+{% endcomment %}
+
+{% if percent <= 1 %}
+  {% assign finalPercent = percent | times: 100 %}
+{% else %}
+  {% assign finalPercent = percent %}
+{% endif %}
+
+{% assign count_num = count | plus: 0 %}
+
+{% if label_low_count %}
+  {% assign label_postfix = label_low_count %}
+{% else %}
+  {% assign label_postfix = label %}
+{% endif %}
+
+<div class="{{ headlineClasses | default: "d-block mb-2 h6" }}">
+  {% if count %}
+    {% if count_num < 3 %}
+      {{ t_volunteer_just_started_help_us_get_to }} {{ goal | number_with_commas }} {{ label_postfix | pluralize }}
+    {% else %}
+      {{ count | number_with_commas }} {{ label | pluralize }} {{ t_volunteer_so_far_help_us_get_to }} {{ goal | number_with_commas }}
+    {% endif %}
+  {% else %}
+    {{ amount }} {{ label }} {{ t_volunteer_so_far_help_us_get_to }} {{ goal | number_with_commas }}
+  {% endif %}
+</div>
+
+<div class="progress" data-percent="{{ finalPercent }}" data-count="{{ count_num }}" data-goal="{{ goal }}" data-amount="{{ amount }}">
+  <div class="progress-bar py-2" role="progressbar" style="width: {{ finalPercent }}%;" aria-valuenow="{{ percent }}" aria-valuemin="0" aria-valuemax="100">
+  </div>
+</div>

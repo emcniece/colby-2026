@@ -1,0 +1,65 @@
+<div class="container content-{{ request.template  | replace: '_', '-' }}">
+
+  {% if page.features_count > 0 and page.features.size > 0 %}
+    <div class="row">
+      <div class="col">
+        {% include "features" %}
+      </div>
+    </div>
+  {% endif %}
+
+
+  {% assign tags_list = "" %}
+  {% for tag in page.tags %}
+    {% assign tags_list = tag.name | downcase | append: ", " | append: tags_list %}
+  {% endfor %}
+
+  {% if page.type_slug == "basic" and tags_list contains "sitemap" %}
+
+    {% include "sitemap" %}
+
+  {% else %}
+
+    <div class="row">
+      <div class="col-12 col-md">
+
+          {% if is_session
+            or request.template contains "signups_edit"
+            or request.template contains "profiles_show_wide"
+            or request.template contains "profiles_show"
+            or request.template == "page_not_found"
+            or request.template == "tags_show"
+            or page.type_slug == "petition"
+            or page.type_slug == "signup"
+            or page.type_slug == "endorsement"
+            or page.type_slug == "volunteer_signup"
+            or page.type_slug == "event"
+            or page.type_slug == "blog"
+            or page.type_slug == "directory"
+            or page.type_slug == "calendar" %}
+              
+              
+              {% yield %}
+
+          {% else %}
+
+            {% if sidebar %}
+              <div class="row">
+                <div class="col-12 col-lg-9 mx-auto">
+                  
+                  {% yield %}
+                </div>
+              </div>
+            {% else %}
+              
+              {% yield %}
+            {% endif %}
+
+          {% endif %}
+
+      </div>
+    </div>
+
+  {% endif %}
+
+</div>

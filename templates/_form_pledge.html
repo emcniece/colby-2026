@@ -1,0 +1,47 @@
+{% include "translation" %}
+
+{% if page.vote_pledge.is_pledged? %}
+  <h4>{{ t_general_you }}
+    {% if page.vote_pledge.current_vote_pledge.is_no? %}
+    {{ t_vote_pledge_pledged_not }}
+    {% elsif page.vote_pledge.current_vote_pledge.is_unsure? %}
+    {{ t_general_said_you_were_not_sure_whether }}
+    {% elsif page.vote_pledge.current_vote_pledge.is_yes? %}
+    {{ t_vote_pledge_pledged }}
+    {% endif %}
+    to
+    {% if page.vote_pledge.current_vote_pledge.could_vote? %}
+    {{ t_vote_for }}
+    {% else %}
+    {{ t_general_support }}
+    {% endif %}
+    {{ site.candidate_first_name_or_site_name }}.
+  </h4>
+
+  <div class="mt-2">
+    {{ page.vote_pledge.current_vote_pledge | delete_link message: t_vote_pledge_remove_pledge, class_name: "btn btn-danger destroy-link" }}
+  </div>
+{% else %}
+  <div class="form-errors" role="alert">{% error_messages_for vote_pledge %}</div>
+  <div id="vote_pledge_form" class="vote-pledge-form">
+
+    <div class="form-group">
+      <a href="{{ page.vote_pledge.yes_url }}" class="btn btn-primary btn-sm mr-1 get">{{ t_yes }}</a> {{ t_vote_pledge_i_support }} {{ site.candidate_first_name_or_site_name }}.
+    </div>
+
+    <div class="form-group">
+      <a href="{{ page.vote_pledge.unsure_url }}" class="btn btn-secondary btn-sm mr-1 get"> {{ t_vote_pledge_i_might }}</a> {{ t_general_support }} {{ site.candidate_first_name_or_site_name }},
+      <a href="{{ site.full_url}}">{{ t_general_tell_me_more }}</a>.
+    </div>
+
+    <div class="form-group">
+      <a href="{{ page.vote_pledge.no_url }}" class="btn btn-danger btn-sm mr-1 get">{{ t_no }}</a> {{ t_vote_pledge_i_do_not_support }} {{ site.candidate_first_name_or_site_name }}.
+    </div>
+  </div>
+
+  {% if page.text_keyword_instructions.size > 0 %}
+  <div class="my-2">
+    {{ t_general_or }} {{ page.text_keyword_instructions }}
+  </div>
+  {% endif %}
+{% endif %}

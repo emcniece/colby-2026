@@ -1,0 +1,126 @@
+{% include "translation" %}
+
+{% if page.blog.is_posting_public? %}
+  <div class="row">
+    <div class="col-12 col-lg-9 mx-auto">
+
+      {% if request.logged_in? %}
+
+        <h2 class="h5">{{ t_general_create_a_new_post }}</h2>
+
+        <div class="card mb-5">
+          <div class="card-body p-0">
+
+            <div class="form-wrap">
+              {% form_for blog_post_page %}
+                <div class="form-errors" role="alert">{% error_messages_for blog_post_page %}</div>
+
+                <div class="form-group d-flex align-items-md-center">
+                  <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+                    {% include "avatar" signup: request.current_signup, size: 72 %}
+                  </div>
+
+                  <div id="blog-post-page-page-headline-input" class="blog-post-page-page-headline-input form-group flex-grow-1 mb-0">
+                    <div class="form-control-material">
+                      <label for="blog_post_page_page_headline" class="floating-label floating-label--float-above">{{ page.blog.public_posting_prompt }}</label>
+                      {% text_field "page_headline", class:"form-control text" %}
+                    </div>
+                  </div>
+                </div>
+
+                <div id="blog-post-page-form-expanded" class="blog-post-page-form-expanded mt-4 hide">
+                  <div class="form-group">
+                    <label for="mceu_13">{{ t_general_your_post_content }}</label>
+                    {% text_area "content_editable", class:"form-control textarea-tinymce" %}
+                  </div>
+
+                  {% if page.show_consent_form? %}
+                    {% include "consent_form" %}
+                  {% endif %}
+
+                  <div class="form-group">
+                    {% submit_tag t_post, class:"btn btn-primary submit-button" %}
+                    <div class="form-submit"></div>
+                  </div>
+                </div>
+
+                <script>
+                  ;(function() {
+                    var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+                    var headline = previous.previousElementSibling.querySelector('#blog_post_page_page_headline');
+
+                    headline.addEventListener('focusin', onFocus);
+
+                    function onFocus() {
+                      previous.classList.remove('hide');
+
+                      headline.removeEventListener('focusin', onFocus);
+                    }
+                  })();
+                </script>
+              {% endform_for %}
+            </div><!--/.form-wrap -->
+
+          </div><!--/.card-body -->
+        </div><!--/.card -->
+
+      {% else %}
+
+        <div class="form-wrap mb-5">
+          <h2 class="h5">{{ t_auth_sign_in_to_create_a_post }}</h2>
+
+          {% form_for blog_post_page %}
+            <div class="form-errors" role="alert">{% error_messages_for blog_post_page %}</div>
+
+            <div class="form-group d-flex align-items-md-center">
+              <div class="flex-shrink-0 d-none d-md-block mr-md-3">
+                {% include "avatar" signup: nil, anon: true, size: 72 %}
+              </div>
+
+              <div class="flex-grow-1">
+                <div class="form-control-material">
+                  <label for="blog_post_page_page_headline" class="floating-label floating-label--float-above">{{ page.blog.public_posting_prompt }}</label>
+                  {% text_field "page_headline", class:"form-control text" %}
+                </div>
+              </div>
+            </div>
+
+          {% endform_for %}
+          <div class="user-session-form-container">
+            {% include "user_session_form" %}
+          </div>
+        </div><!--/.form-wrap -->
+
+      {% endif %}
+
+    </div><!--/.col-lg-9 -->
+  </div><!--/.row -->
+{% endif %}
+
+<div class="row">
+  <div class="col-12">
+    <div id="blog-page-{{ page.id }}" class="row">
+      {% for post in page.blog.most_recent_blog_posts %}
+        <div class="col-md-6 col-lg-4 mb-4">
+          {% include "blog_excerpt" page: post %}
+        </div>
+      {% endfor %}
+    </div>
+
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+
+    {% include "pagination" source: page.blog.most_recent_blog_posts %}
+
+    {% if page.tags_count > 0 %}
+      <div id="page-tags" class="page-tags">
+        {% include "page_tags" with page %}
+      </div>
+    {% endif %}
+
+    {% include "like_page" %}
+  </div>
+</div>

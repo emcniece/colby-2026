@@ -1,0 +1,67 @@
+{% comment %}
+  Get page icon
+
+  @param {string} slug
+  @returns {string}
+{% endcomment %}
+
+{% assign icon = "" %}
+{% capture icon %}
+  {% case slug %}
+    {% when "activity_stream" %}
+      <i class="fas fa-stream"></i>
+    {% when "basic" %}
+      <i class="fas fa-file"></i>
+    {% when "blog" or "blog_post" %}
+      <i class="fas fa-newspaper"></i>
+    {% when "calendar" %}
+      <i class="fas fa-calendar-alt"></i>
+    {% when "donation" or "donation_v2" %}
+      <i class="fas fa-credit-card"></i>
+    {% when "directory" %}
+      <i class="fas fa-list-alt"></i>
+    {% when "endorsement" %}
+      <i class="fas fa-thumbs-up"></i>
+    {% when "event" %}
+      <i class="fas fa-calendar"></i>
+    {% when "faq" %}
+      <i class="fas fa-question-circle"></i>
+    {% when "question" %}
+      <i class="fas fa-question"></i>
+    {% when "feedback" %}
+      <i class="fas fa-comment"></i>
+    {% when "find_friends" %}
+      <i class="fas fa-search"></i>>
+    {% when "followers" %}
+      <i class="fas fa-check"></i>
+    {% when "follows" %}
+      <i class="fas fa-check"></i>
+    {% when "leaderboard" %}
+      <i class="fas fa-medal"></i>
+    {% when "moneybomb" %}
+      <i class="fas fa-hourglass-start"></i>
+    {% when "petition" %}
+      <i class="fas fa-clipboard"></i>
+    {% when "political_capital" %}
+      <i class="fas fa-box-open"></i>
+    {% when "press_release" %}
+      <i class="fas fa-bullhorn"></i>
+    {% when "recruiting" %}
+      <i class="fas fa-user-plus"></i>
+    {% when "redirect" %}
+      <i class="fas fa-directions"></i>
+    {% when "rules" %}
+      <i class="fas fa-user-secret"></i>
+    {% when "signup" %}
+      <i class="fas fa-envelope"></i>
+    {% when "suggestion_box" %}
+      <i class="fas fa-archive"></i>
+    {% when "survey" %}
+      <i class="fas fa-check"></i>
+    {% when "volunteer_signup" %}
+      <i class="fas fa-hands-helping"></i>
+    {% when "vote_pledge" %}
+      <i class="fas fa-check-square"></i>
+  {% endcase %}
+{% endcapture %}
+{{ icon | strip }}

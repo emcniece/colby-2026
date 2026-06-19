@@ -1,0 +1,17 @@
+
+<div class="row">
+	<div class="col-12 col-lg-9 mx-auto">
+		<div id="content">
+		  <ul class="list-unstyled mb-4">
+		    {% for post in tag.most_recent_published_pages %}
+          <li class="{% unless forloop.last == true %}mb-4 pb-4{% endunless %}">
+            {% include "page_excerpt" with post %}
+          </li>
+		    {% endfor %}
+		  </ul>
+
+      {% include "pagination" source: tag.most_recent_published_pages %}
+		</div>
+	</div>
+</div>
+

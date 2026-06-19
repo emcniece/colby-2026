@@ -1,31 +1,211 @@
+{% include "translation" %}
+
+{% assign tags_list = "" %}
+{% for tag in page.tags %}
+  {% assign tags_list = tag.name | downcase | append: ", " | append: tags_list %}
+{% endfor %}
+
+{% assign homepage_tags_list = "" %}
+{% for tag in site.homepage.tags %}
+  {% assign homepage_tags_list = tag.name | downcase | append: ", " | append: homepage_tags_list %}
+{% endfor %}
+
+{% assign is_session = false %}
+{% if request.template contains "sessions_new"
+  or request.template contains "password_resets"
+  or request.template contains "passwords_new"
+  or request.template contains "users_activations_new_wide" %}
+
+  {% assign is_session = true %}
+{% endif %}
+
+{% assign is_donation = false %}
+{% if page.type_slug == 'donation_v2' or page.type_slug == 'donation' %}
+  {% assign is_donation = true %}
+{% endif %}
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{% if page.headline %}{{ page.headline }} — {% endif %}{{ site.name }}</title>
-  <meta name="description" content="{% if page.meta_description %}{{ page.meta_description }}{% else %}Re-Elect Colby Harder for Langford City Council — October 17, 2026{% endif %}" />
+<html lang="{{ current_language | default: 'en' }}">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lexend:wght@700;800&family=Quattrocento&family=Questrial&display=swap" />
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{ page_title }}</title>
 
-  <!-- Font Awesome 6 Free -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link href="theme.scss" rel="stylesheet" />
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="{{ 'main.css' | theme_stylesheet_url }}" />
+    <!-- Colby 2026 custom fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lexend:wght@700;800&family=Quattrocento&family=Questrial&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-  {% if page.head_content %}{{ page.head_content }}{% endif %}
-</head>
-<body>
+    <!-- start of content for header -->
+    {{ content_for_header }}
+    <!-- end of content for header -->
 
-  {{ content_for_layout }}
+    <script>
+      NB.appConfig.userIsLoggedIn = {{ request.logged_in? }};
+      NB.appConfig.pageTagsList = "{{ tags_list }}";
+    </script>
 
-  <!-- Accordion toggle -->
-  <script src="{{ 'accordion.js' | theme_javascript_url }}" defer></script>
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=NodeList.prototype.forEach%2CMap%2CObject.values%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CMutationObserver"></script>
 
-  {% if page.foot_content %}{{ page.foot_content }}{% endif %}
-</body>
+    <!-- VCS dependencies -->
+    <script src="simple-scrollbar.js"></script>
+    <script src="lodash.custom.min.js"></script>
+    <script src="bezier-easing.js"></script>
+    <!--/-->
+
+    <!-- VCS main scripts -->
+    <script src="vcs-helper.js"></script>
+    <script src="vcs-media.js"></script>
+    <script src="vcs-nav.js"></script>
+    <!--/-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
+  </head>
+  <body class="bootstrap-theme v3-theme {%if page.is_homepage? %}homepage{% elsif is_session %}session-page{% endif %} {{ page.page_class_name }} page-{{ request.template | replace: '_', '-' }} js {% if homepage_tags_list contains "site: disable sticky nav" or tags_list contains "disable sticky nav" %}disable-sticky-nav{% endif %}">
+
+    <a id="skip-to-main-content" href="#main-content" class="sr-only sr-only-focusable p-3">{{ t_accessibility_skip_to_main_content }}</a>
+
+    {% unless page.is_homepage? and page.type_slug == 'basic' %}
+      {% include "header" %}
+    {% endunless %}
+
+    {% if page.is_homepage? and page.type_slug == 'basic' %}
+
+      {% include "homepage" %}
+
+    {% else %}
+
+      {% unless is_session
+        or request.template contains "signups_edit"
+        or request.template contains "profiles_show_wide"
+        or request.template contains "profiles_show"
+        or page.type_slug == "donation_v2"
+        or page.type_slug == "donation"
+        or request.template == "page_not_found"
+      %}
+        {% include "hero" %}
+      {% endunless %}
+
+      <main id="content"
+        {% if is_session and site.has_background_image? %}
+          class="d-flex flex-column justify-content-center position-relative py-5 w-100"
+        {% elsif is_session %}
+          class="d-flex flex-column justify-content-center py-5 w-100 bg-color-2"
+        {% elsif site.has_background_image? %}
+          class="position-relative pt-4 pb-5"
+        {% elsif is_donation %}
+          class="position-relative bg-color-2 pt-4 pb-5"
+        {% else %}
+          class="py-3 mb-5"
+        {% endif %}
+
+        role="main"
+      >
+        {% if is_session %}
+          <div id="main-content"></div>
+        {% endif %}
+
+        {{ content_for_notifications }}
+
+        {% if is_session or is_donation %}
+          {% if site.has_background_image? %}
+            <div class="background-image" style="background-image: url('{{ site.background_image_url }}');"></div>
+
+            {% if is_donation %}
+              <div class="background-overlay position-absolute"></div>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+
+        <script src="adjust-offset.js"></script>
+
+        {% if is_donation %}
+          {% yield %}
+        {% else %}
+          {% include "content", sidebar: request.is_sidebar? %}
+        {% endif %}
+      </main>
+
+      {% if page.show_stream? and is_donation == false %}
+        {% if page.type_slug == "petition" %}
+          {% include "page_stream" hide_form: true %}
+        {% else %}
+          {% include "page_stream" %}
+        {% endif %}
+      {% endif %}
+
+    {% endif %}
+
+    <script src="vcs-components.js"></script>
+
+    {% if request.template contains "signups_edit"
+      or request.template contains "profiles_show_wide"
+      or request.template contains "profiles_show"
+      or page.show_stream?
+      or page.show_social_slider?
+      or request.template contains "recruiting"
+      or request.template contains "activity_stream"
+    %}
+      <script src="adjust-activity-stream.js"></script>
+    {% endif %}
+
+    {% if page.type_slug == "blog" or page.type_slug == "calendar" %}
+      <script src="adjust-pattern.js"></script>
+    {% endif %}
+
+    {% unless is_session %}
+      {% include "footer" %}
+    {% endunless %}
+
+    {{ content_for_footer }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="bootstrap.min.js"></script>
+    <script src="bootstrap-4.3.1-modal-patch.js"></script>
+    <script src="bs-custom-file-input.min.js"></script>
+    <script>
+      ;$(document).ready(function () {
+        bsCustomFileInput.init()
+
+        $('#flash-share').modal('show');
+      });
+    </script>
+
+    <!-- VCS Form related scripts -->
+    <script src="vcs-slider.js"></script>
+
+    <script src="exif.js"></script>
+    <script src="vcs-dropzone.js"></script>
+
+    <script src="vcs-custom-controls.js"></script>
+
+    <script src="init-forms.js"></script>
+    <!--/-->
+
+    <div style="display:none!important;" id="default-share-text">{{ page.default_face_tweet_text | strip_html }}</div>
+    <div style="display:none!important;" id="default-share-headline">{{ page.headline | strip_html }}</div>
+    <div style="display:none!important;" id="default-profile-share-headline">{{ profile.profile_headline | strip_html }}</div>
+    <div style="display:none!important;" id="default-profile-share-text">{{ profile.bio | strip_html }}</div>
+    <div style="display:none!important;" id="default-homepage-share-text">{{ site.homepage.default_face_tweet_text | strip_html }}</div>
+    <div style="display:none!important;" id="default-recruiting-text">{{ page.recruiting.default_tweet_text | strip_html }}</div>
+    <div style="display:none!important;" id="default-recruiting-headline">{{ page.recruiting.featured_page.headline | strip_html }}</div>
+
+    {% include "supporter_nav" %}
+
+    <script>
+      ;(function() {
+        $('[data-toggle="tooltip"]').tooltip();
+      })();
+      setTimeAgo('{{ current_language }}');
+    </script>
+
+    <!-- ActionButton handling -->
+    <script src="vcs-actionbutton.js"></script>
+  </body>
 </html>

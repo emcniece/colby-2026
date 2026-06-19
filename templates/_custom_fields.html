@@ -1,0 +1,24 @@
+{% comment %}
+  <!-- Use this file to add custom fields to all petition, volunteer signup, survey, feedback, event, donation and donation v2 pages -->
+{% endcomment %}
+
+{% case page.page_class_name %}
+  {% when "page-type-petition" %}
+    {% assign label_prefix = "petition_signature" %}
+  {% when "page-type-volunteer-signup" %}
+    {% assign label_prefix = "volunteer_signup" %}
+  {% when "page-type-survey" %}
+    {% assign label_prefix = "survey" %}
+  {% when "page-type-feedback" %}
+    {% assign label_prefix = "feedback" %}
+  {% when "page-type-event" %}
+    {% assign label_prefix = "event_rsvp" %}
+  {% when "page-type-donation-v2" %}
+    {% assign label_prefix = "donation" %}
+  {% when "page-type-donation" %}
+    {% assign label_prefix = "donation" %}
+{% endcase %}
+
+{% if label_prefix %}
+  <!-- Add custom fields here. Use label_prefix with for attribute in <label> element -->
+{% endif %}

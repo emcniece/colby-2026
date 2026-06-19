@@ -1,0 +1,25 @@
+{% if page.has_subnav? %}
+  {% assign subnav_count = 0 %}
+
+  {% for child in page.nav_children %}
+    {% assign subnav_count = subnav_count | plus: 1 %}
+  {% endfor %}
+
+  {% if subnav_count > 0 %}
+    <nav class="subnav bg-light py-3 mt-n4 mb-5" aria-label="Subpages">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 mx-auto">
+            <ul class="list-unstyled mb-0 text-center">
+              {% for child in page.nav_children %}
+                <li class="d-inline-block">
+                  <a class="btn btn-transparent btn-sm text-color-2 px-3 my-2 {% if child.is_or_is_ancestor_of_current_page? %}active{% endif %}" href="{{ child.url }}">{{ child.name }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div><!--/.col-12 -->
+        </div><!--/.row -->
+      </div><!--/.container -->
+    </nav><!--/.subnav -->
+  {% endif %}
+{% endif %}

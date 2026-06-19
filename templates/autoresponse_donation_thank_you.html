@@ -1,0 +1,26 @@
+{{ recipient.first_name_or_friend }} --
+<br /><br />
+Thank you for your payment. Here is your receipt.
+<br />
+
+<h3>SUMMARY</h3>
+<strong>Confirmation #: </strong>{{ donation.id }}<br />
+<strong>Date: </strong>{{ donation.succeeded_at | date_to_string }}<br />
+<strong>Payment: </strong>{{ donation.payment_type_name }}<br />
+{% if donation.is_recurring %}
+Your card will be charged {{ donation.amount_format }} on the {{ donation.succeeded_at | %d }} day of every month.
+{% else %}
+<strong>Amount: </strong>{{ donation.amount_format }}
+{% endif %}
+
+<h3>YOUR INFORMATION</h3>
+<strong>Name: </strong> {{ donation.name }} <br />
+<strong>Email: </strong> {{ donation.email }} <br />
+<strong>Phone: </strong> {{ donation.billing_address.phone }} <br />
+<strong>Billing Address: </strong> {{ donation.billing_address.one_line }}<br />
+<br />
+<em>Please retain this receipt for your records as confirmation of your payment. This payment is {% if donation.merchant_account.is_taxable? == true %}not {% endif %}tax deductible.</em>
+
+{% if donation.available_for_supporter_portal? %}
+  <p>To update your payment details or cancel future payments, please {% if donation.signup.has_a_login? == false %}create an account and {% endif %}visit <a href="{{ donation.supporter_portal_url }}">our portal</a>.</p>
+{% endif %}

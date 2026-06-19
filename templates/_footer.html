@@ -1,0 +1,79 @@
+<footer class="footer text-center position-relative">
+  <div class="container">
+
+    {% if site.footer_content.size > 0 %}
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="footer-content my-2">
+            {{ site.footer_content }}
+          </div>
+          <hr class="footer-ruler mt-5 mb-4" />
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="row">
+      <div class="col">
+
+        {% if site.long_name.size > 0 %}
+          <h5>{{ site.long_name }}</h5>
+        {% endif %}
+
+        {% if settings.has_address? %}
+          <div class="my-3">
+            {% assign address = settings.address %}
+
+           {% if address.one_line != empty %}
+              <div>
+                <i class="fas fa-map-marker-alt mr-2"></i>
+                {{ address.one_line }}
+              </div>
+            {% endif %}
+
+            {% if address.phone_number != empty %}
+              <a href="tel:{{ address.phone_number }}"><i class="fas fa-phone-alt mr-2"></i>{{ address.phone_number }}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% comment %} New redirect page-based social media icons {% endcomment %}
+        {% if site.page_tags contains "footer social media icon" %}
+          {% tag "footer_social_media_icon" with "social_footer_icons" %}
+        {% endif %}
+
+        {% comment %} Fallback to broadcaster icons if no redirect pages are tagged {% endcomment %}
+        {% capture social_icons_check %}{% tag "footer_social_media_icon" with "social_footer_icons" %}{% endcapture %}
+        {% if social_icons_check == blank %}
+          {% if site.has_broadcaster? %}
+            {% if site.broadcaster.has_facebook? or site.broadcaster.has_twitter? %}
+              <ul class="list-inline my-3">
+                {% if site.broadcaster.has_facebook? %}
+                  <li class="list-inline-item"><a href="{{ site.broadcaster.facebook_page_profile_url }}" target="_blank"><i class="fab fa-facebook-square"></i></a></li>
+                {% endif %}
+
+                {% if site.broadcaster.has_twitter? %}
+                  <li class="list-inline-item"><a href="{{ site.broadcaster.twitter_profile_url }}" target="_blank"><i class="fab fa-twitter"></i></a></li>
+                {% endif %}
+              </ul>
+            {% endif %}
+          {% endif %}
+        {% endif %}
+
+        <div class="footer-fineprint text-muted">
+          {% if request.logged_in? %}
+            {{ t_general_hi_user }} <a href="{{ request.current_signup.settings_url }}" class="text-muted">{{ request.current_signup.name_or_email }}</a>.
+            {{ t_ui_view_your }} {% if site.show_public_profiles? %}<a href="{{ request.current_signup.profile_url }}" class="text-muted">{{ t_general_public_profile }}</a>, {% endif %}
+            <a href="{{ request.current_signup.settings_url }}" class="text-muted">{{ t_auth_account_settings }}</a>,
+            <a href="{{ request.current_signup.logout_url }}" class="text-muted">{{ t_footer_or_logout }}</a>.
+          {% else %}
+          <a href="/login" class="text-muted">{{ t_login }}</a>
+          {% endif %}
+        </div>
+
+        <!-- The NationBuilder link below is required. If it is removed, we may add it back ourselves.
+             You can style it or move it in different ways, but please leave it in the footer. -->
+        <div class="footer-fineprint text-muted">{{ t_general_created_with }} <a href="{{ site.attribution_url }}" target="_blank" rel="noopener" class="text-muted">{{ t_general_nationbuilder }}</a></div>
+      </div>
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,35 @@
+<div class="col py-6">
+  {% if page.headline.size > 0 %}
+    {% if page.is_homepage? and page.features_count == 0 %}
+      <h1 class="headline">{{ page.headline }}</h1>
+    {% else %}
+      <h2 class="headline">{{ page.headline }}</h2>
+    {% endif %}
+  {% endif %}
+
+  {% if page.has_author? %}
+    {% include "page_byline" %}
+  {% endif %}
+
+  {% if page.suggestion.content.size > 0 %}
+    <div class="intro mb-5">
+      {{ page.suggestion.content }}
+    </div>
+  {% endif %}
+
+  {% if page.suggestion.is_answered? %}
+    <div class="mt-5">
+      <p class="m-0 d-flex align-items-center small text-uppercase">
+        <span class="font-weight-bold">{{ t_general_official_response_from }} {{ page.suggestion.answer_author.published_name_linked }}</span>
+        {% if page.suggestion.is_answer_type? %}
+          <span class="ml-1 badge badge-secondary">{{ page.suggestion.answer_type_html }}</span>
+        {% endif %}
+      </p>
+      {% if page.suggestion.answer.size > 0 %}
+        <div class="intro mt-1">
+          {{ page.suggestion.answer }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

@@ -1,0 +1,51 @@
+{% comment %}
+  Social Media Footer Icons
+  Displays icons for redirect pages tagged with "footer social media icon"
+  Maps exact page names to appropriate SVG icons
+{% endcomment %}
+
+{% if tag.most_recent_published_pages_no_pagination.size > 0 %}
+  <ul class="list-inline my-3">
+    {% for page in tag.most_recent_published_pages_no_pagination %}
+      {% assign page_name = page.name %}
+      {% assign icon_svg = "" %}
+
+      {% comment %} Icon mapping logic - exact names only {% endcomment %}
+      {% case page_name %}
+        {% when "Facebook" %}
+          {% assign icon_svg = 'facebook.svg' %}
+        {% when "Instagram" %}
+          {% assign icon_svg = 'instagram.svg' %}
+        {% when "LinkedIn" %}
+          {% assign icon_svg = 'linkedin.svg' %}
+        {% when "Substack" %}
+          {% assign icon_svg = 'substack.svg' %}
+        {% when "X" %}
+          {% assign icon_svg = 'twitter-x.svg' %}
+        {% when "WhatsApp" %}
+          {% assign icon_svg = 'whatsapp.svg' %}
+        {% when "YouTube" %}
+          {% assign icon_svg = 'youtube.svg' %}
+        {% when "Telegram" %}
+          {% assign icon_svg = 'telegram.svg' %}
+        {% when "TikTok" %}
+          {% assign icon_svg = 'tiktok.svg' %}
+        {% when "Bluesky" %}
+          {% assign icon_svg = 'bluesky.svg' %}
+        {% when "Threads" %}
+          {% assign icon_svg = 'threads-fill.svg' %}
+        {% when "Signal" %}
+          {% assign icon_svg = 'signal.svg' %}
+      {% endcase %}
+
+      {% if icon_svg != "" %}
+        <li class="list-inline-item">
+          <a href="{{ page.url }}" target="_blank" rel="noopener noreferrer nofollow" class="social-icon-link">
+            <img src="{{ theme[icon_svg] }}" alt="" class="social-icon">
+            <span class="sr-only">{{ t_visit_social_profile | replace: '$platform_name', page_name }}</span>
+          </a>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+{% endif %}

@@ -1,0 +1,17 @@
+{% if site.has_button1? or site.has_button2? or site.has_button3? %}
+  <nav class="site-buttons mb-5" aria-label="Site buttons">
+    <ul class="list-unstyled">
+      {% if site.has_button1? %}
+        <li><a class="btn btn-primary w-100 mb-2" href="{{ site.button1_page.full_url_with_profile_recruiter }}">{{ site.button1_text }}</a></li>
+      {% endif %}
+
+      {% if site.has_button2? %}
+        <li><a class="btn btn-primary w-100 mb-2" href="{{ site.button2_page.full_url_with_profile_recruiter }}">{{ site.button2_text }}</a></li>
+      {% endif %}
+      
+      {% if site.has_button3? %}
+        <li><a class="btn btn-primary w-100 mb-2" href="{{ site.button3_page.full_url_with_profile_recruiter }}">{{ site.button3_text }}</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}

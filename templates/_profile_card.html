@@ -1,0 +1,118 @@
+{% comment %}
+  Display a profile card
+
+  @param {Object} profile
+  @param {string} [append]
+  @param {number} [rank]
+  @returns {void}
+{% endcomment %}
+
+<div class="card border-0 shadow-sm rounded mb-4{% unless request.template == 'profiles_show' or request.template == 'profiles_show_wide' %} h-100{% endunless %}">
+  <div class="card-header bg-color-2 border-bottom-0 p-6 " style="background-image: url('{{ site.header_image_url_1026 }}'); background-position: center; background-size: cover; background-repeat: no-repeat;"></div>
+
+  <div class="card-body">
+    <div class="d-flex justify-content-center mt-n7">
+      {% if rank %}
+        <div class="position-relative">
+          {% include "avatar" signup: profile, size: 120 %}
+
+          <div class="avatar-rank position-absolute">
+            <span class="d-flex align-items-center badge badge-pill bg-color-2 text-white">{{ rank }}</span>
+          </div>
+        </div>
+      {% else %}
+        {% include "avatar" signup: profile, size: 120 %}
+      {% endif %}
+    </div>
+
+    <div class="media-body">
+      <h4 class="d-flex justify-content-center text-center text-break mt-3">{{ profile.published_name_linked }}</h4>
+      <div class="d-flex justify-content-center">
+        <div class="badge badge-color-2 text-center">{{ profile.capital_amount_format }}</div>
+      </div>
+
+      <!-- follow/unfollow -->
+      {% if request.logged_in? %}
+        {% if profile.id != request.current_signup.id %}
+          <div class="d-flex justify-content-center mt-2">
+            <div id="signup_follow_{{ profile.id }}">
+              {% if request.current_signup.following_ids contains profile.id %}
+                <a href="{{ profile.unfollow_url }}" class="btn btn-sm btn-link delete">{{ t_unfollow }} <i class="fa fa-star text-warning"></i></a>
+              {% else %}
+                <a href="{{ profile.follow_url }}" class="btn btn-sm btn-link post">{{ t_follow }} <i class="fa fa-star text-muted"></i></a>
+              {% endif %}
+            </div>
+          </div>
+
+          {% if profile.following_ids contains request.current_signup.id %}
+            <div class="desktop-visible d-flex justify-content-center">
+              <div class="small text-muted text-center is_following">{{ profile.published_name }} {{ t_general_is_following_you }}</div>
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      <!-- .follow/unfollow -->
+
+      <!-- edit your profile link -->
+      {% if request.sorta_logged_in? %}
+        {% if request.current_signup.id == profile.id %}
+          <div class="d-flex justify-content-center mt-2">
+            <a href="{{ request.current_signup.settings_url }}" class="btn btn-sm btn-link"><i class="fa fa-cog"></i> {{ t_general_edit_your_profile }}</a>
+          </div>
+        {% endif %}
+      {% endif %}
+      <!-- .edit your profile link -->
+
+      {% if profile.has_membership_level_badge %}
+        {% if site.has_membership_page? %}
+          <span class="badge badge-secondary"><a href="{{ site.membership_page.url }}">{{ profile.membership_level_badge }}</a></span>
+        {% else %}
+          <span class="badge badge-secondary">{{ profile.membership_level_badge }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if request.current_signup.is_banned? %}
+        <span class="text-danger">{{ t_general_banned }}</span>
+      {% elsif request.current_signup.rule_violations_count == 1 %}
+        <span class="text-warning">{{ t_warning }}</span>
+      {% elsif request.current_signup.rule_violations_count == 2 %}
+        <span class="text-warning">{{ t_general_1_violation }}</span>
+      {% elsif request.current_signup.rule_violations_count == 3 %}
+        <span class="text-warning">{{ t_general_2_violations }}</span>
+      {% endif %}
+    </div>
+
+    {% if profile.has_bio? or profile.has_website? or profile.has_twitter_info? %}
+      <div class="mt-2">
+        {% if profile.has_bio? %}
+          <div class="text-center mb-3">
+            {{ profile.bio | link_urls }}
+          </div>
+        {% endif %}
+
+        {% if profile.has_website? %}
+          <div class="d-flex justify-content-center text-break mb-3">
+            {% assign website_last_char = profile.website | slice: -1, 1 %}
+
+            {% if website_last_char == "/" %}
+              {% assign website_size = profile.website.size | minus: 1 %}
+              <a href="{{ profile.website }}" target="_blank">{{ profile.website | slice: 0, website_size | remove: "http://" | remove: "https://" }}</a>
+            {% else %}
+              <a href="{{ profile.website }}" target="_blank">{{ profile.website | remove: "http://" | remove: "https://" }}</a>
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if profile.has_twitter_info? %}
+          <div class="d-flex justify-content-center">
+            <a href="{{ profile.twitter_profile_url }}" class="twitter-follow-button" data-show-count="true" data-show-screen-name="false">@{{ profile.twitter_login }}</a>
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if append %}
+      {{ append }}
+    {% endif %}
+  </div>
+</div>

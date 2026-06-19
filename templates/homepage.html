@@ -1,6 +1,3 @@
-{% extends 'layout' %}
-
-{% block content %}
 
 <!-- ═══════════════════════════════════════════════════════════
      HERO SECTION
@@ -9,21 +6,21 @@
 
   <!-- Full-bleed photo background -->
   <img class="hero__bg"
-       src="{{ '/files/hero-background.png' | asset_url }}"
+       src="{{ theme['hero-background.png'] }}"
        alt=""
        role="presentation"
        loading="eager" />
 
   <!-- Pink diagonal overlay -->
   <div class="hero__diagonal" aria-hidden="true">
-    <img src="{{ '/files/hero-diagonal.svg' | asset_url }}" alt="" />
+    <img src="{{ theme['hero-diagonal.svg'] }}" alt="" />
   </div>
 
   <!-- Transparent header nav -->
   <header class="site-header hero__header" role="banner">
     <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
       <span class="colby-logo colby-logo--v2 colby-logo--default">
-        <img src="{{ '/files/colby-logo-horizontal.png' | asset_url }}" alt="{{ site.name }}" />
+        <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="{{ site.name }}" />
       </span>
     </a>
 
@@ -100,7 +97,7 @@
     <!-- Sub-hero yellow bar with quote -->
     <div class="hero__sub">
       <div class="hero__sub-photo" aria-hidden="true">
-        <img src="{{ '/files/colby-portrait.png' | asset_url }}" alt="Colby Harder" />
+        <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
       </div>
 
       <div class="hero__sub-content">
@@ -131,7 +128,7 @@
           <h2 class="heading-h2">Delivering results for Langford</h2>
 
           <div class="section-progress__photo">
-            <img src="{{ '/files/progress-landscape.png' | asset_url }}" alt="Langford community" loading="lazy" />
+            <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
           </div>
 
           <!-- 2×2 counter grid -->
@@ -181,7 +178,7 @@
     <!-- Right photo panel (full-height, edge-to-edge) -->
     <div class="section-progress__image-panel" aria-hidden="true">
       <img class="section-photo"
-           src="{{ '/files/progress-clinic.png' | asset_url }}"
+           src="{{ theme['progress-clinic.png'] }}"
            alt="Langford medical clinic"
            loading="lazy" />
     </div>
@@ -231,7 +228,7 @@
 
     <!-- Right photo -->
     <div class="section-powered__photo">
-      <img src="{{ '/files/people-powered.png' | asset_url }}" alt="Colby with Langford residents" loading="lazy" />
+      <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
     </div>
   </div>
 
@@ -246,7 +243,7 @@
   <!-- Left photo -->
   <div class="section-priorities__image" aria-hidden="true">
     <img class="section-photo"
-         src="{{ '/files/priorities-photo.png' | asset_url }}"
+         src="{{ theme['priorities-photo.png'] }}"
          alt="Langford neighbourhood"
          loading="lazy" />
   </div>
@@ -350,7 +347,7 @@
           </p>
         </div>
         <div class="section-faqs__photo">
-          <img src="{{ '/files/faqs-photo.png' | asset_url }}" alt="Colby at a community event" loading="lazy" />
+          <img src="{{ theme['faqs-photo.png'] }}" alt="Colby at a community event" loading="lazy" />
         </div>
       </div>
 
@@ -436,7 +433,7 @@
   <!-- Left photo panel -->
   <div class="section-platform__image" aria-hidden="true">
     <img class="section-photo"
-         src="{{ '/files/platform-photo.png' | asset_url }}"
+         src="{{ theme['platform-photo.png'] }}"
          alt="Langford skyline"
          loading="lazy" />
   </div>
@@ -513,7 +510,7 @@
 <section class="section-logo-date page-section section-1" aria-label="Vote October 17">
   <div class="section-inner">
     <div class="section-logo-date__logo">
-      <img src="{{ '/files/colby-logo-horizontal.png' | asset_url }}" alt="Colby Harder 2026" />
+      <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="Colby Harder 2026" />
     </div>
     <p class="section-logo-date__date">October 17th, 2026</p>
   </div>
@@ -530,16 +527,15 @@
     </p>
     <div class="site-footer__socials" aria-label="Follow Colby on social media">
       <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <img src="{{ '/files/icon-facebook.svg' | asset_url }}" alt="Facebook" />
+        <img src="{{ theme['icon-facebook.svg'] }}" alt="Facebook" />
       </a>
       <a class="site-footer__social-btn" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <img src="{{ '/files/icon-instagram.svg' | asset_url }}" alt="Instagram" />
+        <img src="{{ theme['icon-instagram.svg'] }}" alt="Instagram" />
       </a>
       <a class="site-footer__social-btn" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-        <img src="{{ '/files/icon-tiktok.svg' | asset_url }}" alt="TikTok" />
+        <img src="{{ theme['icon-tiktok.svg'] }}" alt="TikTok" />
       </a>
     </div>
   </div>
 </footer>
 
-{% endblock %}

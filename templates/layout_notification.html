@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0"/>    <!-- So that mobile webkit will display zoomed in -->
+    <meta name="format-detection" content="telephone=no"/> <!-- disable auto telephone linking in iOS -->
+
+    <title>Created with NationBuilder</title>
+
+    <style type="text/css">
+		  body{background-color:#ffffff;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;}
+      body{color:#333333;font-size:15px;font-family:Arial,'Helvetica',sans-serif;margin:0;padding:0;}
+      table{border-spacing:0;border-collapse:collapse;border-spacing:0;}
+      table td{border-collapse:collapse;}
+      p{margin-bottom:1em;}
+      h1{font-size:36px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      h2{font-size:30px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      h3{font-size:24px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      h4{font-size:18px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      h5{font-size:14px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      h6{font-size:12px;font-weight:bold;margin: 15px 0;color:#C31A1A;}
+      a{color:#47c6eb;}
+      .body-content img{max-width:100%;}
+      .appleLinksBlue a {color: #47c6eb !important; text-decoration: none;}
+
+      /* Constrain email width for small screens */
+      @media screen and (max-width:600px) {
+        table[class="container"] { width:100%!important; }
+      }
+
+      /* Give content more room on mobile */
+      @media screen and (max-width:480px) {
+        table[class="container"] { width:100%!important; }
+        div[class="body-content"]img { width:100%; }
+      }
+
+      /* Styles for forcing columns to rows */
+      @media only screen and (max-width:600px) {
+        /* force container columns to (horizontal) blocks */
+        table[class="container"] { width:100%!important; }
+      }
+    </style>
+  </head>
+
+  <body style="margin:0; padding:0;" bgcolor="#ffffff" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+    <!-- 100% wrapper -->
+    <table border="0" width="100%" height="100%" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="border-left:15px solid #FFFFFF;border-right:15px solid #FFFFFF;border-top:15px solid #FFFFFF;border-bottom:15px solid #FFFFFF;">
+      <tbody>
+        <tr>
+          <td align="center" valign="top" bgcolor="#ffffff">
+
+          <!-- ### 600PX CONTAINER ### -->
+            <table width="600" cellpadding="0" cellspacing="0" bgcolor="#ffffff" style="background-color:#ffffff" class="container">
+              <tbody>
+                <tr>
+                  {% if site.has_meta_image? %}
+                  <td style="text-align:center;font-size:17px;font-family:Arial,'Helvetica',sans-serif;padding-left:0;padding-right:0;padding-top:15px;padding-bottom:0px;line-height:1.5;background-color:#ffffff;" bgcolor="#ffffff" class="body-content"><a href="{{ settings.site.full_url }}"><img src="{{ site.meta_image_url }}" width="250" border="0" alt="{{ site.long_name }}" title="{{ site.long_name }}" style="width:250px; margin-bottom:20px;"/></a></td>
+                  {% else %}
+                  <td style="text-align:center;font-size:17px;font-family:Arial,'Helvetica',sans-serif;padding-left:0;padding-right:0;padding-top:15px;padding-bottom:0px;line-height:1.5;background-color:#ffffff;" bgcolor="#ffffff" class="body-content"><a href="{{ settings.site.full_url }}"><h3>{{ site.long_name }}</h3></a></td>
+                  {% endif %}
+                </tr>
+                <tr>
+                  <td style="text-align:left;font-size:17px;font-family:Arial,'Helvetica',sans-serif;padding-left:0;padding-right:0;padding-top:10px;padding-bottom:35px;line-height:1.5;background-color:#ffffff;" bgcolor="#ffffff" class="body-content">{% yield %}</td>
+                </tr>
+            </tbody>
+            </table>
+          <!-- ### 600PX CONTAINER ###  -->
+          </td>
+        </tr>
+        <tr>
+          <td align="center" valign="top">
+            <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#f9f9f9" style="background-color:#f9f9f9" class="container">
+              <tbody><tr>
+                <td width="100%" style="text-align:center;color:#cccccc;font-family:Arial,sans-serfi;font-size:14px;padding-left:3%;padding-right:3%;padding-top:35px;padding-bottom:35px;">
+                  <div class="appleLinksBlue" style="margin-top:0px;font-size:10px;">{{ t_email_this_email_was_sent_to }} <a href="mailto:{{ recipient.email }}" style="color:#47c6eb;text-decoration:none;">{{ recipient.email }}</a>.<br/>{{ t_email_to_update_email_preferences_or_unsubscribe }} <a style="color:#47c6eb;text-decoration:none;" href="{{ settings.site.unsubscribe_url }}">{{ t_general_click_here }}</a>.</div>
+                  <div>
+                    {% if broadcaster.has_twitter? %}<span class="appleLinksBlue"><a href="{{ broadcaster.twitter_profile_url }}"><img src="twitter-email.png" alt="{{ t_visit_social_profile | replace: '$platform_name', 'Twitter' }}" /></a></span>{% endif %}
+                    {% if broadcaster.has_facebook? %}<span class="appleLinksBlue"><a href="{{ broadcaster.facebook_page_profile_url }}"><img src="facebook-email.png" alt="{{ t_visit_social_profile | replace: '$platform_name', 'Facebook' }}" /></a></span>{% endif %}
+                  </div>
+                </td>
+              </tr>
+            </tbody></table>
+          </td>
+        </tr>
+      </tbody>
+    </table><!--/100% wrapper-->
+  </body>
+</html>
