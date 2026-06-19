@@ -20,16 +20,32 @@
   <header class="site-header hero__header" role="banner">
     <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
       <span class="colby-logo colby-logo--v2 colby-logo--default">
-        <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="{{ site.name }}" />
+        <span class="colby-logo__wordmark">
+          <span class="colby-logo__tri colby-logo__tri--left" aria-hidden="true"></span>
+          <span class="colby-logo__swatch">
+            <span class="colby-logo__name">
+              <span class="colby-logo__colby">COLBY</span>
+              <span class="colby-logo__harder">HARDER</span>
+            </span>
+          </span>
+          <span class="colby-logo__tri colby-logo__tri--right" aria-hidden="true"></span>
+        </span>
+        <span class="colby-logo__re-elect" aria-hidden="true">
+          <span class="colby-logo__re-tri colby-logo__re-tri--left"></span>
+          <span class="colby-logo__re-elect-label">
+            <span class="colby-logo__re-elect-text">Re-elect</span>
+          </span>
+          <span class="colby-logo__re-tri colby-logo__re-tri--right"></span>
+        </span>
       </span>
     </a>
 
     <nav class="site-header__nav" role="navigation" aria-label="Main navigation">
       <ul class="site-header__nav-links" role="list">
+        <li><a href="/pages/about" class="menu-link">About Colby</a></li>
         <li><a href="#progress" class="menu-link">Progress</a></li>
-        <li><a href="#priorities" class="menu-link">Priorities</a></li>
-        <li><a href="#faqs" class="menu-link">FAQs</a></li>
-        <li><a href="#platform" class="menu-link">Platform</a></li>
+        <li><a href="#priorities" class="menu-link">Get Involved</a></li>
+        <li><a href="/pages/contact" class="menu-link">Contact</a></li>
       </ul>
     </nav>
 
@@ -44,10 +60,10 @@
   <div id="mobile-nav" class="mobile-nav hide-desktop" hidden>
     <nav role="navigation" aria-label="Mobile navigation">
       <ul role="list">
+        <li><a href="/pages/about" class="menu-link">About Colby</a></li>
         <li><a href="#progress" class="menu-link">Progress</a></li>
-        <li><a href="#priorities" class="menu-link">Priorities</a></li>
-        <li><a href="#faqs" class="menu-link">FAQs</a></li>
-        <li><a href="#platform" class="menu-link">Platform</a></li>
+        <li><a href="#priorities" class="menu-link">Get Involved</a></li>
+        <li><a href="/pages/contact" class="menu-link">Contact</a></li>
         <li><a href="/pages/donate" class="btn btn-v3">Donate</a></li>
       </ul>
     </nav>
@@ -61,50 +77,46 @@
 
       <div class="hero__text">
         <h1 class="heading-h1 hero__headline">Moving Langford forward, together</h1>
+        <p class="hero__sub-headline">From a new medical clinic to safe routes to school, we've spent the last four years doing the heavy lifting to fix our city's foundation. Let's keep the momentum!</p>
 
         <!-- Sign-up form -->
-        <div class="signup-form">
+        <form class="signup-form" action="/pages/join" method="post">
+          <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
           <div class="signup-form__row">
             <div class="form-group">
-              <label class="form-group__label" for="hero-first-name">First name</label>
-              <input class="form-group__field" id="hero-first-name" type="text" name="signup[first_name]" placeholder="Your first name" autocomplete="given-name" />
+              <label class="form-group__label" for="hero-name">Name</label>
+              <input class="form-group__field" id="hero-name" type="text" name="signup[name]" placeholder="Your name" autocomplete="name" />
             </div>
-            <div class="form-group">
-              <label class="form-group__label" for="hero-last-name">Last name</label>
-              <input class="form-group__field" id="hero-last-name" type="text" name="signup[last_name]" placeholder="Your last name" autocomplete="family-name" />
-            </div>
-          </div>
-          <div class="signup-form__row">
             <div class="form-group">
               <label class="form-group__label" for="hero-email">Email</label>
               <input class="form-group__field" id="hero-email" type="email" name="signup[email]" placeholder="your@email.com" autocomplete="email" />
             </div>
-            <div class="form-group">
-              <label class="form-group__label" for="hero-phone">Phone (optional)</label>
-              <input class="form-group__field" id="hero-phone" type="tel" name="signup[phone]" placeholder="(250) 555-0100" autocomplete="tel" />
-            </div>
           </div>
           <div class="signup-form__footer">
-            <button class="btn btn-v4" type="submit">Join the team</button>
-            <p class="signup-form__disclaimer">
-              By signing up, you agree to receive occasional campaign updates. We respect your privacy and will never share your information.
-            </p>
+            <button class="btn btn-white-ghost" type="submit">Get involved</button>
+            <label class="signup-form__volunteer checkbox-group">
+              <input class="checkbox-group__control" type="checkbox" name="signup[volunteer]" value="1" />
+              <span class="checkbox-group__label">I want to volunteer</span>
+            </label>
           </div>
-        </div>
+          <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
+        </form>
       </div>
     </div>
 
-    <!-- Sub-hero yellow bar with quote -->
-    <div class="hero__sub">
+    </div>
+
+  <!-- Sub-hero yellow bar — outside hero__inner so it bleeds to full viewport width -->
+  <div class="hero__sub">
+    <div class="hero__sub-inner">
       <div class="hero__sub-photo" aria-hidden="true">
         <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
       </div>
 
       <div class="hero__sub-content">
-        <blockquote class="hero__sub-quote">
-          "Langford has always had big dreams — and the people to make them real. I'm running to make sure every neighbourhood has a voice, and every family can see a future here."
-          <cite> — Colby Harder</cite>
-        </blockquote>
+        <p class="hero__sub-quote">
+          As a lifelong resident, I know the pressures we face as a growing city. I'm fighting for a more connected, affordable, and vibrant Langford; a city that works for all of us.
+        </p>
 
         <a href="/pages/about" class="btn btn-v2">About Colby</a>
       </div>
@@ -124,8 +136,9 @@
       <div class="section-progress__cols">
 
         <div class="section-progress__col-main">
-          <span class="kicker kicker--on-3">What we've built together</span>
-          <h2 class="heading-h2">Delivering results for Langford</h2>
+          <span class="kicker kicker--on-3">Progress</span>
+          <h2 class="heading-h2">Turning bold ideas into action</h2>
+          <p class="section-progress__body">From prioritizing public safety to protecting our natural environment, here is how we've turned bold ideas into real, lasting progress for Langford.</p>
 
           <div class="section-progress__photo">
             <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
@@ -149,8 +162,8 @@
                 <span class="progress-counter__label">In infrastructure investment secured</span>
               </div>
               <div class="progress-counter">
-                <span class="progress-counter__number">Zero</span>
-                <span class="progress-counter__label">Property tax increases during tenure</span>
+                <span class="progress-counter__number">27</span>
+                <span class="progress-counter__label">New full-time firefighters hired</span>
               </div>
             </div>
           </div>
@@ -161,8 +174,8 @@
               <i class="fa-solid fa-chevron-left"></i>
             </button>
             <div class="progress-slider__item">
-              <i class="fa-solid fa-tree-city" aria-hidden="true"></i>
-              <span class="progress-slider__label">Westshore Parks &amp; Recreation expansion</span>
+              <i class="fa-solid fa-road" aria-hidden="true"></i>
+              <span class="progress-slider__label">First-ever Transportation Master Plan</span>
             </div>
             <button class="btn-mini" aria-label="Next highlight">
               <i class="fa-solid fa-chevron-right"></i>
@@ -194,16 +207,14 @@
 
   <div class="section-inner">
     <div class="section-powered__content">
-      <h2 class="heading-h2 section-powered__heading">People-powered politics</h2>
+      <h2 class="heading-h2 section-powered__heading">100% People Powered</h2>
       <p class="section-powered__body">
-        This campaign runs on small donations from everyday Langford residents — not big developers or outside money. Your support keeps the focus where it belongs: on you.
+        Help keep the interests of Langford residents — not corporations — at the forefront in city hall. My campaign is funded entirely by dedicated volunteers and donations from people like you.
       </p>
 
       <!-- Donor progress bar -->
       <div class="donor-progress">
-        <p class="donor-progress__label">
-          <strong>17 of 100</strong> goal donors this month
-        </p>
+        <p class="donor-progress__label">Just started. Help us get to 100 donors</p>
         <div class="donor-progress__bar" role="progressbar" aria-valuenow="17" aria-valuemin="0" aria-valuemax="100" aria-label="17 of 100 donors reached">
           <div class="donor-progress__fill"></div>
         </div>
@@ -211,7 +222,7 @@
 
       <!-- Donation amount selector -->
       <div class="donation-selector">
-        <p class="donation-selector__label">Choose an amount to donate:</p>
+        <p class="donation-selector__label">Select an amount:</p>
         <div class="donation-selector__row">
           <div class="donation-selector__amounts" role="group" aria-label="Donation amounts">
             <button class="donation-amount" type="button" data-amount="20">$20</button>
@@ -250,74 +261,78 @@
 
   <!-- Right content -->
   <div class="section-priorities__text">
-    <span class="kicker kicker--on-4">Tell us what matters</span>
-    <h2 class="heading-h2 section-priorities__heading">Your priorities shape our platform</h2>
+    <span class="kicker kicker--on-4">Priorities</span>
+    <h2 class="heading-h2 section-priorities__heading">I want to know what's important to you</h2>
     <p class="section-priorities__body">
-      Take 60 seconds to tell Colby where Langford should focus next. Every response shapes the platform.
+      My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
     </p>
 
     <!-- Survey form -->
     <form class="survey" action="/pages/submit-priorities" method="post">
       <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
 
-      <!-- Q1: Sentiment -->
+      <!-- Q1: Direction sentiment -->
       <div class="survey__question">
-        <p class="survey__question-label" data-num="1">How are you feeling about the direction of Langford?</p>
-        <div class="survey__sentiment" role="group" aria-label="Sentiment options">
-          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="positive" aria-pressed="false">
-            <i class="fa-solid fa-face-smile" aria-hidden="true"></i> Positive
+        <p class="survey__question-label" data-num="1">How would you rate the current direction of our city?</p>
+        <div class="survey__sentiment" role="group" aria-label="Direction options">
+          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="right-track" aria-pressed="false">
+            On the right track
           </button>
-          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="neutral" aria-pressed="false">
-            <i class="fa-solid fa-face-meh" aria-hidden="true"></i> Mixed
+          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-adjustment" aria-pressed="false">
+            Needs adjustment
           </button>
-          <button class="btn btn-v4-outline" type="button" name="survey[sentiment]" value="negative" aria-pressed="false">
-            <i class="fa-solid fa-face-frown" aria-hidden="true"></i> Concerned
+          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-change" aria-pressed="false">
+            Needs change
           </button>
         </div>
       </div>
 
-      <!-- Q2: Checkboxes -->
+      <!-- Q2: Priority areas -->
       <div class="survey__question">
-        <p class="survey__question-label" data-num="2">Which issues matter most to you? (select all that apply)</p>
-        <div class="survey__checkboxes" role="group" aria-label="Priority issues">
+        <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
+        <div class="survey__checkboxes" role="group" aria-label="Priority areas">
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="housing" />
-            <span class="checkbox-group__label">Affordable housing</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="traffic-roads" />
+            <span class="checkbox-group__label">Traffic &amp; Roads</span>
           </label>
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="transit" />
-            <span class="checkbox-group__label">Transit &amp; roads</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="public-safety" />
+            <span class="checkbox-group__label">Public Safety</span>
           </label>
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="healthcare" />
-            <span class="checkbox-group__label">Local healthcare</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="housing-affordability" />
+            <span class="checkbox-group__label">Housing &amp; Affordability</span>
           </label>
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="environment" />
-            <span class="checkbox-group__label">Environment</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="transparency" />
+            <span class="checkbox-group__label">Transparency &amp; Accountability</span>
           </label>
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="business" />
-            <span class="checkbox-group__label">Local business</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="parks-greenspace" />
+            <span class="checkbox-group__label">Parks &amp; Greenspace</span>
           </label>
           <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[issues][]" value="safety" />
-            <span class="checkbox-group__label">Public safety</span>
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="other" />
+            <span class="checkbox-group__label">Other</span>
+          </label>
+          <label class="checkbox-group">
+            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="community-facilities" />
+            <span class="checkbox-group__label">Community Facilities</span>
           </label>
         </div>
       </div>
 
       <!-- Q3: Open text -->
       <div class="survey__question">
-        <label class="survey__question-label" data-num="3" for="survey-comment">
-          Anything else you'd like Colby to know?
+        <label class="survey__question-label" data-num="3" for="survey-change">
+          What is the single biggest change you would like to see in Langford over the next four years?
         </label>
         <div class="form-group">
-          <textarea class="form-group__field form-group__field--textarea form-group__field--bordered"
-                    id="survey-comment"
-                    name="survey[comment]"
-                    rows="3"
-                    placeholder="Your thoughts…"></textarea>
+          <input class="form-group__field form-group__field--bordered"
+                 id="survey-change"
+                 type="text"
+                 name="survey[change]"
+                 placeholder="Your answer…" />
         </div>
       </div>
 
@@ -334,16 +349,16 @@
 <section class="section-faqs page-section" id="faqs">
   <div class="section-inner">
 
-    <span class="kicker kicker--on-3">Common questions</span>
+    <span class="kicker kicker--on-3">FAQs</span>
 
     <div class="section-faqs__cols">
 
       <!-- Left: heading + body + photo -->
       <div class="section-faqs__col-intro">
         <div>
-          <h2 class="heading-h2 section-faqs__heading">Got questions? We've got answers.</h2>
+          <h2 class="heading-h2 section-faqs__heading">Your questions, answered</h2>
           <p class="section-faqs__body">
-            Wondering what Colby stands for, how he plans to deliver on his commitments, or how you can get involved? Find the most common questions below.
+            I've heard your questions while knocking on doors and talking at community events. I'm committed to being open about our challenges and transparent about my plan to solve them.
           </p>
         </div>
         <div class="section-faqs__photo">
@@ -357,61 +372,69 @@
 
           <div class="accordion-item accordion-item--open" role="listitem">
             <button class="accordion-item__title" aria-expanded="true" aria-controls="faq-1-body">
-              <span class="accordion-item__title-text">What are Colby's top three priorities?</span>
+              <span class="accordion-item__title-text">Why did my property taxes increase during this term?</span>
               <span class="btn-mini" aria-hidden="true">
                 <i class="fa-solid fa-minus-circle"></i>
               </span>
             </button>
             <div class="accordion-item__body" id="faq-1-body">
-              Colby is focused on keeping housing attainable for families, expanding transit options so more residents can leave their cars at home, and ensuring Langford's growth doesn't outpace its infrastructure.
+              <p>As a Langford taxpayer, I feel the pain of the increase too. Many of us are struggling to build a future in this city, and I don't take that lightly.</p>
+              <p>When we took office, we found that our city had been under-funding essential services like the fire department for years to keep taxes artificially low. We were essentially ignoring our city's real needs to keep the numbers looking good on paper. We had to make a choice: continue that pattern, or make the necessary investments to get our city on the right track.</p>
+              <p>We chose to catch up. Because of that investment, some of the tangible benefits are:</p>
+              <ul>
+                <li>27 new full-time firefighters</li>
+                <li>A new medical clinic with 12 new family doctors</li>
+                <li>Safe sidewalks to schools</li>
+              </ul>
+              <p>My goal is to ensure your tax dollars are actually paying for the services we need, rather than just covering up long-term problems.</p>
             </div>
           </div>
 
           <div class="accordion-item" role="listitem">
             <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-2-body">
-              <span class="accordion-item__title-text">How is the campaign funded?</span>
+              <span class="accordion-item__title-text">What is your plan for public safety in Langford?</span>
               <span class="btn-mini" aria-hidden="true">
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
             <div class="accordion-item__body" id="faq-2-body" hidden>
-              This campaign is funded entirely by individual donations from Langford residents. No corporate donations, no developer money. The maximum individual donation under BC's Local Elections Campaign Financing Act is $1,429.70.
+              We've already made significant investments — hiring 27 new full-time firefighters and supporting the new Westshore RCMP detachment. Going forward, my focus is on proactive community safety: better street lighting, expanded mental health response options, and ensuring our emergency services keep pace with our growing population.
             </div>
           </div>
 
           <div class="accordion-item" role="listitem">
             <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-3-body">
-              <span class="accordion-item__title-text">How can I volunteer?</span>
+              <span class="accordion-item__title-text">Why did the city spend money on consultants?</span>
               <span class="btn-mini" aria-hidden="true">
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
             <div class="accordion-item__body" id="faq-3-body" hidden>
-              Sign up at the top of this page and let us know you want to help. We need canvassers, phone bankers, sign crews, and event helpers — all skill levels welcome.
+              Some consultant spending is necessary and responsible — for example, hiring independent experts to develop our Transportation Master Plan ensures the city gets unbiased, technical advice on complex infrastructure decisions. Where I've pushed back is on consultants hired to do work that should be done by qualified city staff. I'm committed to transparency about what we spend and why.
             </div>
           </div>
 
           <div class="accordion-item" role="listitem">
             <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-4-body">
-              <span class="accordion-item__title-text">When is election day?</span>
+              <span class="accordion-item__title-text">You campaigned on "change." What does that actually look like today?</span>
               <span class="btn-mini" aria-hidden="true">
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
             <div class="accordion-item__body" id="faq-4-body" hidden>
-              BC's general local elections are on Saturday, October 17, 2026. Advance voting opportunities are available in the two weeks prior. Check the City of Langford website for polling locations.
+              Change in local government is often slower and less visible than people expect — and that's okay. It means new medical clinics, updated zoning rules that allow more housing types, a Transportation Master Plan that didn't exist before, and a fire department that's finally properly staffed. I'm proud of that work, and there's much more still to do.
             </div>
           </div>
 
           <div class="accordion-item" role="listitem">
             <button class="accordion-item__title" aria-expanded="false" aria-controls="faq-5-body">
-              <span class="accordion-item__title-text">What has Colby already accomplished?</span>
+              <span class="accordion-item__title-text">Why does my vote matter in this election?</span>
               <span class="btn-mini" aria-hidden="true">
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
             <div class="accordion-item__body" id="faq-5-body" hidden>
-              Colby has championed over $82M in infrastructure investment, helped create 1,200+ new childcare spaces, and added 47km of trails — all without raising property taxes.
+              Local elections are decided by small margins — sometimes just a few hundred votes. The councillors elected in October will make decisions about your taxes, your roads, your parks, and the housing in your neighbourhood for the next four years. Every vote directly shapes the city you live in.
             </div>
           </div>
 
@@ -434,18 +457,18 @@
   <div class="section-platform__image" aria-hidden="true">
     <img class="section-photo"
          src="{{ theme['platform-photo.png'] }}"
-         alt="Langford skyline"
+         alt="Langford community"
          loading="lazy" />
   </div>
 
   <!-- Right content -->
   <div class="section-platform__text">
-    <span class="kicker kicker--on-2">The platform</span>
+    <span class="kicker kicker--on-2">Platform</span>
 
     <div class="section-platform__intro">
       <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
       <p class="section-platform__intro-body">
-        Langford is one of the fastest-growing cities in Canada. That's a gift — and a responsibility. Colby's platform is built to make sure growth works for everyone who calls this city home.
+        My aim is to make Langford more affordable, connected, and fun. I'm focusing on bringing the right people and ideas together to keep us moving forward, together.
       </p>
     </div>
 
@@ -486,13 +509,13 @@
 
     <!-- Notify me form -->
     <div class="section-platform__notify">
-      <p class="section-platform__notify-text">Be the first to hear when the full platform is released:</p>
+      <p class="section-platform__notify-text">My full platform is coming soon. Sign up to be notified when it's ready.</p>
       <div class="section-platform__notify-form">
         <div class="form-group">
           <input class="form-group__field"
                  type="email"
                  name="notify[email]"
-                 placeholder="your@email.com"
+                 placeholder="Email"
                  autocomplete="email"
                  aria-label="Email address for platform notifications" />
         </div>
@@ -510,7 +533,30 @@
 <section class="section-logo-date page-section section-1" aria-label="Vote October 17">
   <div class="section-inner">
     <div class="section-logo-date__logo">
-      <img src="{{ theme['colby-logo-horizontal.png'] }}" alt="Colby Harder 2026" />
+      <div class="colby-logo colby-logo--v1 colby-logo--default">
+        <div class="colby-logo__wordmark">
+          <div class="colby-logo__tri colby-logo__tri--left" aria-hidden="true"></div>
+          <div class="colby-logo__swatch">
+            <div class="colby-logo__name">
+              <span class="colby-logo__colby">COLBY</span>
+              <span class="colby-logo__harder">HARDER</span>
+            </div>
+          </div>
+          <div class="colby-logo__tri colby-logo__tri--right" aria-hidden="true"></div>
+        </div>
+        <div class="colby-logo__re-elect" aria-hidden="true">
+          <div class="colby-logo__re-tri colby-logo__re-tri--left"></div>
+          <div class="colby-logo__re-elect-label">
+            <span class="colby-logo__re-elect-text">Re-elect</span>
+          </div>
+          <div class="colby-logo__re-tri colby-logo__re-tri--right"></div>
+        </div>
+      </div>
+      <div class="colby-logo__for-council" aria-hidden="true">
+        <div class="para-badge para-badge--pink">
+          <span class="para-badge__inner">For Langford City Council</span>
+        </div>
+      </div>
     </div>
     <p class="section-logo-date__date">October 17th, 2026</p>
   </div>
@@ -538,4 +584,3 @@
     </div>
   </div>
 </footer>
-

@@ -1,25 +1,47 @@
 #!/usr/bin/env bash
-# Copy git-changed files into upload-to-nb/ for NationBuilder deployment.
+# Stage git-changed files and upload them to NationBuilder.
 #
-# On the first run: diffs against downloaded-from-nb/ (the NB baseline).
-# On subsequent runs: diffs against the git SHA recorded at last deploy.
-# Also includes any uncommitted working-tree changes.
+# STAGING
+#   First run: diffs against downloaded-from-nb/ baseline.
+#   Subsequent runs: diffs against the SHA recorded in .last-deploy-sha.
+#   Uncommitted working-tree changes are always included.
 #
-# Template files (.html) still need to be pasted into NationBuilder's
-# template code editor — drag-and-drop only works for static assets.
+# UPLOADING (static assets only)
+#   Requires .nb-cookies — copy the full Cookie header value from DevTools
+#   while logged into NationBuilder admin and paste it into that file.
+#   Refresh the file when your session expires (~24 h for Cloudflare cookies).
+#
+#   HTML templates cannot be uploaded via the file manager API — paste those
+#   manually into the NationBuilder template code editor.
+#
+# FLAGS
+#   --upload   Also upload staged static assets to NationBuilder via curl.
+#              Without this flag, deploy.sh only stages files into upload-to-nb/.
 
 set -euo pipefail
 cd "$(dirname "$0")"
 
+NB_HOST="https://langford2026electioncampaign.nationbuilder.com"
+NB_THEME_ID="6a35a28b1c12ee3267034f74"
+NB_UPLOAD_URL="$NB_HOST/admin/sites/1/themes/$NB_THEME_ID/attachments?browser_id=default"
+
 DEPLOY_SHA_FILE=".last-deploy-sha"
+COOKIE_FILE=".nb-cookies"
+UPLOAD=false
+[[ "${1:-}" == "--upload" ]] && UPLOAD=true
+
 count=0
+upload_count=0
+upload_errors=0
+
+# ── Helpers ───────────────────────────────────────────────────────────────────
 
 stage_file() {
   local path="$1"
-  [[ -f "$path" ]] || return 0  # skip deletions
-  local dest="upload-to-nb/$(basename "$path")"
-  cp "$path" "$dest"
-  echo "  $(basename "$path")"
+  [[ -f "$path" ]] || return 0
+  mkdir -p upload-to-nb
+  cp "$path" "upload-to-nb/$(basename "$path")"
+  echo "  staged:   $(basename "$path")"
   (( count++ )) || true
 }
 
@@ -30,11 +52,35 @@ is_source_file() {
   esac
 }
 
+is_uploadable() {
+  # HTML templates must be pasted manually into the template code editor.
+  case "$1" in
+    *.html) return 1 ;;
+    *)      return 0 ;;
+  esac
+}
+
+mime_for() {
+  case "$1" in
+    *.scss|*.css)  echo "text/css" ;;
+    *.js)          echo "application/javascript" ;;
+    *.svg)         echo "image/svg+xml" ;;
+    *.png)         echo "image/png" ;;
+    *.jpg|*.jpeg)  echo "image/jpeg" ;;
+    *.gif)         echo "image/gif" ;;
+    *.woff2)       echo "font/woff2" ;;
+    *.woff)        echo "font/woff" ;;
+    *.ttf)         echo "font/ttf" ;;
+    *)             echo "application/octet-stream" ;;
+  esac
+}
+
+# ── Stage ─────────────────────────────────────────────────────────────────────
+
 if [[ -f "$DEPLOY_SHA_FILE" ]]; then
   base=$(cat "$DEPLOY_SHA_FILE")
   echo "Files changed since last deploy (${base:0:8}):"
 
-  # Collect paths from: committed changes + staged + unstaged + untracked
   while IFS= read -r path; do
     is_source_file "$path" && stage_file "$path"
   done < <(
@@ -61,7 +107,99 @@ if [[ $count -eq 0 ]]; then
 fi
 
 echo ""
-echo "${count} file(s) staged in upload-to-nb/"
+echo "$count file(s) staged in upload-to-nb/"
 
-# Record the current HEAD so the next run diffs against it
 git rev-parse HEAD > "$DEPLOY_SHA_FILE"
+
+$UPLOAD || exit 0
+
+# ── Upload ────────────────────────────────────────────────────────────────────
+
+# Count uploadable files
+uploadable=()
+html_files=()
+for filepath in upload-to-nb/*; do
+  [[ -f "$filepath" ]] || continue
+  filename="$(basename "$filepath")"
+  if is_uploadable "$filename"; then
+    uploadable+=("$filepath")
+  else
+    html_files+=("$filename")
+  fi
+done
+
+if [[ ${#uploadable[@]} -eq 0 && ${#html_files[@]} -eq 0 ]]; then
+  exit 0
+fi
+
+if [[ ${#html_files[@]} -gt 0 ]]; then
+  echo ""
+  echo "Reminder — paste these HTML templates manually in the NB template editor:"
+  for f in "${html_files[@]}"; do echo "  $f"; done
+fi
+
+if [[ ${#uploadable[@]} -eq 0 ]]; then
+  echo ""
+  echo "No static assets to upload."
+  exit 0
+fi
+
+if [[ ! -f "$COOKIE_FILE" ]]; then
+  echo ""
+  echo "ERROR: $COOKIE_FILE not found."
+  echo "Copy the Cookie header value from NationBuilder DevTools and save it to that file."
+  exit 1
+fi
+
+echo ""
+echo "Uploading ${#uploadable[@]} static asset(s) to NationBuilder..."
+
+# Fetch the upload page to get a fresh CSRF token
+page_html=$(curl -s --compressed \
+  -b "$(cat "$COOKIE_FILE")" \
+  "$NB_UPLOAD_URL")
+
+# Extract meta csrf-token — used for both the X-CSRF-Token header and the
+# authenticity_token form field (NB injects it from the meta tag via JS)
+csrf=$(echo "$page_html" \
+  | grep -o 'name="csrf-token" content="[^"]*"' \
+  | sed 's/.*content="//;s/"//')
+
+if [[ -z "$csrf" ]]; then
+  echo "ERROR: Could not extract CSRF token — session may have expired."
+  echo "Refresh $COOKIE_FILE with fresh cookies from your browser."
+  exit 1
+fi
+
+for filepath in "${uploadable[@]}"; do
+  filename="$(basename "$filepath")"
+  mime="$(mime_for "$filename")"
+
+  response=$(curl -s --compressed \
+    -b "$(cat "$COOKIE_FILE")" \
+    -H "X-CSRF-Token: $csrf" \
+    -H "X-Requested-With: XMLHttpRequest" \
+    -H "Accept: application/json, text/javascript, */*; q=0.01" \
+    -H "Origin: $NB_HOST" \
+    -F "utf8=✓" \
+    -F "authenticity_token=$csrf" \
+    -F "attachment[attachment]=@$filepath;type=$mime" \
+    "$NB_UPLOAD_URL")
+
+  if echo "$response" | grep -q '"result":"success"'; then
+    echo "  uploaded: $filename"
+    (( upload_count++ )) || true
+  else
+    echo "  FAILED:   $filename"
+    echo "  Response: $response"
+    (( upload_errors++ )) || true
+  fi
+done
+
+echo ""
+if [[ $upload_errors -eq 0 ]]; then
+  echo "$upload_count file(s) uploaded."
+else
+  echo "$upload_count uploaded, $upload_errors failed."
+  exit 1
+fi

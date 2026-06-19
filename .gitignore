@@ -1,3 +1,4 @@
 .DS_Store
 upload-to-nb/
 .last-deploy-sha
+.nb-cookies

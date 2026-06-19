@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-19
+   COLBY 2026 CUSTOM STYLES — 2026-06-19i
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -369,6 +369,14 @@ h1, h2 {
   --btn-v3-outline-text-hover:     #ffdf5a;
   --btn-v3-outline-border-pressed: #ffeda2;
   --btn-v3-outline-text-pressed:   #ffeda2;
+
+  /* ── Buttons — White ghost (transparent bg, white border + text) ── */
+  --btn-white-ghost-border:         var(--color-white);
+  --btn-white-ghost-text:           var(--color-white);
+  --btn-white-ghost-border-hover:   rgba(255,255,255,0.75);
+  --btn-white-ghost-text-hover:     rgba(255,255,255,0.75);
+  --btn-white-ghost-border-pressed: rgba(255,255,255,0.55);
+  --btn-white-ghost-text-pressed:   rgba(255,255,255,0.55);
 
   /* ── Buttons — Variant 4 (pale pink solid / pale outline) ─ */
   --btn-v4-solid-bg:           var(--color-pink-50);
@@ -639,6 +647,15 @@ body {
 .btn-v4-outline:hover  { border-color: var(--btn-v4-outline-border-hover);   color: var(--btn-v4-outline-text-hover); }
 .btn-v4-outline:active { border-color: var(--btn-v4-outline-border-pressed); color: var(--btn-v4-outline-text-pressed); }
 
+/* White ghost — transparent bg, white border and text; use on dark/coloured backgrounds */
+.btn-white-ghost {
+  background-color: transparent;
+  border-color: var(--btn-white-ghost-border);
+  color: var(--btn-white-ghost-text);
+}
+.btn-white-ghost:hover  { border-color: var(--btn-white-ghost-border-hover);   color: var(--btn-white-ghost-text-hover); }
+.btn-white-ghost:active { border-color: var(--btn-white-ghost-border-pressed); color: var(--btn-white-ghost-text-pressed); }
+
 /* Mini button — icon-only, used in accordion */
 .btn-mini {
   display: inline-flex;
@@ -696,6 +713,7 @@ body {
 
 .site-header__nav {
   display: flex;
+  position: relative;
   align-items: center;
   gap: var(--size-triple);
 }
@@ -1160,63 +1178,161 @@ body {
 
 /* ═══════════════════════════════════════════════════════════
    COLBY LOGO
-   The logo is SVG-based with polygon decorators — use inline SVG
-   or the logo image asset from files/
+   Parallelogram wordmark + overlapping RE-ELECT badge.
+   Triangle caps create the angled left/right edges.
+   Angle: arctan(17/80) ≈ 12° — matches --para-angle.
+
+   Variants: --v1 yellow | --v2 blue | --v3 pink | --v4 dark
+   Sizes:    --default (194px) | --small (155px)
+
+   HTML structure:
+   .colby-logo.colby-logo--v2.colby-logo--default
+     .colby-logo__wordmark
+       .colby-logo__tri.colby-logo__tri--left
+       .colby-logo__swatch
+         .colby-logo__name
+           .colby-logo__colby  "COLBY"
+           .colby-logo__harder "HARDER"
+       .colby-logo__tri.colby-logo__tri--right
+     .colby-logo__re-elect (absolute)
+       .colby-logo__re-tri.colby-logo__re-tri--left
+       .colby-logo__re-elect-label
+         .colby-logo__re-elect-text "Re-elect"
+       .colby-logo__re-tri.colby-logo__re-tri--right
    ═══════════════════════════════════════════════════════════ */
 
 .colby-logo {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: flex-start;
   position: relative;
   flex-shrink: 0;
 }
 
-/* Default size: 194×80px wordmark block */
-.colby-logo--default { width: 194px; }
-.colby-logo--small   { width: 155.2px; }
+/* Size tokens — tri widths computed from height to guarantee a consistent angle */
+.colby-logo--default { --logo-h: 80px; --logo-re-h: 31px; }
+.colby-logo--small   { --logo-h: 65px; --logo-re-h: 25px; }
 
-.colby-logo__wordmark {
-  display: flex;
-  align-items: flex-start;
-  overflow: clip;
-  position: relative;
+/* Derive triangle widths: width = height × tan(angle) ⟹ angle stays fixed across all sizes */
+.colby-logo {
+  --logo-tri:    calc(var(--logo-h)    * tan(var(--para-angle)));
+  --logo-re-tri: calc(var(--logo-re-h) * tan(var(--para-angle)));
 }
 
-.colby-logo__default .colby-logo__wordmark { width: 197px; height: 80px; }
-.colby-logo__small   .colby-logo__wordmark { width: 159.6px; height: 64.8px; }
+/* ── Wordmark ─────────────────────────────────────────────── */
+.colby-logo__wordmark {
+  display: flex;
+  align-items: stretch;
+  height: var(--logo-h);
+  overflow: clip;
+}
 
-/* Background color swatch behind COLBY/HARDER */
+/* Triangle caps — clip-path creates the angled edge */
+.colby-logo__tri {
+  width: var(--logo-tri);
+  height: var(--logo-h);
+  flex-shrink: 0;
+}
+/* Left cap: hypotenuse from top-right → bottom-left */
+.colby-logo__tri--left  { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
+/* Right cap: hypotenuse from top-left → bottom-right? No — same lean direction */
+.colby-logo__tri--right { clip-path: polygon(0% 0%, 100% 0%, 0% 100%); }
+
+/* Swatch = coloured name block */
 .colby-logo__swatch {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
-  text-align: center;
+  padding: 16px 12px;
   white-space: nowrap;
-  height: 100%;
+  flex: 1;
 }
 
-/* Variant colours (applied to .colby-logo) */
-.colby-logo--v1 .colby-logo__swatch { background-color: var(--color-yellow-300); color: var(--color-blue-900); }
-.colby-logo--v1 .colby-logo__re-elect { background-color: var(--color-pink-500); color: var(--color-pink-50); }
-
-.colby-logo--v2 .colby-logo__swatch { background-color: var(--color-blue-700); color: var(--color-yellow-300); }
-.colby-logo--v2 .colby-logo__re-elect { background-color: var(--color-yellow-300); color: var(--color-blue-900); }
-
-.colby-logo--v3 .colby-logo__swatch { background-color: var(--color-pink-500); color: var(--color-pink-50); }
-.colby-logo--v3 .colby-logo__re-elect { background-color: var(--color-yellow-300); color: var(--color-blue-900); }
-
-.colby-logo--v4 .colby-logo__swatch { background-color: var(--color-pink-500); color: var(--color-pink-50); }
-.colby-logo--v4 .colby-logo__re-elect { background-color: var(--color-blue-900); color: var(--color-yellow-300); }
-
 .colby-logo__name {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
   font-family: var(--font-lexend);
 }
 
 .colby-logo__colby  { font-weight: 800; font-size: 16px; line-height: 18px; letter-spacing: -0.8px; }
 .colby-logo__harder { font-weight: 700; font-size: 34px; line-height: 32px; letter-spacing: -1.7px; }
-.colby-logo__re-elect-text { font-family: var(--font-lexend); font-weight: 700; font-size: 13.2px; line-height: 13.2px; letter-spacing: -0.66px; }
+
+/* ── RE-ELECT badge ───────────────────────────────────────── */
+.colby-logo__re-elect {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  left: 8px;
+  top: -6px;
+  height: var(--logo-re-h);
+  overflow: clip;
+}
+
+.colby-logo__re-tri {
+  width: var(--logo-re-tri);
+  height: var(--logo-re-h);
+  flex-shrink: 0;
+}
+.colby-logo__re-tri--left  { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
+.colby-logo__re-tri--right { clip-path: polygon(0% 0%, 100% 0%, 0% 100%); }
+
+.colby-logo__re-elect-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  height: 100%;
+}
+
+.colby-logo__re-elect-text {
+  font-family: var(--font-lexend);
+  font-weight: 700;
+  font-size: 13.2px;
+  line-height: 1;
+  letter-spacing: -0.66px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* ── Variant colours ──────────────────────────────────────── */
+/* v1: yellow wordmark, pink RE-ELECT */
+.colby-logo--v1 .colby-logo__tri--left      { background: var(--color-yellow-300); }
+.colby-logo--v1 .colby-logo__swatch         { background: var(--color-yellow-300); color: var(--color-blue-900); }
+.colby-logo--v1 .colby-logo__tri--right     { background: var(--color-blue-700); }
+.colby-logo--v1 .colby-logo__re-tri--left   { background: var(--color-pink-500); }
+.colby-logo--v1 .colby-logo__re-elect-label { background: var(--color-pink-500); }
+.colby-logo--v1 .colby-logo__re-elect-text  { color: var(--color-pink-50); }
+.colby-logo--v1 .colby-logo__re-tri--right  { background: var(--color-blue-700); }
+
+/* v2: blue wordmark, yellow RE-ELECT — confirmed from Figma */
+.colby-logo--v2 .colby-logo__tri--left      { background: var(--color-blue-700); }
+.colby-logo--v2 .colby-logo__swatch         { background: var(--color-blue-700); color: var(--color-yellow-300); }
+.colby-logo--v2 .colby-logo__tri--right     { background: var(--color-blue-700); }
+.colby-logo--v2 .colby-logo__re-tri--left   { background: var(--color-yellow-300); }
+.colby-logo--v2 .colby-logo__re-elect-label { background: var(--color-yellow-300); }
+.colby-logo--v2 .colby-logo__re-elect-text  { color: var(--color-blue-900); }
+.colby-logo--v2 .colby-logo__re-tri--right  { background: var(--color-yellow-300); }
+
+/* v3: pink wordmark, yellow RE-ELECT */
+.colby-logo--v3 .colby-logo__tri--left      { background: var(--color-pink-500); }
+.colby-logo--v3 .colby-logo__swatch         { background: var(--color-pink-500); color: var(--color-pink-50); }
+.colby-logo--v3 .colby-logo__tri--right     { background: var(--color-blue-700); }
+.colby-logo--v3 .colby-logo__re-tri--left   { background: var(--color-yellow-300); }
+.colby-logo--v3 .colby-logo__re-elect-label { background: var(--color-yellow-300); }
+.colby-logo--v3 .colby-logo__re-elect-text  { color: var(--color-blue-900); }
+.colby-logo--v3 .colby-logo__re-tri--right  { background: var(--color-blue-700); }
+
+/* v4: pink wordmark, dark-blue RE-ELECT */
+.colby-logo--v4 .colby-logo__tri--left      { background: var(--color-pink-500); }
+.colby-logo--v4 .colby-logo__swatch         { background: var(--color-pink-500); color: var(--color-pink-50); }
+.colby-logo--v4 .colby-logo__tri--right     { background: var(--color-yellow-300); }
+.colby-logo--v4 .colby-logo__re-tri--left   { background: var(--color-blue-900); }
+.colby-logo--v4 .colby-logo__re-elect-label { background: var(--color-blue-900); }
+.colby-logo--v4 .colby-logo__re-elect-text  { color: var(--color-yellow-300); }
+.colby-logo--v4 .colby-logo__re-tri--right  { background: var(--color-yellow-300); }
 
 
 /* ═══════════════════════════════════════════════════════════
@@ -1326,18 +1442,16 @@ body {
 .hero__diagonal {
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 0;
   pointer-events: none;
   overflow: hidden;
 }
 
 .hero__diagonal img {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-15%);
+  inset: 0;
+  width: 100%;
   height: 100%;
-  max-width: none;
 }
 
 .hero__inner {
@@ -1395,10 +1509,33 @@ body {
   color: var(--color-pink-50);
 }
 
-/* Sub-hero yellow bar */
+/* Sub-hero yellow bar — full viewport width */
 .hero__sub {
+  /* On tablet/mobile the photo is hidden — full solid yellow */
   background-color: var(--section-2-bg);
   width: 100%;
+  position: relative;
+}
+
+/* At desktop (≥1280px) the hero__inner is centered at max-width 1280px.
+   The photo container (469px) sits at page-pad-h (64px) from the inner's left edge.
+   Photo center from the viewport left edge = (100vw - 1280px)/2 + 64 + 234.5px.
+   Gradient cuts from transparent → yellow at that exact point. */
+@media (min-width: 1280px) {
+  .hero__sub {
+    background: linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc((100vw - 1280px) / 2 + 64px + 234px),
+      var(--section-2-bg) calc((100vw - 1280px) / 2 + 64px + 234px)
+    );
+  }
+}
+
+/* Centering wrapper — mirrors hero__inner's max-width centering */
+.hero__sub-inner {
+  max-width: var(--container-std);
+  margin: 0 auto;
   padding: 48px var(--page-pad-h);
   display: flex;
   align-items: center;
@@ -1415,9 +1552,9 @@ body {
 
 .hero__sub-photo img {
   position: absolute;
-  bottom: -48px;
-  right: -75px;
-  height: 480px;
+  bottom: -105px;
+  right: 0px;
+  height: 610px;
   width: auto;
   object-fit: contain;
 }
@@ -1427,7 +1564,6 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 0 var(--page-pad-h);
 }
 
 .hero__sub-quote {
@@ -2042,6 +2178,187 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   PARALLELOGRAM SYSTEM
+   Angle: 13° — matches the hero diagonal SVG
+   (left edge: Δx=253 Δy=1102 → arctan(253/1102) ≈ 13°)
+
+   Two primitives:
+   1. .para-badge  — inline badge, uses skewX (good for small/text elements)
+   2. .para-banner — full-width section band, uses clip-path
+
+   Angled-edge utilities for containers:
+   .angled-top    — diagonal cut on top edge only
+   .angled-bottom — diagonal cut on bottom edge only
+   .angled-both   — both edges (full parallelogram section)
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --para-angle: 12deg;
+  /* Pixel inset at common heights (height × tan 12° ≈ 0.213):
+     40px tall  → ~9px   (badge)
+     80px tall  → ~17px  (logo wordmark — confirmed from Figma: 17.391px)
+     120px tall → ~26px  (section banner) */
+  --para-inset-sm: 9px;
+  --para-inset-md: 17px;
+  --para-inset-lg: 26px;
+}
+
+/* ── 1. Inline parallelogram badge ────────────────────────── */
+.para-badge {
+  display: inline-flex;
+  align-items: center;
+  transform: skewX(calc(-1 * var(--para-angle)));
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.para-badge__inner {
+  display: block;
+  transform: skewX(var(--para-angle));
+  padding: 6px 20px;
+  font-family: var(--font-lexend);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.4px;
+  text-transform: uppercase;
+}
+
+.para-badge--yellow { background: var(--color-yellow-300); color: var(--color-blue-900); }
+.para-badge--pink   { background: var(--color-pink-500);   color: var(--color-white); }
+.para-badge--blue   { background: var(--color-blue-700);   color: var(--color-white); }
+.para-badge--dark   { background: var(--color-blue-900);   color: var(--color-yellow-300); }
+
+/* ── 2. Full-width parallelogram banner ───────────────────── */
+.para-banner {
+  position: relative;
+  overflow: visible;
+}
+
+.para-banner__stripe {
+  background: var(--color-pink-500);
+  clip-path: polygon(
+    var(--para-inset-lg) 0%,
+    100% 0%,
+    calc(100% - var(--para-inset-lg)) 100%,
+    0% 100%
+  );
+  padding: 32px calc(var(--page-pad-h) + var(--para-inset-lg));
+  text-align: center;
+}
+
+.para-banner__text {
+  font-family: var(--font-lexend);
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 1.1;
+  letter-spacing: -1.5px;
+  color: var(--color-white);
+  display: block;
+}
+
+.para-banner__sub {
+  font-family: var(--font-outfit);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 1.4;
+  color: var(--color-white);
+  opacity: 0.85;
+  display: block;
+  margin-top: 8px;
+}
+
+/* Colour modifier for the stripe */
+.para-banner__stripe--yellow {
+  background: var(--color-yellow-300);
+  clip-path: polygon(
+    var(--para-inset-lg) 0%,
+    100% 0%,
+    calc(100% - var(--para-inset-lg)) 100%,
+    0% 100%
+  );
+}
+.para-banner__stripe--yellow .para-banner__text,
+.para-banner__stripe--yellow .para-banner__sub { color: var(--color-blue-900); }
+.para-banner__stripe--yellow .para-banner__sub { opacity: 0.75; }
+
+.para-banner__stripe--dark {
+  background: var(--color-blue-900);
+}
+
+/* ── 3. Angled container edge utilities ───────────────────── */
+/*
+  Add to any block element that has a background.
+  Uses pseudo-elements so the element's own clip area isn't affected.
+  Caller must set position: relative and overflow: hidden (or visible).
+*/
+
+.angled-top {
+  position: relative;
+}
+.angled-top::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--para-inset-lg);
+  background: inherit;
+  clip-path: polygon(var(--para-inset-lg) 0%, 100% 0%, 100% 100%, 0% 100%);
+  transform: translateY(-100%);
+}
+
+.angled-bottom {
+  position: relative;
+}
+.angled-bottom::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: var(--para-inset-lg);
+  background: inherit;
+  clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--para-inset-lg)) 100%, 0% 100%);
+  transform: translateY(100%);
+}
+
+.angled-both {
+  position: relative;
+}
+.angled-both::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: var(--para-inset-lg);
+  background: inherit;
+  clip-path: polygon(var(--para-inset-lg) 0%, 100% 0%, 100% 100%, 0% 100%);
+  transform: translateY(-100%);
+}
+.angled-both::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: var(--para-inset-lg);
+  background: inherit;
+  clip-path: polygon(0% 0%, 100% 0%, calc(100% - var(--para-inset-lg)) 100%, 0% 100%);
+  transform: translateY(100%);
+}
+
+
+/* ═══════════════════════════════════════════════════════════
+   RE-ELECT BANNER SECTION
+   Full-width parallelogram band above the logo/date section.
+   ═══════════════════════════════════════════════════════════ */
+
+.section-reelect {
+  padding: var(--para-inset-lg) 0;
+  background: transparent;
+}
+
+.section-reelect .para-banner__stripe {
+  max-width: 100%;
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
 
@@ -2084,7 +2401,6 @@ body {
 
   .hero__foreground-spacer { display: none; }
   .hero__sub-photo { display: none; }
-  .hero__sub-content { padding: 0; }
 
   .section-faqs__cols { flex-direction: column; }
   .section-platform__intro { flex-direction: column; }
@@ -2119,4 +2435,7 @@ body {
 
   .section-platform__priorities { flex-direction: column; height: auto; }
   .section-platform__priorities .priority-card { width: 100%; height: auto; min-height: 318px; }
+
+  .para-banner__text { font-size: 28px; }
+  .para-banner__sub  { font-size: 16px; }
 }
