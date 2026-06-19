@@ -1,0 +1,41 @@
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    @include button-variant($value, transparent);
+  }
+}
+
+.btn-info,
+.btn-warning,
+.btn-twitter {
+  color: color('white');
+}
+
+.btn-info,
+.btn-warning,
+.btn-twitter,
+.btn-outline-warning,
+.btn-outline-info {
+  @include hover {
+    color: color('white');
+  }
+}
+
+.btn-facebook.btn-sm,
+.btn-twitter.btn-sm {
+  border-radius: 50%;
+  padding: $spacer * .75;
+  width: rem-calc(22px);
+  height: rem-calc(22px);
+  @include font-size($font-size-base * .89);
+}
+
+.input-group > .input-group-append > .btn,
+.input-group.input-group-sm > .input-group-append > .btn,
+.input-group.input-group-lg > .input-group-append > .btn {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.btn-text-sm {
+  @include font-size($input-btn-font-size-sm);
+}

@@ -1,0 +1,101 @@
+<section class="user-session-form my-3" aria-label="User session form">
+
+  {% if request.sorta_logged_in? and request.current_signup.has_a_login? == true %}
+
+    <div class="row">
+
+      <div class="col-12 d-flex flex-column flex-md-row flex-wrap align-items-center">
+        {% form_for user_session %}
+
+          <div class="form-errors" role="alert">{% error_messages_for user_session %}</div>
+
+          {% hidden_field_tag "user_session[email]", request.current_signup.email %}
+
+          <div class="input-group input-group-sm">
+
+            <div class="input-group-append">
+              {% submit_tag t_login, class:"btn btn-primary submit-button border-0" %}
+            </div>
+          </div>
+
+          <div class="form-submit"></div>
+
+        {% endform_for %}
+      </div><!--/.col-12 -->
+
+      <div class="col-12 d-flex flex-column flex-md-row align-items-md-center justify-content-md-between">
+        <span><small><a href="{{ request.new_password_reset_url }}">{{ t_forgot_password }}</a></small></span>
+        <span><small><i>{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>.</i></small></span>
+      </div>
+
+    </div><!--/.row -->
+
+  {% elsif request.sorta_logged_in? and request.current_signup.has_a_login? == false and settings.allow_account_creation? %}
+
+    <div class="row">
+
+      <div class="col-12 d-flex flex-column flex-md-row flex-wrap align-items-center">
+
+        <div class="flex-grow-1 mb-1 mb-md-0">
+          {% form_for account %}
+            {% hidden_field_tag "account[email]", request.current_signup.email %}
+            {% submit_tag t_auth_email_account_activation_instructions, class:"btn btn-primary btn-sm border-0 submit-button" %}
+            <div class="form-submit"></div>
+          {% endform_for %}
+        </div>
+      </div><!--/.col-12 -->
+
+      <div class="col-12 text-center text-md-left">
+        <p><small><i>{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>.</i></small></p>
+      </div><!--/.col-12 -->
+
+    </div><!--/.row -->
+
+  {% else %}
+
+    <div class="row">
+
+      <div class="col-12 d-flex flex-wrap align-items-center">
+        <div class="my-1">
+          <span class="h6 font-weight-normal mr-2">{{ t_login }}</span>
+        </div>
+
+        <div class="sign-in-with-email flex-grow-1 my-1">
+          {% form_for user_session %}
+            <input type="hidden" name="ajax" value="true"/>
+            <div class="input-group input-group-sm">
+              <div class="form-control-material form-control-material-sm">
+                <label for="user_session_email" class="floating-label floating-label-sm floating-label--float-above">{{ t_email }}</label>
+                {% email_field "email", class:"form-control form-control-sm mb-2 mb-md-0", aria: { describedby: "user-session-errors" } %}
+              </div>
+
+              <div class="input-group-append">
+                {% submit_tag t_login, class: "d-block btn btn-primary submit-button px-3" %}
+              </div>
+            </div>
+
+            <div class="form-submit"></div>
+
+            <span id="user-session-errors">{% error_messages_for user_session %}</span>
+
+          {% endform_for %}
+        </div>
+
+      </div><!--/.col-12 -->
+
+      {% if settings.allow_account_creation? %}
+        <div class="col-12 text-md-right">
+          <small><i>{{ t_auth_dont_have_an_account }}</i> <a href="{% if site.has_signup_page? %}{{ site.signup_page.url }}{% else %}/signup{% endif %}"><i>{{ t_auth_click_here_to_signup }}</i></a></small>
+        </div><!--/.col-12 -->
+      {% endif %}
+    </div><!--/.row -->
+
+    <a name="activation"></a>
+
+    <div class="form-group activation-message d-none">
+        {{ t_auth_please_check_your_email_for_a_link_to_activate }}
+    </div>
+
+  {% endif %}
+
+</section>

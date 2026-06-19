@@ -1,0 +1,38 @@
+<div class="media-body">
+  <p class="d-flex align-items-center mb-1">
+    <a href="{{ request.current_signup.settings_url }}" class="name" id="name">{{ request.current_signup.name_or_email }}</a> <span class="badge badge-secondary ml-1">{{ request.current_signup.capital_amount_format }}</span>
+  </p>
+
+  <small>
+    <div id="myprofile" class="text-muted">
+      {% if site.show_public_profiles? == false %}
+      {% elsif request.current_signup.is_profile_published? %}
+        <a href="{{ request.current_signup.profile_url }}">{{ t_general_public_profile }}</a> |
+      {% else %}
+        {{ t_no_public_profile }} |
+      {% endif %}
+
+      <a href="{{ request.current_signup.settings_url }}">{{ t_settings }}</a>
+      | <a href="{{ request.current_signup.logout_url }}">{{ t_logout }}</a>
+    </div>
+    <div class="user-status">
+      {% if request.current_signup.has_membership_level_badge %}
+        {% if site.has_membership_page? %}
+          <span class="badge badge-secondary"><a href="{{ site.membership_page.url }}">{{ request.current_signup.membership_level_badge }}</a></span>
+        {% else %}
+          <span class="badge badge-secondary">{{ request.current_signup.membership_level_badge }}</span>
+        {% endif %}
+      {% endif %}
+
+      {% if request.current_signup.is_banned? %}
+        <span class="text-danger">{{ t_general_banned }}</span>
+      {% elsif request.current_signup.rule_violations_count == 1 %}
+        <span class="text-warning">{{ t_warning }}</span>
+      {% elsif request.current_signup.rule_violations_count == 2 %}
+        <span class="text-warning">{{ t_general_1_violation }}</span>
+      {% elsif request.current_signup.rule_violations_count == 3 %}
+        <span class="text-warning">{{ t_general_2_violations }}</span>
+      {% endif %}
+    </div>
+  </small>
+</div>

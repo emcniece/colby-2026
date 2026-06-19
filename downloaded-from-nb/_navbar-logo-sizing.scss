@@ -1,0 +1,87 @@
+/*
+ * Navbar Logo Sizing Configuration
+ *
+ * This file provides three logo size options and custom sizing capability.
+ * Compatible with older SCSS compilers used by NationBuilder.
+ *
+ * USAGE:
+ * 1. Tag-based sizing (recommended for most users):
+ *    - Tag homepage with "site: navbar logo medium" for medium size
+ *    - Tag homepage with "site: navbar logo large" for large size
+ *    - No tag needed for default size
+ *
+ * 2. Custom sizing (for advanced users):
+ *    - Set $navbar-logo-custom-max-width and $navbar-logo-custom-max-height below
+ *    - Custom sizes override tag-based sizing
+ *
+ * LOGO TYPE RECOMMENDATIONS:
+ *
+ * For wide logos (3:1 ratio):
+ *   $navbar-logo-custom-max-width: 18rem;
+ *   $navbar-logo-custom-max-height: 6rem;
+ *
+ * For tall logos (1:3 ratio):
+ *   $navbar-logo-custom-max-width: 6rem;
+ *   $navbar-logo-custom-max-height: 18rem;
+ *
+ * For square logos:
+ *   $navbar-logo-custom-max-width: 8rem;
+ *   $navbar-logo-custom-max-height: 8rem;
+ *
+ * MOBILE BEHAVIOR:
+ * All logo sizes automatically scale down to 75% on mobile devices
+ * for better mobile navigation experience.
+ */
+
+// Default size (maintains existing behavior)
+$navbar-logo-default-max-width: $navbar-brand-max-width !default;
+$navbar-logo-default-max-height: $navbar-brand-max-height !default;
+
+// Medium size (33% larger than default)
+$navbar-logo-medium-max-width: 15rem !default;
+$navbar-logo-medium-max-height: 4.5rem !default;
+
+// Large size (78% larger than default)
+$navbar-logo-large-max-width: 20rem !default;
+$navbar-logo-large-max-height: 6rem !default;
+
+// Custom sizing variables (set these to override all other sizing)
+// Leave as null to use tag-based sizing instead
+$navbar-logo-custom-max-width: null !default;
+$navbar-logo-custom-max-height: null !default;
+
+// Mobile sizes (pre-calculated for NationBuilder compatibility)
+// Mobile scale factor: 0.75 (75% of desktop size)
+$navbar-logo-default-mobile-width: 8.4375rem !default;   // 11.25 * 0.75
+$navbar-logo-default-mobile-height: 2.53125rem !default; // 3.375 * 0.75
+$navbar-logo-medium-mobile-width: 11.25rem !default;     // 15 * 0.75
+$navbar-logo-medium-mobile-height: 3.375rem !default;    // 4.5 * 0.75
+$navbar-logo-large-mobile-width: 15rem !default;         // 20 * 0.75
+$navbar-logo-large-mobile-height: 4.5rem !default;       // 6 * 0.75
+
+// Custom mobile sizes (calculated if custom sizes are set)
+$navbar-logo-custom-mobile-width: null !default;
+$navbar-logo-custom-mobile-height: null !default;
+
+// Calculate custom mobile sizes if custom sizes are provided
+@if $navbar-logo-custom-max-width != null {
+  $navbar-logo-custom-mobile-width: $navbar-logo-custom-max-width * 0.75;
+}
+
+@if $navbar-logo-custom-max-height != null {
+  $navbar-logo-custom-mobile-height: $navbar-logo-custom-max-height * 0.75;
+}
+
+/*
+ * ACCESSIBILITY NOTES:
+ * - All logo images should have proper alt text
+ * - Logo maintains aspect ratio with object-fit: contain
+ * - Mobile scaling ensures logos don't dominate small screens
+ * - Focus states are preserved for keyboard navigation
+ *
+ * PERFORMANCE NOTES:
+ * - Uses efficient CSS-only scaling
+ * - No JavaScript dependencies
+ * - Minimal CSS overhead
+ * - Compatible with all modern browsers and IE11+
+ */

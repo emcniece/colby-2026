@@ -1,0 +1,20 @@
+<h2 class="mb-3">{{ t_general_your_pages }}</h2>
+
+<table class="my-4 table table-hover" id="content-list">
+  <thead>
+    <tr>
+      <th>{{ t_general_page_name }}</th>
+      <th><div class="d-none d-sm-block text-nowrap">{{ t_date_authored }}</div></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for authored_page in current_signup.authored_pages %}
+      <tr>
+        <td>{% if authored_page.has_parent? %}<a href="{{ authored_page.parent.url }}">{{ authored_page.parent.name }}</a> &rarr;{% endif %} <a href="{{ authored_page.url }}" class="mr-1">{{ authored_page.name }}</a> <a href="{{ authored_page.edit_url }}" class="badge badge-pill badge-primary">{{ t_general_edit }}</a></td>
+        <td><small class="d-none d-sm-block text-nowrap text-muted">{{ authored_page.published_at | date_to_string }}</small></td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{{ current_signup.authored_pages | paginate }}

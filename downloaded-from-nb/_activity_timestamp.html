@@ -1,0 +1,15 @@
+{% include "translation" %}
+
+<span class="activity-time small text-muted">
+  {% if activity.is_private? %}
+    <svg class="svg-icon-inline" width="1em" height="1em" fill="currentColor" aria-hidden="true" focusable="false" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M5.65909 22H18.3409C19.25 22 20 21.3021 20 20.4079v-8.7241c0-.8725-.7273-1.5922-1.6591-1.5922h-.0454V7.99782C18.2955 4.68266 15.5 2 12.0455 2 8.59091 2 5.79545 4.68266 5.79545 7.99782v2.09378h-.13636C4.75 10.0916 4 10.7895 4 11.6838v8.7241C4 21.2803 4.75 22 5.65909 22zm7.31821-5.5616c-.1364.0872-.1591.1745-.1591.3271v1.9193c.0227.2618-.1364.5235-.3637.6543-.5909.2836-1.159-.109-1.159-.6543v-1.9193c0-.1308-.0228-.2181-.1591-.3053-.6137-.4362-.7955-1.1559-.5-1.7884.2954-.6325 1-.9815 1.6818-.8506.75.1526 1.2727.7197 1.2727 1.4394.0227.4799-.2045.8943-.6136 1.1778zM8.54545 8.01963c0-1.85387 1.56815-3.38059 3.52275-3.38059 1.9545 0 3.5227 1.50491 3.5227 3.38059v2.09377H8.54545V8.01963z"/></svg>
+  {% endif %}
+  
+  {{ activity.created_at | time_ago }}
+
+  {% if activity.type_name == 'Comment' and request.logged_in? and site.has_rule_page? and activity.data.has_rule_violation? == nil %}
+    <span class="activity-links">
+      <a href="{{ activity.flag_url }}" class="flag get">{{ t_activity_feed_flag }}</a>
+    </span>
+  {% endif %}
+</span>

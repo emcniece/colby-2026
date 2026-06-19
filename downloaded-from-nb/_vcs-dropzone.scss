@@ -1,0 +1,29 @@
+.dropzone-thumbnail-image img {
+	border-radius: $dropzone-previews-image-border-radius;
+}
+
+.dropzone-container {
+  border: $dropzone-border-width dashed $dropzone-border-color;
+  border-radius: $input-group-vertical-radius;
+  color: $dropzone-text-color;
+  font-family: $dropzone-font-family;
+  cursor: pointer;
+
+  &.dropzone-drag-hover {
+  	border-color: $dropzone-hover-border-color;
+    border-style: solid;
+  }
+}
+
+.dropzone-error {
+  color: $dropzone-error-color;
+	@include font-size($dropzone-font-size-smalltext);
+}
+
+.dropzone-icon {
+  @include font-size($dropzone-font-size-icon);
+}
+
+.dropzone-info {
+  @include font-size($dropzone-font-size-smalltext);
+}

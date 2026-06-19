@@ -1,0 +1,44 @@
+{% include "translation" %}
+
+{% if page.leaderboard.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.leaderboard.content }}
+  </div>
+{% endif %}
+
+{% for leaderboard in page.page_leaderboards %}
+  <div class="leaderboard {% unless forloop.last == true %}mb-4{% endunless %}">
+    {% if leaderboard.display_number_results > 0 %}
+      <h4>{{ leaderboard.display_number_results }} {{ leaderboard.display_name }}</h4>
+
+      {% if leaderboard.has_goal? %}
+        <div class="my-4">
+          {% include "progress"
+            percent: leaderboard.percent_of_goal,
+            count: leaderboard.total,
+            goal: leaderboard.goal,
+            label: leaderboard.goal_name_short
+          %}
+        </div>
+      {% endif %}
+
+      <div class="row mt-4">
+        {% for entry in leaderboard.entries %}
+          {% if entry.signup.is_leaderboardable? == true %}
+            <div class="col-lg-4 col-md-6 mb-4">
+              {% include "profile_card" profile: entry.signup, rank: entry.position %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+{% endfor %}
+
+{% if page.tags_count > 0 %}
+  <div id="page-tags" class="page-tags">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}
+
+{% include "like_page" %}

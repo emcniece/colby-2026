@@ -1,0 +1,103 @@
+{% comment %}
+  Shows object's images with lightbox functionality
+
+  @param {Object} obj - Object with images (ex. page.petition.signatures_with_images, page.endorsement.endorsements_with_images)
+  @param {number} image_count - Number of images
+  @returns {void}
+{% endcomment %}
+
+<section id="lightbox-{{ page.slug }}" class="lightbox" aria-label="Lightbox section">
+  <h1 class="h6 w-100">{{ t_general_recent_images }}</h1>
+
+  {% for item in obj limit: 16 %}
+    <a href="#" class="d-inline-block mb-2 mr-2" data-toggle="modal" data-target="#lightbox-modal-{{ page.slug }}">
+      <img src="{{ item.large_square_image_url }} " class="rounded-xl" width="72" height="72" data-id="{{ forloop.index }}" />
+    </a>
+  {% endfor %}
+
+  <div id="lightbox-modal-{{ page.slug }}" class="modal fade p-0" tabindex="-1" role="dialog" aria-label="Lightbox">
+    <button type="button" class="position-absolute close" data-dismiss="modal">
+      <img src="{{ theme['fa-close.png'] }}" alt="{{ t_close }}" />
+    </button>
+
+    {% if image_count > 1 %}
+      <a class="left carousel-control-prev d-flex align-items-center justify-content-center position-absolute rounded" href="#lightbox-carousel-{{ page.slug }}" role="button" data-slide="prev" aria-label="Previous">
+        <i class="fas fa-chevron-left" aria-hidden="true"></i>
+      </a>
+      <a class="right carousel-control-next d-flex align-items-center justify-content-center position-absolute rounded" href="#lightbox-carousel-{{ page.slug }}" role="button" data-slide="next" aria-label="Next">
+        <i class="fas fa-chevron-right" aria-hidden="true"></i>
+      </a>
+    {% endif %}
+
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+      <div class="modal-content h-100">
+        <div class="modal-body h-100 text-center">
+          <div class="container-fluid h-100">
+            <div id="lightbox-carousel-{{ page.slug }}" class="carousel slide h-100 mb-0" data-ride="carousel" data-interval="false">
+              <div class="carousel-inner h-100">
+                {% for item in obj %}
+                  {% if item.has_image? %}
+                    <div class="carousel-item h-100 {% if forloop.first %}active{% endif %}">
+                      <div class="d-flex align-items-center justify-content-center h-100">
+                        <img src="{{ item.image_url }}" height="{{ item.image_height }}" width="{{ item.image_width }}" data-id="{{ forloop.index }}" />
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+            </div>
+          </div><!--/.container-fluid -->
+        </div><!--/.modal-body -->
+
+      </div><!--/.modal-content -->
+    </div><!--/.modal-dialog -->
+  </div><!--/.modal -->
+
+  <script>
+    ;(function() {
+      var lightbox = document.scripts[document.scripts.length - 1].parentElement;
+
+      SimpleScrollbar.initEl(lightbox.querySelector('.modal-body'));
+
+      /**
+       * Clear active status of a carousel item, if there is any
+       * @returns {void}
+       */
+      function clearActiveItem() {
+        var items = lightbox.querySelectorAll('.carousel-item');
+
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].classList.contains('active')) {
+            items[i].classList.remove('active');
+            break;
+          }
+        }
+      }
+
+      lightbox.addEventListener('click', function(e) {
+        if (e.target.tagName.toLowerCase() === 'img') {
+          clearActiveItem();
+
+          var images = lightbox.querySelectorAll('.carousel-item img');
+
+          for (var i = 0; i < images.length; i++) {
+            if (images[i].getAttribute('data-id') === e.target.getAttribute('data-id')) {
+              getParents(images[i], '.carousel-item')[0].classList.add('active');
+              break;
+            }
+          }
+        }
+      });
+
+      lightbox.querySelector('.modal').addEventListener('keydown', function(e) {
+        if (e.code === 'ArrowRight') {
+          $(lightbox).find('.carousel').carousel('next');
+        } else if (e.code === 'ArrowLeft') {
+          $(lightbox).find('.carousel').carousel('prev');
+        }
+      });
+
+      objectFitImages(lightbox.querySelectorAll('.carousel-item img'));
+    })();
+  </script>
+</section><!--/.lightbox -->

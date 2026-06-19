@@ -1,0 +1,10 @@
+{% comment %}
+  Add pagination to a page
+  
+  @param {Object[]} source
+  @returns {void} 
+{% endcomment %}
+
+{{ source | paginate prev_label: "&laquo;" next_label: "&raquo;" }}
+
+<script src="adjust-pagination.js"></script>

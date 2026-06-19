@@ -1,0 +1,197 @@
+{% if request.current_user.can_publish? %}
+  <div class="row">
+    <div class="col">
+      {% if page.basic.content.size > 0 %}
+        <div id="intro" class="intro">
+          {{ page.basic.content }}
+        </div>
+      {% endif %}
+
+      <nav id="sitemap-nav" class="sitemap-nav" aria-label="Sitemap navigation">
+        <ul>
+          <li><a href="{{ site.admin_dashboard_url }}">{{ t_general_dashboard }}</a></li>
+          <li><a href="{{ site.admin_dashboard_url }}/signups">{{ t_general_people }}</a></li>
+          <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}">{{ t_website }}</a></li>
+
+          <ul>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/pages/new"><i class="fas fa-plus-circle"></i> {{ t_sitemap_new_page }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/pages">{{ t_general_pages }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/pages/nav">{{ t_sitemap_top_nav }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/buttons">{{ t_sitemap_supporter_nav }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/tags/new">{{ t_general_tags }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/comments">{{ t_general_comments }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/social">{{ t_general_social }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/seo">{{ t_general_seo }}</a></li>
+            <li><a href="{{ site.admin_dashboard_url }}/sites/{{ site.id }}/edit">{{ t_general_site_settings }}</a></li>
+          </ul>
+
+          <li><a href="{{ site.admin_dashboard_url }}/broadcasters/{{ site.broadcaster.id }}">{{ t_general_site_broadcaster }}</a></li>
+        </ul>
+
+        <h2>{{ t_sitemap_sitemap }}:</h2>
+
+        <ul>
+          {% for child in site.root_nav_pages %}
+            {% if child.leaf? or child.nav_children.size == 0 %}
+              <li>
+                <a href="{{ child.url }}" data-toggle="tooltip" title="{{ child.name }}" class="child1">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><i class="fas fa-cog"></i></a>
+                {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><i class="fas fa-angle-down"></i></a>
+                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+              </li>
+            {% else %}
+              <li>
+                <a href="{{ child.url }}" class="parent child1">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><i class="fas fa-cog"></i></a>
+                {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><i class="fas fa-angle-down"></i></a>
+                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+
+                <ul>
+                  {% for child in child.children limit: 10 %}
+                    {% if child.leaf? or child.children.size == 0 %}
+                      <li>
+                        <a href="{{ child.url }}" class="child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                        <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                        {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                        <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+                      </li>
+                    {% else %}
+                      <li>
+                        <a href="{{ child.url }}" class="parent child2">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                        <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                        {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                        <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+
+                        <ul>
+                          {% for child in child.children limit: 10 %}
+                            {% if child.leaf? or child.children.size == 0 %}
+                              <li>
+                                <a href="{{ child.url }}" class="child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+                              </li>
+                            {% else %}
+                              <li>
+                                <a href="{{ child.url }}" class="parent child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                <span class="sitemap-child-size">{{ child.children | size }}</span><a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+
+                                <ul>
+                                  {% for child in child.children limit: 10 %}
+                                    {% if child.leaf? or child.children.size == 0 %}
+                                      <li>
+                                        <a href="{{ child.url }}" class="child">{% include "show_page_icon" slug: child.type_slug %}{{ child.name}}</a>
+                                        <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                        {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                        <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+                                      </li>
+                                    {% else %}
+                                      <li>
+                                        <a href="{{ child.url }}" class="parent child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                        <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                        {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                        <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+
+                                        <ul>
+                                          {% for child in child.children limit: 10 %}
+                                            {% if child.leaf? or child.children.size == 0 %}
+                                              <li>
+                                                <a href="{{ child.url }}" class="child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                                {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+                                                {{ child.slug }}
+                                              </li>
+                                            {% else %}
+                                              <li>
+                                                <a href="{{ child.url }}" class="parent child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                                <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                                {% if child.children.size > 0 %}<span class="sitemap-child-size">{{ child.children | size }}</span>{% endif %}<a href="{{ child.admin_subpages_url }}"><em><i class="fas fa-angle-down"></i> </em></a>
+                                                <a href="{{ child.admin_new_subpage_url }}"><i class="fas fa-plus-squared"></i></a>
+
+                                                <ul>
+                                                  {% for child in child.children limit: 10 %}
+                                                    <li>
+                                                      <a href="{{ child.url }}" class="child">{% include "show_page_icon" slug: child.type_slug %} {{ child.name }}</a>
+                                                      <a href="{{ child.admin_edit_url }}" data-toggle="tooltip" title="Edit page"><em><i class="fas fa-cog"></i></em></a>
+                                                    </li>
+                                                  {% endfor %}
+                                                </ul>
+                                              </li>
+                                            {% endif %}
+                                          {% endfor %}
+                                        </ul>
+                                      </li>
+                                    {% endif %}
+                                  {% endfor %}
+                                </ul>
+                              </li>
+                            {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </li>
+                    {% endif %}
+                  {% endfor %}
+                </ul>
+              </li class="list-group-item">
+            {% endif %}
+          {% endfor %}
+        </ul>
+      </nav><!--/.sitemap-nav -->
+
+      <hr class="d-md-none" />
+    </div><!--./col-12 -->
+
+    <div class="col-12 col-md-4 pt-4 pt-md-0">
+      <div class="sitemap-legend">
+        <h2>{{ t_sitemap_legend }}</h2>
+
+        <div>
+          <h3 class="h6"><i>{{ t_sitemap_editing }}</i></h3>
+
+          <ul>
+            <li><i class="fas fa-cog"></i> <strong>{{ t_sitemap_edit_page }}</strong></li>
+            <li><i class="fas fa-angle-down"></i> <strong>{{ t_sitemap_manage_subpages }}</strong></li>
+            <li><i class="fas fa-plus-circle"></i> <strong>{{ t_sitemap_add_subpage }}</strong></li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="h6"><i>{{ t_sitemap_page_types }}</i></h3>
+
+          <ul>
+            <li><i class="fas fa-stream"></i>{{ t_page_type_activity_stream }}</li>
+            <li><i class="fas fa-file"></i>{{ t_page_type_basic }}</li>
+            <li><i class="fas fa-newspaper"></i>{{ t_page_type_blog }}/{{ t_page_type_blog_post }}</li>
+            <li><i class="fas fa-calendar-alt"></i>{{ t_page_type_calendar }}</li>
+            <li><i class="fas fa-credit-card"></i>{{ t_page_type_donation }}/{{ t_page_type_invoices }}</li>
+            <li><i class="fas fa-list-alt"></i>{{ t_page_type_directory }}</li>
+            <li><i class="fas fa-thumbs-up"></i>{{ t_page_type_endorsement }}</li>
+            <li><i class="fas fa-calendar"></i>{{ t_page_type_event }}</li>
+            <li><i class="fas fa-question-circle"></i>{{ t_page_type_faq }}</li>
+            <li><i class="fas fa-question"></i>{{ t_page_type_question }}</li>
+            <li><i class="fas fa-comment"></i>{{ t_page_type_feedback }}</li>
+            <li><i class="fas fa-search"></i>{{ t_page_type_find_friends }}</li>
+            <li><i class="fas fa-check"></i>{{ t_page_type_followers }}</li>
+            <li><i class="fas fa-check"></i>{{ t_page_type_follows }}</li>
+            <li><i class="fas fa-medal"></i>{{ t_page_type_leaderboard }}</li>
+            <li><i class="fas fa-hourglass-start"></i>{{ t_page_type_moneybomb }}</li>
+            <li><i class="fas fa-clipboard"></i>{{ t_page_type_petition }}</li>
+            <li><i class="fas fa-box-open"></i>{{ t_page_type_political_capital }}</li>
+            <li><i class="fas fa-bullhorn"></i>{{ t_page_type_press_release }}</li>
+            <li><i class="fas fa-user-plus"></i>{{ t_page_type_recruiting }}</li>
+            <li><i class="fas fa-directions"></i>{{ t_page_type_redirect }}</li>
+            <li><i class="fas fa-user-secret"></i>{{ t_page_type_rules }}</li>
+            <li><i class="fas fa-envelope"></i>{{ t_page_type_signup }}</li>
+            <li><i class="fas fa-archive"></i>{{ t_page_type_suggestion_box }}</li>
+            <li><i class="fas fa-check"></i>{{ t_page_type_survey }}</li>
+            <li><i class="fas fa-hands-helping"></i>{{ t_page_type_volunteer_signup }}</li>
+            <li><i class="fas fa-check-square"></i>{{ t_page_type_vote_pledge }}</li>
+          </ul>
+        </div>
+      </div>
+    </div><!--/.col-12 -->
+  </div><!--/.row -->
+{% endif %}

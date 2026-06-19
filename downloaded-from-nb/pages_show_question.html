@@ -1,0 +1,24 @@
+{% include "translation" %}
+
+{% if page.question.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.question.content }}
+  </div>
+{% endif %}
+
+{% if page.question.answer.size > 0 %}
+  <div class="intro my-4 card">
+    <p class="card-header">{{ t_answer }}</p>
+    <div class="card-body">
+      {{ page.question.answer }}
+    </div>
+  </div>
+{% endif %}
+
+{% if page.tags_count > 0 %}
+  <div id="page-tags" class="page-tags">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}
+
+{% include "like_page" %}

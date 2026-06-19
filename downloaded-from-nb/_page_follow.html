@@ -1,0 +1,13 @@
+{% include "translation" %}
+
+{% if page.show_stream? and request.sorta_logged_in? %}
+	<div class="btn-group">
+		{% if request.current_signup.following_page_ids contains page.id %}
+			<span class="addreaction btn btn-sm btn-secondary border-0"><i class="fas fa-user" aria-hidden="true" aria-label="Number of page followers"></i> {{ page.followers_count }}</span>
+			<a href="{{ page.unfollow_url }}" class="addreaction btn btn-sm btn-secondary border-0 delete" aria-role="button">{{ t_general_unfollow_reactions }}</a>
+		{% else %}
+			<span class="addreaction btn btn-sm btn-primary border-0"><i class="fas fa-user" aria-hidden="true" aria-label="Number of page followers"></i> {{ page.followers_count }}</span>
+			<a href="{{ page.follow_url }}" class="addreaction btn btn-sm btn-primary border-0 post" aria-role="button">{{ t_general_follow_reactions }}</a>
+		{% endif %}
+	</div>
+{% endif %}

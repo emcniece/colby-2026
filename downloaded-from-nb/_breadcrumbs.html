@@ -1,0 +1,20 @@
+{% unless sidebar %}
+  <div class="row"><div class="col-lg-10 mx-auto">
+{% endunless %}
+
+{% unless page.is_homepage? or page.level == 0 or page.level == nil %}
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb d-inline-flex justify-content-center border-0 bg-transparent pl-0 font-weight-bold">
+      <li class="breadcrumb-item"><a href="/">{{ t_home }}</a></li>
+      {% for ancestor in page.ancestors %}
+        {% unless ancestor.is_homepage? %}
+          <li class="breadcrumb-item"><a href="{{ ancestor.url }}">{{ ancestor.name }}</a></li>
+        {% endunless %}
+      {% endfor %}
+    </ol>
+  </nav>
+{% endunless %}
+
+{% unless sidebar %}
+  </div></div>
+{% endunless %}

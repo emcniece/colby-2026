@@ -1,0 +1,202 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    {% if page.recruiting.content.size > 0 %}
+      <div id="intro" class="intro">
+        {{ page.recruiting.content }}
+      </div>
+    {% endif %}
+
+    {% if request.sorta_logged_in? %}
+      <p>{{ t_general_anyone_referred_through_your_personal_tracking_lin }}</p>
+    {% else %}
+      <p><a href="/login">{{ t_recruiting_sign_in_with_email_to_get_link | remove: '.' }}</a></p>
+    {% endif %}
+
+    <div class="form-group">
+      {% if request.sorta_logged_in? %}
+        <form>
+          <label for="tracking_link">{{ t_general_your_personal_tracking_link }}</label>
+          <input class="form-control" type="text" id="tracking_link" onclick="this.focus();this.select();" readonly="readonly" value="{{ page.recruiting.featured_page.full_url_with_recruiter }}" />
+        </form>
+      {% else %}
+        <form>
+          <label for="tracking_link">{{ t_non_tracking_link }}</label>
+          <input class="form-control" type="text" id="tracking_link" onclick="this.focus();this.select();" readonly="readonly" value="{{ page.recruiting.featured_page.full_url_with_recruiter }}" />
+        </form>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <h4 class="h5">{{ t_social_share_on_facebook }}</h4>
+      <div class="fb-share-button"
+        data-href="{% if request.sorta_logged_in? %}{{ page.recruiting.featured_page.full_url_with_recruiter }}{% else %}{{ page.recruiting.featured_page.full_url }}{% endif %}"
+        data-layout="button">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <h4 class="h5">{{ t_social_tweet_your_followers }}</h4>
+      <script src="//platform.twitter.com/widgets.js"></script>
+      <a href="http://twitter.com/share" class="twitter-share-button" data-url="{{ page.recruiting.featured_page.full_url_with_recruiter }}" data-via="{{ site.broadcaster.twitter_login }}" data-related="{{ site.broadcaster.twitter_login }}" data-text="{{ page.recruiting.default_tweet_text }}">Tweet</a>
+    </div>
+
+    <div class="form-group">
+      <h4 class="h5">{{ t_social_share_with_your_linkedin_network }}</h4>
+      <script src="//platform.linkedin.com/in.js"></script><script type="in/share" data-url="{{ page.recruiting.featured_page.full_url_with_recruiter }}" data-counter="right"></script>
+    </div>
+
+    <div class="form-group">
+      <h4 class="h5">{{ t_social_share_with_whatsapp }}</h4>
+      <a class="whatsapp-share-button" href="https://api.whatsapp.com/send?text={{ page.full_url_with_recruiter | urlencode }}" target="_blank">WhatsApp</a>
+    </div>
+
+    {% if request.sorta_logged_in? and page.recruiting.show_followers? and request.current_signup.followers_count > 0 %}
+
+      <div class="my-4">
+        <div class="card-group">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.followers_supporters_count }}</h4>
+              <span class="text-muted">{{ t_general_supporters }}</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.followers_volunteers_count }}</h4>
+              <span class="text-muted">{{ t_volunteer_volunteers }}</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-body">
+              <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.followers_donors_count }}</h4>
+              <span class="text-muted">{{ t_general_donors }}</span>
+            </div>
+          </div>
+
+          {% if settings.is_voter? %}
+            <div class="card">
+              <div class="card-body">
+                <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.followers_possible_voters_count }}</h4>
+                <span class="text-muted">{{ t_general_could_vote }}</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h4 class="m-0 h2 font-weight-bold">{{ request.current_signup.followers_voters_count }}</h4>
+                <span class="text-muted">{{ t_general_will_vote }}</span>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <table class="my-4 table table-striped content-list" id="content-list">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">{{ t_name }}</th>
+            <th scope="col"><div class="desktop-visible" align="center">{{ t_general_supporter }}</div></th>
+            <th scope="col"><div align="center">{{ t_volunteer }}</div></th>
+            <th scope="col"><div align="center">{{ t_general_donor }}</div></th>
+            {% if settings.is_voter? %}
+              <th scope="col"><div class="desktop-visible" align="center">{{ t_general_could_vote_cap }}</div></th>
+              <th scope="col"><div class="desktop-visible" align="center">{{ t_will_vote_cap }}</div></th>
+            {% endif %}
+          </tr>
+        </thead>
+
+        {% for follower in request.current_signup.followers %}
+          {% assign signup = follower.follower %}
+
+          <tr>
+            <td align="left">{{ signup.published_name_linked }}</td>
+            <td><div class="desktop-visible" align="center">{{ signup.support_level_pretty | on_off_button_small }}</div></td>
+            <td><div align="center">{{ signup.is_volunteer_pretty | on_off_button_small }}</div></td>
+            <td><div align="center">{{ signup.has_donated? | on_off_button_small }}</div></td>
+            {% if settings.is_voter? %}
+              <td><div class="desktop-visible" align="center">{{ signup.could_vote_pretty | on_off_button_small }}</div></td>
+              <td><div class="desktop-visible" align="center">{{ signup.will_vote_pretty | on_off_button_small }}</div></td>
+            {% endif %}
+          </tr>
+        {% endfor %}
+      </table>
+
+      {% include "pagination" source: request.current_signup.followers %}
+
+    {% endif %}
+
+    <div class="my-4">
+      {% if request.sorta_logged_in? and page.show_stream? %}
+        <div class="card">
+          <div id="reactions">
+            {% if request.current_signup.recruiting_activities.size == 0 %}
+              <p class="text-muted">
+                {{ t_general_you_will_be_able_to_see_who_youve_recruited_below }}
+              </p>
+            {% endif %}
+
+            <section class="activities-stream" aria-label="Activities stream">
+              <h5>{{ t_general_recent_recruiting_activity }}</h5>
+
+              {% if request.current_signup.recruiting_activities.size > 0 %}
+
+                <div id="reactions" class="content-list my-3">
+                  <ul class="list-unstyled mb-4 activities">
+                    {% for activity in request.current_signup.recruiting_activities %}
+                      <li class="activity d-block w-100 position-relative {% unless forloop.last %}pb-5 pb-md-4{% endunless %}">
+                        {% unless forloop.last %}
+                          <div class="activity-vertical-hr d-none d-md-block position-absolute"></div>
+                        {% endunless %}
+
+                        <div class="d-flex flex-column flex-md-row align-items-top">
+                          <div class="position-relative flex-shrink-0 text-center mb-2 mb-md-0 mr-md-3">
+                            {% include "avatar_with_activity" signup: activity.signup, size: 72, activity_name: activity.type_name %}
+                          </div>
+
+                          <div class="w-100 ml-md-3">
+                            {% include "activity_show" %}
+                          </div>
+                        </div>
+                      </li>
+                    {% endfor %}
+                  </ul>
+
+                  {% include "pagination" source: request.current_signup.recruiting_activities %}
+                </div>
+
+              {% else %}
+
+                <i>{{ t_general_no_recent_activity }}</i>
+
+              {% endif %}
+            </section>
+
+            <script>
+              ;(function() {
+                var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+                previous.querySelectorAll('.activity-content').forEach(function(content) {
+                  if (!content.textContent.trim()) {
+                    var parent = getParents(content, '.align-items-top')[0];
+
+                    parent.classList.remove('align-items-top');
+                    parent.classList.add('align-items-center');
+                  }
+                });
+              })();
+            </script>
+
+          </div>
+        </div>
+      {% elsif page.show_stream? %}
+        <p class="text-muted">
+          {{ t_general_when_you_sign_in_you_will_be_able_to_see_who_youve_recruited_here }}
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>

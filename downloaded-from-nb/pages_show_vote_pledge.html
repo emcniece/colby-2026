@@ -1,0 +1,82 @@
+{% include "translation" %}
+
+{% if page.vote_pledge.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.vote_pledge.content }}
+  </div>
+{% endif %}
+
+{% if page.show_social_slider? and page.public_activities_count > 0 %}
+  {% include "social_slider" %}
+
+  <hr />
+{% endif %}
+
+{% if page.vote_pledge.has_yes_goal? %}
+  <div class="my-4">
+    {% include "progress"
+      percent: page.vote_pledge.percent_of_yes_goal,
+      count: page.vote_pledge.yes_votes_count,
+      goal: page.vote_pledge.yes_goal,
+      label: t_vote_pledge_votes
+    %}
+  </div>
+{% endif %}
+
+{% if page.vote_pledge.is_pledged? %}
+  <h4>{{ t_general_you }}
+    {% if page.vote_pledge.current_vote_pledge.is_no? %}
+      {{ t_vote_pledge_pledged_not }}
+    {% elsif page.vote_pledge.current_vote_pledge.is_unsure? %}
+      {{ t_general_said_you_were_not_sure_whether }}
+    {% elsif page.vote_pledge.current_vote_pledge.is_yes? %}
+      {{ t_vote_pledge_pledged }}
+    {% endif %}
+    {{ t_general_to }}
+    {% if page.vote_pledge.current_vote_pledge.could_vote? %}
+      {{ t_vote_for }}
+    {% else %}
+      {{ t_vote_pledge_support }}
+    {% endif %}
+    {{ site.candidate_first_name_or_site_name }}.
+  </h4>
+
+  <div class="mt-2">
+    {{ page.vote_pledge.current_vote_pledge
+    | delete_link: t_vote_pledge_remove_pledge, "btn btn-danger destroy-link", t_are_you_sure }}
+  </div>
+{% else %}
+  <div class="form" role="form">
+    <div class="form-errors" role="alert">{% error_messages_for vote_pledge %}</div>
+
+    <div id="vote_pledge_form" class="vote-pledge-form">
+
+      <div class="form-group">
+        <a href="{{ page.vote_pledge.yes_url }}" class="btn btn-success btn-sm mr-1 get">{{ t_yes }}</a> {{ t_vote_pledge_i_support }} {{ site.candidate_first_name_or_site_name }}.
+      </div>
+
+      <div class="form-group">
+        <a href="{{ page.vote_pledge.unsure_url }}" class="btn btn-warning btn-sm mr-1 get"> {{ t_vote_pledge_i_might }}</a> {{ t_vote_pledge_support }} {{ site.candidate_first_name_or_site_name }},
+        <a href="{{ site.full_url}}">{{ t_general_tell_me_more }}</a>.
+      </div>
+
+      <div class="form-group">
+        <a href="{{ page.vote_pledge.no_url }}" class="btn btn-light btn-sm mr-1 get">{{ t_no }}</a> {{ t_vote_pledge_i_do_not_support }} {{ site.candidate_first_name_or_site_name }}.
+      </div>
+    </div>
+  </div>
+
+  {% if page.text_keyword_instructions.size > 0 %}
+    <div class="my-2">
+      {{ t_general_or }} {{ page.text_keyword_instructions }}
+    </div>
+  {% endif %}
+{% endif %}
+
+{% if page.tags_count > 0 %}
+  <div id="page-tags" class="page-tags">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}
+
+{% include "like_page" %}

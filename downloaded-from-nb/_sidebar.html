@@ -1,0 +1,19 @@
+<section class="sidebar col-12 col-md-4 pt-4 pt-md-0" aria-label="Sidebar" role="region">
+
+  {% if site.has_signup_page? %}
+    {% subpage site.signup_page.slug with "sidebar_signup" %}
+  {% endif %}
+
+  {% include "site_buttons" %}
+
+  {% if page and page.has_rss? or page and page.has_parent? and page.parent.has_rss? %}
+    <div class="my-4">
+      {% if page and page.has_rss? %}
+        <a class="btn btn-primary w-100" href="{{ page.rss_url }}"><i class="fas fa-rss mr-1"></i>{{ t_general_subscribe_with_rss }}</a>
+      {% elsif page and page.has_parent? and page.parent.has_rss? %}
+        <a class="btn btn-primary w-100" href="{{ page.parent.rss_url }}"><i class="fas fa-rss mr-1"></i>{{ t_general_subscribe_with_rss }}</a>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+</section>

@@ -1,0 +1,40 @@
+{% comment %}
+------------------------------------------------
+  Translation and Internationalization (i18n)
+------------------------------------------------
+{% endcomment %}
+
+{% include 'tag_list' %}
+{% if tag_list contains 'lang_en' %}
+  {% include 'translation_en' %}
+  {% assign current_language = 'en' %}
+{% elsif tag_list contains 'lang_fr' %}
+  {% include 'translation_fr' %}
+  {% assign current_language = 'fr' %}
+{% elsif tag_list contains 'lang_es' %}
+  {% include 'translation_es' %}
+  {% assign current_language = 'es' %}
+{% else %}
+  {% assign current_language = site.language %}
+  {% if site.language contains 'en' %}
+    {% include 'translation_en' %}
+  {% elsif site.language contains 'fr' %}
+    {% include 'translation_fr' %}
+  {% elsif site.language contains 'es' %}
+    {% include 'translation_es' %}
+  {% else %}
+    {% include 'translation_en' %}
+  {% endif %}
+{% endif %}
+
+{% comment %}
+------------------------------------------------
+  Helper Variables
+------------------------------------------------
+{% endcomment %}
+
+{% assign checkPage = request.url | split: page.url | last | split: '?page=' | last | split: '&' | first %}
+{% assign first_page = true %}
+{% if request.url contains '?page=' and checkPage != '1' %}
+  {% assign first_page = false %}
+{% endif %}

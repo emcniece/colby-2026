@@ -1,0 +1,322 @@
+{% include "translation" %}
+
+<div class="invoices">
+
+	{% if page.invoice.content.size > 0 %}
+		<div id="intro" class="intro">
+			{{ page.invoice.content }}
+		</div>
+	{% endif %}
+
+	{% if outstanding_invoices.size == 0 %}
+		<div class="form-row">
+			<div class="form-group col">{{ t_general_you_have_no_outstanding_invoices }}</div>
+		</div>
+	{% else %}
+		{% if outstanding_invoices.size == 1 %}
+			{% for invoice in outstanding_invoices %}
+				<h4>{{ invoice.name }}</h4>
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col" width="12%">{{ t_general_quantity }}</th>
+							<th scope="col">{{ t_name }}</th>
+							<th scope="col" class="amount">{{ t_amount }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for item in invoice.items %}
+							<tr>
+								<td class="invoice-quantity">{{ item.quantity }}</td>
+								<td>{{ item.name }}</td>
+								<td class="amount">{{ item.amount }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="2" class="invoice-total">{{ t_total }}</td>
+							<td class="price-invoice">{{ invoice.amount_due_format }}</td>
+						</tr>
+					</tfoot>
+				</table>
+			{% endfor %}
+		{% else %}
+			{% for invoice in outstanding_invoices %}
+				<div class="expand card mb-3">
+					<div class="card-header border-0 {% unless forloop.first %}collapsed{% endunless %}" data-toggle="collapse" data-target="#invoice-{{ forloop.index0 }}" aria-expanded="{% unless forloop.first %}false{%else%}true{% endunless %}" aria-controls="invoice-{{ forloop.index0 }}">
+						<h3 class="mb-0 h5">
+							{{ invoice.name }}
+						</h3>
+					</div>
+					<div id="invoice-{{ forloop.index0 }}" class="collapse {% if forloop.first %}show{% endif %}">
+						<div class="card-body p-0">
+							<table class="table table-hover m-0">
+								<thead>
+									<tr>
+										<th scope="col" width="12%">{{ t_general_quantity }}</th>
+										<th scope="col">{{ t_name }}</th>
+										<th scope="col" class="amount">{{ t_amount }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for item in invoice.items %}
+										<tr>
+											<td class="invoice-quantity">{{ item.quantity }}</td>
+											<td>{{ item.name }}</td>
+											<td class="amount">{{ item.amount }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+								<tfoot>
+									<tr>
+										<td colspan="2" class="invoice-total">{{ t_total }}</td>
+										<td class="price-invoice">{{ invoice.amount_due_format }}</td>
+									</tr>
+								</tfoot>
+							</table>
+						</div>
+					</div><!-- /.expander-content -->
+				</div><!-- /.expander -->
+			{% endfor %}
+		{% endif %}
+
+		{% form_for invoice_payment %}
+
+			<div class="form">
+				<div class="form-errors" role="alert">
+					{% error_messages_for invoice_payment %}
+				</div>
+				{% if page.invoice.merchant_account.is_test_mode? %}
+					<div class="form-row">
+						<div class="form-group col">
+							<p class="text-danger"><strong>{{ t_general_testing_mode }}:</strong> {{ t_general_transactions_will_not_be_processed_use_your_regula }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if outstanding_invoices.size > 1 %}
+					<div class="form-row">
+						<div class="form-group col">
+              <div class="form-control-material form-control-material-custom-select">
+                <label for="invoice_payment_invoice_id" class="floating-label floating-label-select floating-label--float-above">{{ t_donation_invoice_to_pay }}</label>
+                {% select_field "invoice_id", outstanding_invoices, "id", "name", class:"custom-select" %}
+              </div>
+						</div>
+					</div>
+				{% else %}
+					<input type="hidden" name="invoice_payment[invoice_id]" id="invoice_payment_invoice_id" value="{{ outstanding_invoices[0].id }}">
+				{% endif %}
+
+				<div class="form-row">
+					<div class="form-group col-12 col-md-6">
+            <div class="form-control-material">
+              <label for="invoice_payment_first_name" class="floating-label floating-label--float-above">{{ t_first_name }}*</label>
+              {% text_field "first_name", class:"form-control", required:"required" %}
+            </div>
+          </div>
+
+          <div class="form-group col-12 col-md-6">
+            <div class="form-control-material">
+              <label for="invoice_payment_last_name" class="floating-label floating-label--float-above">{{ t_last_name }}*</label>
+              {% text_field "last_name", class:"form-control", required:"required" %}
+            </div>
+          </div>
+        </div>
+
+				<div class="form-row">
+					<div class="form-group col">
+            <div class="form-control-material form-control-material-custom-select">
+              <label for="invoice_payment_billing_address_country_code" class="floating-label floating-label-select floating-label--float-above">{{ t_country }}*</label>
+              {% select_field "billing_address.country_code", page.invoice.countries, "code", "name", class:"custom-select" %}
+            </div>
+					</div>
+        </div>
+
+				<div class="form-row">
+					<div class="form-group col">
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_address1" class="floating-label floating-label--float-above">{{ t_forms_billing_address_1 }}*</label>
+              {% text_field "billing_address.address1", class:"form-control mb-1", required:"required" %}
+            </div>
+
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_address2" class="floating-label floating-label--float-above">{{ t_forms_billing_address_2 }}</label>
+              {% text_field "billing_address.address2", class:"form-control mb-1" %}
+            </div>
+
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_address3" class="floating-label floating-label--float-above">{{ t_forms_billing_address_3 }}</label>
+              {% text_field "billing_address.address3", class:"form-control not-us-or-canada" %}
+            </div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-4">
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_city" class="floating-label floating-label--float-above">{{ t_city }}*</label>
+              {% text_field "billing_address.city", class:"form-control", required:"required" %}
+            </div>
+          </div>
+
+					<div id="state" class="form-group col-4 us-or-canada us-only">
+            <div class="form-control-material form-control-material-custom-select">
+              <label for="invoice_payment_billing_address_state" class="floating-label floating-label-select floating-label--float-above">{{ t_state }}*</label>
+              {% select_field "billing_address.state", page.invoice.us_states, "code", "name", class:"custom-select" %}
+            </div>
+          </div>
+
+					<div id="province" class="form-group col-4 us-or-canada canada-only">
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_state" class="floating-label floating-label--float-above">{{ t_general_province }}*</label>
+              {% text_field "billing_address.state", class:"form-control", required:"required" %}
+            </div>
+          </div>
+
+					<div class="form-group col-4">
+            <div class="form-control-material">
+              <label for="invoice_payment_billing_address_zip" class="floating-label floating-label--float-above">{{ t_zip }}*</label>
+              {% text_field "billing_address.zip", class:"form-control", required:"required" %}
+            </div>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-12 col-md-6">
+            <div class="form-control-material">
+              <label for="invoice_payment_email" class="floating-label floating-label--float-above">{{ t_email }}*</label>
+              {% email_field "email", class:"form-control", required:"required" %}
+            </div>
+          </div>
+
+					<div class="form-group col-12 col-md-6">
+            <div class="form-control-material">
+              <label for="invoice_payment_phone" class="floating-label floating-label--float-above">{{ t_phone_number }}</label>
+              {% text_field "billing_address.phone_number", class:"form-control" %}
+            </div>
+					</div>
+				</div>
+
+				{% if page.invoice.merchant_account.is_paypal_express? %}
+					<div class="form-row">
+						<div class="form-group col">
+							{% submit_tag t_donation_continue_to_paypal, class:"btn btn-success" %}
+						</div>
+          </div>
+
+					<div class="form-row">
+						<div class="form-group col">
+							{{ page.invoice.merchant_account.accepted_card_icons }}
+						</div>
+					</div>
+				{% endif %}
+
+        {% if page.invoice.merchant_account.is_paypal_express? == false %}
+          <div class="form-row">
+            <div class="form-group col-12 col-md-6">
+              <div class="form-control-material">
+                <label for="invoice_payment_card_number" class="floating-label floating-label--float-above">{{ t_general_credit_card_number }}*</label>
+                {% text_field "card_number", class:"form-control", required:"required" %}
+                <div class="cc">{{ page.invoice.merchant_account.accepted_card_icons }}</div>
+              </div>
+            </div>
+
+            <div class="form-group col-12 col-3">
+              <div class="form-control-material">
+                <label for="invoice_payment_card_verification" class="floating-label floating-label--float-above">{{ t_general_cvc }}*</label>
+                {% text_field "card_verification", class:"form-control" %}
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-12">
+              <label for="invoice_payment_card_expires_on_1i">{{ t_general_card_expiration }}</label>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <div class="expiration-selects">
+                {{ page.invoice.form_card_expires_on }}
+              </div>
+
+              <script>
+                ;(function() {
+                  var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+                  var $year = $(previous).find('#invoice_payment_card_expires_on_1i');
+                  var $month = $(previous).find('#invoice_payment_card_expires_on_2i');
+
+                  $month.parents('.form-row').append($month.detach());
+                  $month.wrap('<div class="form-group col-12 col-sm-6 col-md-3"></div>');
+
+                  $year.unwrap().parent().addClass('col-12 col-sm-6 col-md-3');
+
+                  $month.removeClass('form-control');
+                  $year.removeClass('form-control');
+
+                  $month.addClass('custom-select');
+                  $year.addClass('custom-select');
+
+                  $year.wrap('<div class="form-control-material form-control-material-custom-select"></div>');
+                  $month.wrap('<div class="form-control-material form-control-material-custom-select"></div>');
+
+                  $year.before('<label for="invoice_payment_card_expires_on_1i" class="floating-label floating-label-select floating-label--float-above">{{ t_general_year_cap }}</label>');
+                  $month.before('<label for="invoice_payment_card_expires_on_2i" class="floating-label floating-label-select floating-label--float-above">{{ t_general_month }}</label>');
+                })();
+              </script>
+            </div>
+          </div>
+
+          <div class="form-row mt-4">
+            <div class="form-group col-12 col-md-6">
+              {% submit_tag t_donation_process_payment, class:"btn btn-lg btn-primary submit-button" %}
+            </div>
+          </div>
+
+          <div class="form-group col-12">
+            <div class="form-submit"></div>
+          </div>
+        {% endif %}
+
+			</div><!-- /.form -->
+		{% endform_for %}
+	{% endif %}
+
+	{% if closed_invoices.size > 0 %}
+		<h4>{{ t_general_closed_invoices }}</h4>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th scope="col">{{ t_general_invoice }}</th>
+					<th scope="col">{{ t_amount }}</th>
+					<th scope="col">{{ t_general_closed_on }}</th>
+					<th scope="col">{{ t_general_pdf }}</th>
+				</tr>
+			</thead>
+			<tbody>
+        {% for invoice in closed_invoices %}
+          <tr>
+            <td>{{ invoice.name }}</td>
+            <td>{{ invoice.amount_with_discount_format }}</td>
+            <td>{{ invoice.closed_at | date_to_string }}</td>
+            <td><a href="{{ invoice.pdf_url }}">{{ t_general_pdf }}</a></td>
+          </tr>
+        {% endfor %}
+			</tbody>
+		</table>
+	{% endif %}
+
+	{% if page.show_stream? %}
+		{% include "page_stream" %}
+	{% endif %}
+
+	<script src="/assets/liquid/invoices.js"></script>
+	<script>
+		;jQuery(function () {
+			NB.Liquid.Invoices.init();
+		});
+	</script>
+
+</div><!-- /.invoices -->
+<script src="vcs-invoices.js"></script>

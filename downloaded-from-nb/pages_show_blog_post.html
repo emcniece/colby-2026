@@ -1,0 +1,17 @@
+{% include "translation" %}
+
+<div id="intro" class="intro">
+  {{ page.blog_post.content_full }}
+</div>
+
+{% if page.tags_count > 0 %}
+  <div class="page-tags mt-4">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}
+
+{% if page.author.has_bio? %}
+  {% include "author_card" %}
+{% endif %}
+
+{% include "like_page" %}

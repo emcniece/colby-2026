@@ -1,0 +1,92 @@
+{% comment %}
+  Display the feature
+
+  @param {Object} page
+  @param {string} [id='page-features'] - HTML id to use with the feature
+  @param {boolean} [no_margin=false]
+  @returns {void}
+{% endcomment %}
+
+{% if page.features_count > 0 %}
+  {% if page.features.size > 0 %}
+
+    {% unless id %}
+      {% assign id = "page-features" %}
+    {% endunless %}
+
+    {% comment %}Check if page has "include hero slider" tag{% endcomment %}
+    {% assign has_hero_slider = false %}
+    {% for tag in page.tags %}
+      {% if tag.name == "include hero slider" %}
+        {% assign has_hero_slider = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% comment %}Get aspect ratio from first image if hero slider is enabled{% endcomment %}
+    {% if has_hero_slider and page.features.first %}
+      {% assign first_feature = page.features.first %}
+      {% if first_feature.image_width and first_feature.image_height and first_feature.image_width > 0 and first_feature.image_height > 0 %}
+        {% assign aspect_ratio = first_feature.image_width | times: 1.0 | divided_by: first_feature.image_height %}
+      {% endif %}
+    {% endif %}
+
+    <div id="{{ id | default: 'page-features' }}" class="carousel slide {% if has_hero_slider %}hero-slider{% endif %} {% if no_margin %}mb-0{% endif %}" data-ride="carousel" data-interval="false" {% if has_hero_slider and aspect_ratio %}style="--hero-aspect-ratio: {{ first_feature.image_width }}/{{ first_feature.image_height }};"{% endif %}>
+      {% if page.features_count > 1 %}
+        <ol class="carousel-indicators m-0">
+          {% for feature in page.features %}
+            <li data-target="#{{ id | default: 'page-features' }}" data-slide-to="{{ forloop.index0 }}" class="rounded-circle {% if forloop.first %}active{% endif %}"></li>
+          {% endfor %}
+        </ol>
+      {% endif %}
+
+      <div class="carousel-inner">
+        {% for feature in page.features %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            <a href="{{ feature.page.url }}" class="d-block position-relative h-100">
+              <img src="{{ feature.image_url }}" class="d-block w-100 {% if has_hero_slider %}hero-slider-img{% else %}h-100{% endif %}" {% if has_hero_slider %}data-no-objectfit="true"{% endif %} height="{{ feature.image_height }}" width="{{ feature.image_width }}" alt="{{ feature.headline | split:'|' | first | strip_html }}" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"/>
+            </a>
+
+            {% if feature.headline.size > 0 %}
+              {% assign components = feature.headline | split:"|" %}
+
+              <div class="carousel-caption {% unless page.features_count > 1 and page.features.size > 1 %}single{% endunless %}">
+                <div class="container">
+
+                  <h2 class="text-white d-inline-block px-sm-5 mt-2 mb-3">
+                    {{ components[0] }}
+                  </h2>
+
+                  {% if components.size == 2 %}
+                    <button class="btn btn-primary mb-3" data-fullurl="{{ feature.page.full_url }}">{{ components[1] }}</button>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        {% endfor %}
+      </div>
+
+      {% if page.features.size > 1 %}
+        <a class="left carousel-control-prev d-none d-sm-flex align-items-center justify-content-center position-absolute" href="#{% if id %}{{ id }}{% else %}page-features{% endif %}" role="button" data-slide="prev" aria-label="{{ t_previous }}">
+          <i class="fas fa-chevron-left" aria-hidden="true"></i>
+        </a>
+
+        <a class="right carousel-control-next d-none d-sm-flex align-items-center justify-content-center position-absolute" href="#{% if id %}{{ id }}{% else %}page-features{% endif %}" role="button" data-slide="next" aria-label="{{ t_next }}">
+          <i class="fas fa-chevron-right" aria-hidden="true"></i>
+        </a>
+      {% endif %}
+    </div>
+
+    {% unless has_hero_slider %}
+    <script>
+      ;(function() {
+        objectFitImages('#{{ id | default: "page-features" }} .carousel-item img');
+      })();
+    </script>
+    {% endunless %}
+
+    <script src="adjust-features.js"></script>
+
+  {% endif %}
+{% endif %}

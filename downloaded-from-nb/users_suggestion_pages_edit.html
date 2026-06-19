@@ -1,0 +1,18 @@
+{% include "translation" %}
+
+<h2 class="mb-3">{{ suggestion_page.page.headline }}</h2>
+
+{% form_for suggestion_page %}
+  <div class="form">
+    <div class="form-errors" role="alert">{% error_messages_for suggestion_page %}</div>
+
+    <div class="form-group">
+      {% text_area "content_editable", class:"form-control textarea-tinymce" %}
+    </div>
+
+    <div class="form-group">
+      {% submit_tag t_suggestion_save_and_update_suggestion, class:"btn btn-primary submit-button" %}
+      <div class="form-submit"></div>
+    </div>
+  </div>
+{% endform_for %}

@@ -1,0 +1,62 @@
+{% comment %}
+  Display the homepage
+
+  @param {boolean} [has_tagged] - Does homepage has pages tagged "homepage"
+  @returns {void}
+{% endcomment %}
+
+<section id="homepage" class="homepage" aria-label="Homepage content">
+  <script src="adjust-offset.js"></script>
+
+  {{ content_for_notifications }}
+
+  {% if page.features_count > 0 and page.features.size > 0 %}
+    <div id="main-content"></div>
+
+    {% include "features" %}
+
+    <div class="{% cycle 'odd', 'even' %} pb-6">
+      <div class="container">
+        {% include "homepage_excerpt" with page %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if has_tagged %}
+
+    {% assign tagged_pages = tagged_pages | reverse %}
+    {% for tagged_page in tagged_pages %}
+      {% if tagged_page.features_count > 0 and tagged_page.features.size > 0 %}
+        {% assign has_features = true %}
+      {% else %}
+        {% assign has_features = false %}
+      {% endif %}
+
+      {% if tagged_page.type_slug == "basic" %}
+        {% assign content_size = tagged_page[tagged_page.type_slug].content | trim | size %}
+      {% endif %}
+
+      <section id="{{ tagged_page.slug }}"
+        class="homepage-section {{ tagged_page.type_slug }} position-relative {% cycle 'odd', 'even' %} {% unless has_features %}pt-6{% endunless %} {% unless tagged_page.type_slug == "basic" and has_features and content_size < 1 %}pb-6{% endunless %}"
+        aria-label="{{ tagged_page.headline }} section">
+        
+        {% if has_features %}
+          {% assign features_id = "page-features-" | append: tagged_page.slug %}
+
+          {% if tagged_page.type_slug == "basic" and content_size < 1 %}
+            {% include "features" page: tagged_page, id: features_id, no_margin: true %}
+          {% else %}
+            {% include "features" page: tagged_page, id: features_id %}
+          {% endif %}
+        {% endif %}
+
+        {% unless tagged_page.type_slug == "basic" and has_features and content_size < 1 %}
+          <div class="container">
+            {% include "homepage_excerpt" with tagged_page %}
+          </div>
+        {% endunless %}
+        </section><!--/.homepage-section -->
+    {% endfor %}
+
+  {% endif %}
+</section>

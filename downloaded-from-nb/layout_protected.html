@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% assign is_session = false %}
+  {% if request.template contains "sessions_new"
+    or request.template contains "password_resets"
+    or request.template contains "passwords_new"
+    or request.template contains "users_activations_new_wide" %}
+
+    {% assign is_session = true %}
+  {% endif %}
+
+  {% assign tags_list = "" %}
+  {% for tag in page.tags %}
+    {% assign tags_list = tag.name | downcase | append: ", " | append: tags_list %}
+  {% endfor %}
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{{ page_title }}</title>
+
+    <link href="theme.scss" rel="stylesheet" />
+
+    <!-- start of content for header -->
+    {{ content_for_header }}
+    <!-- end of content for header -->
+
+    <script>
+      NB.appConfig.userIsLoggedIn = {{ request.logged_in? }};
+      NB.appConfig.pageTagsList = "{{ tags_list }}";
+    </script>
+
+    <!-- Pre-loaded popular Google Fonts for theme customization -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,400i,700,700i|Montserrat:400,700|Roboto:400,400i,700,700i|Open+Sans:400,400i,700,700i|Raleway:400,700|Poppins:400,700|Merriweather:400,400i,700,700i|Playfair+Display:400,700|Lora:400,400i,700,700i|Source+Serif+Pro:400,700&display=swap" rel="stylesheet" />
+
+    <!-- Bootstrap -->
+    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=NodeList.prototype.forEach%2CMap%2CObject.values%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CMutationObserver"></script>
+
+    <!-- VCS dependencies -->
+    <script src="simple-scrollbar.js"></script>
+    <script src="lodash.custom.min.js"></script>
+    <script src="bezier-easing.js"></script>
+    <!--/-->
+
+    <!-- VCS main scripts -->
+    <script src="vcs-helper.js"></script>
+    <script src="vcs-media.js"></script>
+    <script src="vcs-nav.js"></script>
+    <!--/-->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
+  </head>
+  <body class="bootstrap-theme v3-theme {%if page.is_homepage? %}homepage{% elsif is_session %}session-page{% endif %} {{ page.page_class_name }} page-{{ request.template | replace: '_', '-' }} js">
+
+    {% unless page.type_name == "Donation (v2)" %}
+      {% include "header" %}
+
+      <main id="content"
+        {% if is_session and site.has_background_image? %}
+          class="d-flex flex-column justify-content-center position-relative py-5 w-100"
+        {% elsif is_session %}
+          class="d-flex flex-column justify-content-center py-5 w-100 bg-color-2"
+        {% endif %}
+        role="main"
+      >
+        {% include "content", sidebar: request.is_sidebar? %}
+      </main>
+
+      {% if is_session %}
+        {% if site.has_background_image? %}
+          <div class="background-image" style="background-image: url('{{ site.background_image_url }}');"></div>
+        {% endif %}
+      {% endif %}
+
+      {% unless is_session %}
+        {% include "footer" %}
+      {% endunless %}
+    {% else %}
+      {% yield %}
+    {% endunless %}
+
+    {{ content_for_notifications }}
+
+    {{ content_for_footer }}
+
+    {% if site.has_background_image? %}
+      <style>
+        body {
+          background: url('{{ site.background_image_url }}') no-repeat center center fixed;
+          -webkit-background-size: cover;
+          -moz-background-size: cover;
+          -o-background-size: cover;
+          background-size: cover;
+        }
+      </style>
+    {% endif %}
+
+    <script src="adjust-offset.js"></script>
+
+    <script src="bootstrap.min.js"></script>
+    <script src="bs-custom-file-input.min.js"></script>
+    <script>
+      ;$(document).ready(function () {
+        bsCustomFileInput.init()
+      })
+    </script>
+    <!-- VCS Form related scripts -->
+    <script src="vcs-slider.js"></script>
+
+    <script src="exif.js"></script>
+    <script src="vcs-dropzone.js"></script>
+
+    <script src="vcs-custom-controls.js"></script>
+
+    <script src="init-forms.js"></script>
+    <!--/-->
+
+    <!-- ActionButton handling -->
+    <script src="vcs-actionbutton.js"></script>
+  </body>
+</html>

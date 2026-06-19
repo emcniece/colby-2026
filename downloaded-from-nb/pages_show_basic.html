@@ -1,0 +1,17 @@
+{% include "translation" %}
+
+<div id="basic-page-content">
+  {% if page.basic.content.size > 0 %}
+    <div id="intro" class="intro">
+      {{ page.basic.content }}
+    </div>
+  {% endif %}
+
+  {% if page.tags_count > 0 %}
+    <div id="page-tags" class="page-tags">
+      {% include "page_tags" with page %}
+    </div>
+  {% endif %}
+
+  {% include "like_page" %}
+</div>

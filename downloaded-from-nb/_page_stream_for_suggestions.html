@@ -1,0 +1,96 @@
+{% include "translation" %}
+
+{% if page.public_activities_count > 0 or page.is_commentable? %}
+  <div id="stream" class="mt-4">
+
+    <div class="card">
+      <div class="card-header">
+        <div class="d-md-flex align-items-center justify-content-between">
+          <h3 class="h5 mb-1 mb-md-0">
+            <a name="addreaction"></a>
+
+            {% if page.public_activities_count == 1 %}
+              {{ t_general_showing_1_reaction }}
+            {% elsif page.public_activities_count > 1 %}
+              {{ t_general_showing_reactions | replace: '[count]', page.public_activities_count }}
+            {% elsif page.is_commentable? %}
+              {{ t_general_be_the_first_to_comment }}
+            {% endif %}
+          </h3>
+          {% include "page_follow" %}
+        </div>
+      </div>
+
+      {% if page.is_commentable? and page.type_name != 'Petition' and page.type_name != 'Endorsement' %}
+        <div class="card-body">
+          <div class="reaction-wrap">
+            {% form_for comment %}
+              {% if page.type_name == 'Suggestion' %}
+                {% if page.suggestion.suggestion_box_tag_names.size > 0 %}
+                  <div class="form-group">
+                    <div class="tag-page">
+                      <strong class="d-block mb-1">{{ t_general_how_would_you_tag_this_suggestion }}</strong>
+
+                      {% include "suggestion_tag_list" %}
+                    </div>
+                  </div>
+                {% endif %}
+              {% endif %}
+
+              <div class="form-errors" role="alert">{% error_messages_for comment %}</div>
+
+              <div class="form-group">
+                {% text_area "content", class:"form-control textarea autogrow" %}
+              </div>
+
+              <input type="hidden" class="text" id="pending_object_id" name="pending_object_id" value="{{ request.pending_object_id }}"/>
+
+              <div class="d-md-flex align-items-center justify-content-between">
+                {% if request.logged_in? %}
+                  {% submit_tag t_post_your_comment, class:"btn btn-primary submit-button" %}
+                {% else %}
+                  {% submit_tag t_post_your_comment, class:"btn btn-primary submit-button hide" %}
+                {% endif %}
+
+                {% if request.logged_in? and site.has_rule_page? %}
+                  <div class="review-rules mt-1 mt-md-0"><a href="{{ site.rule_page.url }}">{{ t_review_site_rules }}</a></div>
+                {% endif %}
+              </div>
+
+              <div class="form-submit"></div>
+            {% endform_for %}
+
+            {% unless request.logged_in? %}
+              <div class="user-session-form-container">
+                {% include "user_session_form" %}
+              </div>
+            {% endunless %}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if page.public_activities_count > 0 %}
+        <div id="reactions" class="card-body bg-light border-top rounded-bottom content-list">
+          <ul id="page-stream" class="list-unstyled mb-0 activities">
+            {% for activity in page.activities %}
+              <li class="activity {% unless forloop.last == true %}mb-3{% endunless %}">
+                <div class="media">
+                  <div class="mr-3">
+                    {% include "avatar" signup: activity.signup, size: 24 %}
+                  </div>
+
+                  <div class="media-body">
+                    {{ activity.show_page_view }}
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% include "pagination" source: page.activities %}
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+{% endif %}

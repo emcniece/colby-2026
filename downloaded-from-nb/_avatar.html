@@ -1,0 +1,29 @@
+{% comment %}
+	Display the avatar
+	
+	@param {Object} signup 				- User object
+	@param {number} size 					- Image size
+	@param {boolean} anon 				- Display user as anonymous?
+	@param {boolean} with_points	- Display with social points?
+	@returns {void}
+{% endcomment %}
+
+{% if signup.profile_image_url contains "profile-avatar.png" %}
+	{% assign avatar_url = theme['profile-avatar.png'] %}
+{% else %}
+	{% assign avatar_url = signup.profile_image_url %}
+{% endif %}
+
+{% if with_points %}
+  <div class="avatar-container d-flex flex-column position-relative align-items-center">
+{% endif %}
+
+    <img src="{% if anon %}{{ theme['profile-avatar.png'] }}{% else %}{{ avatar_url }}{% endif %}" alt="{% if anon %}{{ t_auth_anonymous }}{% else %}{{ signup.full_name_or_friend }}{% endif %}" class="avatar flex-shrink-0 rounded-circle bg-white" width="{{ size | default: 48 }}" height="{{ size | default: 48 }}" />
+
+    {% if with_points %}
+      <div class="points position-absolute badge badge-color-2">{{ signup.capital_amount_in_cents }} {{ t_general_political_capital_abbr }}</div>
+    {% endif %}
+
+{% if with_points %}
+  </div>
+{% endif %}

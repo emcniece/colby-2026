@@ -1,0 +1,56 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+
+    <section class="activities-stream" aria-label="Activities stream">
+      {% if page.activity_stream.activities.size > 0 %}
+
+        <div id="reactions" class="content-list my-3">
+          <ul class="list-unstyled mb-4 activities">
+            {% for activity in page.activity_stream.activities %}
+              <li class="activity d-block w-100 position-relative {% unless forloop.last %}pb-5 pb-md-4{% endunless %}">
+                {% unless forloop.last %}
+                  <div class="activity-vertical-hr d-none d-md-block position-absolute"></div>
+                {% endunless %}
+
+                <div class="d-flex flex-column flex-md-row align-items-top">
+                  <div class="position-relative flex-shrink-0 text-center mb-2 mb-md-0 mr-md-3">
+                    {% include "avatar_with_activity" signup: activity.signup, size: 72, activity_name: activity.type_name %}
+                  </div>
+
+                  <div class="w-100 ml-md-3">
+                    {% include "activity_show" %}
+                  </div>
+                </div>
+              </li>
+            {% endfor %}
+          </ul>
+
+          {% include "pagination" source: page.activity_stream.activities %}
+        </div>
+
+      {% else %}
+
+        <i>{{ t_general_no_recent_activity }}</i>
+
+      {% endif %}
+    </section>
+
+    <script>
+      ;(function() {
+        var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+        previous.querySelectorAll('.activity-content').forEach(function(content) {
+          if (!content.textContent.trim()) {
+            var parent = getParents(content, '.align-items-top')[0];
+
+            parent.classList.remove('align-items-top');
+            parent.classList.add('align-items-center');
+          }
+        });
+      })();
+    </script>
+
+  </div><!--/.col-12 -->
+</div><!--/.row -->

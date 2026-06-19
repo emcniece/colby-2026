@@ -1,0 +1,75 @@
+{% assign aria_label = t_nav_choose_to_sign_in_or_sign_up %}
+{% if request.logged_in? or request.sorta_logged_in? %}
+  {% assign aria_label = t_nav_profile_menu_for | append: " " | append: request.current_signup.name_or_email %}
+{% endif %}
+<section class="modal fade" id="supporter-nav" tabindex="-1" role="dialog" aria-label="{{ aria_label }}">
+  <button type="button" class="position-absolute close" data-dismiss="modal">
+    <img src="{{ theme['fa-close.png'] }}" alt="{{ t_close }}" />
+  </button>
+
+  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <div class="container-fluid">
+          {% if request.logged_in? or request.sorta_logged_in? %}
+
+            {% assign signup = request.current_signup %}
+
+            <div class="mb-3">
+              {% include "avatar" signup: signup, size: 72, with_points: true %}
+            </div>
+
+            <h1 class="mb-4">{{ t_general_hi_user_name | replace: '[name]', signup.first_name | default: signup.email }}</h1>
+
+            <div class="supporter-nav-links mb-4">
+              <strong>
+                {% if site.show_public_profiles? and signup.is_profile_published? %}
+                  <a href="{{ signup.profile_url }}">{{ t_general_public_profile_cap }}</a><span class="mx-2" aria-hidden="true">//</span>
+                {% endif %}
+                <a href="{{ signup.settings_url }}">{{ t_settings }}</a><span class="mx-2" aria-hidden="true">//</span>
+                <a href="{{ settings.supporter_portal_url }}/security">{{ t_account_login_and_security }}</a><span class="mx-2" aria-hidden="true">//</span>
+                <a href="{{ signup.logout_url }}">{{ t_logout }}</a>
+              </strong>
+            </div>
+
+            {% if signup.has_parent? %}
+              <div class="supporter-nav-point-person mb-4">
+                {% if site.show_public_profiles? and signup.parent.is_profile_published? %}
+                  {{ t_general_your_point_person_is }} <a href="{{ signup.parent.profile_url }}" class="mx-1 text-decoration-none">{% include "avatar" signup: signup.parent, size: 34 %}</a> {{ signup.parent.published_name_linked }}
+                {% else %}
+                  {{ t_general_your_point_person_is }} <div class="d-inline-block mx-1">{% include "avatar" signup: signup.parent, size: 34 %}</div> {{ signup.parent.published_name }}
+                {% endif %}
+              </div>
+            {% endif %}
+
+            {% if site.supporter_pages.size > 0 %}
+              <nav class="supporter-nav-pages" aria-label="Supporter nav pages">
+                <ul class="list-unstyled">
+                  {% for supporter_page in site.supporter_pages %}
+                    <li class="mb-2"><a href="{{ supporter_page.url }}" class="btn btn-primary btn-text-sm w-100">{{ supporter_page.name }}</a></li>
+                  {% endfor %}
+                </ul>
+              </nav>
+            {% endif %}
+
+          {% else %}
+
+            <h1 class="h3 mb-4">{{ t_auth_sign_in_to_your_account }}</h1>
+
+            <a href="/login" class="btn btn-primary btn-text-sm w-100 mb-2">{{ t_login }}</a>
+            {% if settings.allow_account_creation? %}
+              <a href="{% if site.has_signup_page? %}{{ site.signup_page.url }}{% else %}/signup{% endif %}"><strong>{{ t_auth_or_click_here_to_create_an_account }}</strong></a>
+            {% endif %}
+          {% endif %}
+        </div><!--/.container-fluid -->
+      </div><!--/.modal-body -->
+
+    </div><!--/.modal-content -->
+  </div><!--/.modal-dialog -->
+
+  <script>
+    ;(function() {
+      SimpleScrollbar.initEl(document.querySelector('#supporter-nav .modal-body'));
+    })();
+  </script>
+</section>

@@ -1,0 +1,32 @@
+<div id="flag-content" class="flag-content">
+  {% unless request.is_ajax? %}
+    <h3 class="headline">{{ t_general_flagging_page }} <a href="{{ page.url }}" target="_top">{{ page.headline }}</a></h3>
+  {% endunless %}
+
+  {% form_for flag %}
+    <div class="form">
+      <div class="form-errors" role="alert">{% error_messages_for flag %}</div>
+
+      {% hidden_field_tag "flag[page_id]", page.id %}
+
+      {% if site.has_rule_page? %}
+        <div class="form-group">
+          <div class="form-control-material form-control-material-custom-select">
+            <label for="flag_rule_id" class="floating-label floating-label-select floating-label--float-above">{{ t_general_which_rule_was_violated }}?</label>
+            {% select_field "rule_id", site.rule_page.rule.rules_collection, class:"custom-select" %}</div>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="form-group">
+        <div class="form-control-material form-control-material-textarea">
+          <label for="flag_content" class="floating-label floating-label-textarea floating-label--float-above">{{ t_general_explanation_optional }}</label>
+          {% text_area "content", class:"form-control autogrow" %}
+        </div>
+      </div>
+
+      {% submit_tag t_general_flag_this_page, class:"btn btn-primary" %}
+      <div class="form-submit"></div>
+    </div>
+  {% endform_for %}
+</div>

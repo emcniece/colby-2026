@@ -1,0 +1,77 @@
+{% case homepage_excerpt.type_name %}
+  <!-- Activity stream page -->
+  {% when "Activity Stream" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_activity_stream" %}
+  <!-- Basic page -->
+  {% when "Basic" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_basic" %}
+  <!-- Blog page -->
+  {% when "Blog" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_blog" %}
+  <!-- Blog post page -->
+  {% when "Blog Post" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_blog_post" %}
+  <!-- Calendar page -->
+  {% when "Calendar" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_calendar" %}
+  <!-- Donation page -->
+  {% when "Donation" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_donation" %}
+  <!-- Donation page v2 -->
+  {% when "Donation (v2)" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_donation_v2" %}
+  <!-- Endorsement page -->
+  {% when "Endorsement" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_endorsement" %}
+  <!-- Event page -->
+  {% when "Event" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_event" %}
+  <!-- FAQ page -->
+  {% when "FAQ" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_faq" %}
+  <!-- Feedback page -->
+  {% when "Feedback" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_feedback" %}
+  <!-- Leaderboard page -->
+  {% when "Leaderboard" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_leaderboard" %}
+  <!-- Moneybomb page -->
+  {% when "Moneybomb" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_moneybomb" %}
+  <!-- Petition page -->
+  {% when "Petition" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_petition" %}
+  <!-- Press release page -->
+  {% when "Press Release" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_press_release" %}
+  <!-- Question page -->
+  {% when "Question" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_question" %}
+  <!-- Recruiting page -->
+  {% when "Recruiting" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_recruiting" %}
+  <!-- Rules page -->
+  {% when "Rules" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_rules" %}
+  <!-- Signup page -->
+  {% when "Signup" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_signup" %}
+  <!-- Suggestion box page -->
+  {% when "Suggestion Box" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_suggestion_box" %}
+  <!-- Suggestion page -->
+  {% when "Suggestion" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_suggestion" %}
+  <!-- Survey page -->
+  {% when "Survey" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_survey" %}
+  <!-- Volunteer signup page -->
+  {% when "Volunteer Signup" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_volunteer_signup" %}
+  <!-- Vote pledge page -->
+  {% when "Vote Pledge" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_vote_pledge" %}
+  <!-- Directory page -->
+  {% when "Directory" %}
+    {% subpage homepage_excerpt.slug with "homepage_excerpt_directory" %}
+{% endcase %}

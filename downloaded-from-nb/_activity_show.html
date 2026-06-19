@@ -1,0 +1,520 @@
+{% include "translation" %}
+
+{% assign activity_type = activity.type_name | downcase | replace:' ','-' %}
+
+{% capture activity_oneliner %}
+  {% case activity_type %}
+  {% when "blog-post" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_posted }} <a href="{{ activity.data.page.url_path }}">{{ activity.data.page.headline }}</a> {{ t_general_to }} <a href="{{ activity.page.url }}">{{ activity.page.headline }}</a>
+  {% when "called" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_called }} {{ activity.broadcaster.name }}
+  {% when "comment" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_commented_on }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "comment-flag" %}
+    {% if activity.has_author? %}
+      <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a>
+    {% else %}
+      {{ t_auth_anonymous }}
+    {% endif %}
+    {{ t_activity_feed_flagged }} <a href="{{ activity.page.admin_url }}/comments/{{ activity.data.comment_id }}/edit">{{ t_activity_feed_comment }}</a> {{ t_general_by }} <a href="{{ activity.signup.admin_url }}">{{ activity.signup.name_or_email }}</a>
+  {% when "contacted" %}
+    {{ activity.author.published_name_linked }}
+    {% if activity.has_broadcaster? %} {{ t_activity_feed_as }} {{ activity.broadcaster.name }}{% endif %}
+    {% if activity.data.contact_method_name == 'Meeting' %}
+      {{ t_activity_feed_had_a_meeting_with }} {{ activity.signup.published_name_linked }}
+    {% elsif activity.data.contact_method_name == 'Phone call' %}
+      {{ t_activity_feed_called }} {{ activity.signup.published_name_linked }}
+    {% elsif activity.data.contact_method_name == 'Email' %}
+      {{ t_activity_feed_emailed }} {{ activity.signup.published_name_linked }}
+    {% elsif activity.data.contact_method_name == 'Snail mail' %}
+      {{ t_activity_feed_snail_mailed }} {{ activity.signup.published_name_linked }}
+    {% else %}
+      {{ t_activity_feed_contacted }} {{ activity.signup.published_name_linked }} {{ t_activity_feed_via }} {{ activity.data.contact_method_name | downcase }}
+    {% endif %}
+  {% when "donation" %}
+    {{ activity.signup.published_name_linked }} {{ t_donated }}
+    {% if activity.data.donation.actblue_order_number %}
+      {{ t_general_on }} <a href="{{ activity.page.actblue.actblue_page_url_with_tracking }}">ActBlue</a>
+    {% endif %}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "donation-cancel" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_canceled }} {{ activity.signup.published_name | possessive }} {{ t_activity_feed_donation }}
+  {% when "donation-deleted" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_deleted }} {{ activity.signup.published_name | possessive }} {{ t_activity_feed_donation }}
+  {% when "donation-problem" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_had_a_problem_donating }}
+  {% when "donation-raised" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_brought_in_a_donation_from }} {{ activity.signup.published_name_linked }}
+  {% when "endorsement" %}
+    {% if activity.data.is_organization == true %}
+      {{ activity.signup.employer }}
+    {% else %}
+      {{ activity.signup.published_name_linked }}
+    {% endif %}
+      {{ t_activity_feed_endorsed }}
+    {% if activity.data.text_message %} {{ t_activity_feed_via_text_message }}{% endif %}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "event-attended" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_attended }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "event-created" %}
+      {{ activity.author.published_name_linked }} {{ t_activity_feed_posted }} <a href="{{ activity.data.page.url }}">{{ activity.data.page.name }}</a> {{ t_general_to }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "event-host" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_hosting }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "event-rsvp" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_rsvped }} {% if activity.data.guests_count > 0 %}+{{ activity.data.guests_count}}{% endif %} {{ t_activity_feed_for }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+      {% if activity.data.is_facebook %} {{ t_general_on }} <a href="{{ activity.page.event.facebook_url }}">{{ t_social_facebook }}</a> {% endif %}
+      {% if activity.data.is_meetup %} {{ t_general_on }} <a href="{{ activity.page.event.meetup_url }}">Meetup</a> {% endif %}
+      {% if activity.data.text_message %} {{ t_activity_feed_via_text_message }}{% endif %}
+      {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "event-rsvp-cancel" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_rsvp }} {% if activity.data.guests_count > 0 %}+{{ activity.data.guests_count}}{% endif %} {{ t_activity_feed_for }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "event-rsvp-transfer" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_transferred_their_rsvp }} {% if activity.data.guests_count > 0 %}+{{ activity.data.guests_count}}{% endif %} {{ t_activity_feed_for }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a> {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %} {{ t_general_to }} {{ activity.signup.published_name_linked }}
+  {% when "facebook-post-broadcast" %}
+    {{ activity.broadcaster.name }} {{ t_activity_feed_posted }}{% if activity.page %} {{ t_activity_feed_about }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>{% endif %} {{ t_general_on }} <a href="{{ activity.broadcaster.facebook_page_profile_url}}">{{ activity.broadcaster.name | possessive }}</a> Facebook page
+  {% when "facebook-post-like" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_liked }} <a href="{{ activity.broadcaster.facebook_page_profile_url }}">{{ activity.broadcaster.name }}</a> <a href="{{ activity.data.facebook_post.facebook_url }}">{{ t_activity_feed_facebook_post }}</a>
+  {% when "facebook-post" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_posted }}
+    {% if activity.page %}
+      {{ t_activity_feed_about }} <a href="{{ activity.page.full_url }}">{{ activity.page.name }}</a>
+    {% endif %}
+    {% if activity.has_broadcaster? %}
+      {{ t_general_on }} <a href="{{ activity.broadcaster.facebook_page_profile_url}}">{{ activity.broadcaster.name | possessive }}</a> Facebook page
+    {% else %}
+      {{ t_general_on }} <a href="{{ activity.data.facebook_url }}">{{ t_social_facebook }}</a>
+    {% endif %}
+  {% when "feedback" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_commented }} {% if activity.page %} {{ t_general_on }} <a href="{{ activity.page.full_url }}">{{ activity.page.name }}</a>{% endif %}
+  {% when "flagged-email-as-spam" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_flagged_email_updates_as_spam }}
+  {% when "follower" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_is_following }} {{ activity.signup.published_name_linked }}.
+  {% when "invoice-closed" %}
+    {% if activity.has_author? %}
+      <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a>
+      {{ t_activity_feed_closed_an_invoice }}{% if activity.has_signup? %} {{ t_activity_feed_for }} {{ activity.signup.published_name_linked }}{% endif %}
+    {% else %}
+      {{ t_activity_feed_closed_an_invoice_no_author }}
+    {% endif %}
+  {% when "invoice-created" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_started_an_invoice }}{% if activity.has_signup? %} {{ t_activity_feed_for }} {{ activity.signup.published_name_linked }}{% endif %}
+  {% when "invoice-overdue" %}
+    {% if activity.has_signup? %}
+      {{ activity.signup.published_name_linked }}
+    {% endif %}
+    {{ t_activity_feed_invoice_is_overdue }}
+  {% when "invoice-payment" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_paid_invoice }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "invoice-payment-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_invoice_payment }}
+  {% when "invoice-payment-problem" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_had_a_problem_paying_an_invoice }}
+  {% when "invoice-payment-referral" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_brought_in_an_invoice_payment }} {{ activity.signup.published_name_linked }}
+  {% when "mailing-created" or "mailing-created-from-modal" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_started_a_new_email_blast_from }} {{ activity.broadcaster.name }}
+  {% when "mailing-queued" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_sent_an_email_blast_from }} {{ activity.broadcaster.name }} {{ t_activity_feed_with_subject }} {{ activity.data.subject }} {{ t_general_to }} {{ activity.data.to_send_count }} {{ t_activity_feed_people }}
+  {% when "membership" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_became_a }} {{ activity.data.membership_level.name | downcase }}
+  {% when "membership-canceled" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_their }} {{ activity.data.membership_level.name | downcase }} {{ t_activity_feed_membership }}
+  {% when "membership-changed" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_now_a }} {{ activity.data.membership_level.name | downcase }}
+  {% when "membership-deleted" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_deleted_their }} {{ activity.data.membership_level.name | downcase }} {{ t_activity_feed_membership }}
+  {% when "membership-renewed" %}
+     {{ activity.signup.published_name_linked }} {{ t_activity_feed_renewed_their }} {{ activity.data.membership_level.name | downcase }} {{ t_activity_feed_membership }}
+  {% when "nation-created" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_started }} {{ activity.data.nation.slug }} {{ t_activity_feed_nation }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "nation-signup" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_signed_up_for_a_nation }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "nation-staffer" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_has_control_panel_access_to }} {{ activity.data.nation.slug }} {{ t_activity_feed_nation }}
+  {% when "nation-staffer-quit" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_no_longer_has_control_panel_access_to }} {{ activity.data.nation.slug }} {{ t_activity_feed_nation }}
+  {% when "non-supporter" or "non-supporter-auto-imported" or "non-supporter-imported" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_not_a_supporter }}
+  {% when "page-created" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_created }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "page-follow" %}
+    {% if activity_stream %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_followed }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+    {% else %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_followed_this_page }}
+    {% endif %}
+  {% when "page-published" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_published }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>{% if activity.page.parent %} {{ t_activity_feed_in }} <a href="{{ activity.page.parent.url }}">{{ activity.page.parent.name }}</a>{% endif %}
+  {% when "page-unfollow" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_stopped_following }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "page-user-tag" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_tagged }}
+      {% if activity.author.id != activity.signup.id %}
+        {{ activity.author.published_name | possessive }}
+      {% endif %}
+      <a href="{{ activity.page.url }}">{{ activity.page.headline }}</a> {{ t_activity_feed_with }} <span class="page_tag">{{ activity.data.tag.name }}</span>
+  {% when "petition-signature" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_signed }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+    {% if activity.data.text_message %}{{ t_activity_feed_via_text_message }}{% endif %}
+    {% if activity.has_recruiter? %}{{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "pledge" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_pledged }} {{ activity.data.pledge.amount }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "pledge-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled }} {{ activity.data.pledge.amount }} {{ t_activity_feed_pledge }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "point-person" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_is_now_the_point_person_for }} {{ activity.signup.published_name_linked }}
+  {% when "political-capital" %}
+    {% if activity.signup_amount_in_cents > 0 %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_earned }} <span class="pc_earned">{{ activity.signup_amount_format }}</span> {{ t_activity_feed_for }} {{ activity.data.note }}
+    {% elsif activity.signup_amount_in_cents < 0 %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_spent }} <span class="pc_spent">{{ activity.signup_amount_format }}</span> {{ t_general_on }} {{ activity.data.note }}
+    {% endif %}
+  {% when "profile-note" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_posted_a_note }}{% if activity.author.id != activity.signup.id %} {{ t_activity_feed_for }} {{ activity.signup.published_name_linked }}{% endif %}
+  {% when "profile-private-note" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_posted_a }}{% if activity.is_private? %} {{ t_activity_feed_private }}{% endif %} {{ t_activity_feed_note_about }} {{ activity.signup.name_or_email }}.
+  {% when "prospect-follower" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_is_following }} {{ activity.signup.published_name_linked }}
+  {% when "prospect" or "prospect-auto-imported" or "prospect-imported"%}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_a_prospect }}
+  {% when "recruited-signup" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_recruited }} {{ activity.signup.published_name_linked }}
+  {% when "recurring-donation" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_started_a_recurring_donation }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "retweet-broadcast" %}
+    <a href="{{ activity.broadcaster.twitter_profile_url }}">@{{ activity.broadcaster.twitter_login }}</a> {{ t_activity_feed_retweeted }}
+    {% if activity.has_signup? %}<a href="{{ activity.signup.twitter_profile_url }}">@{{ activity.signup.twitter_login }}</a>{% endif %}
+    {% if activity.page %}{{ t_activity_feed_linking_to }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>{% endif %}
+  {% when "retweet" %}
+      <a href="{{ activity.author.twitter_profile_url }}">@{{ activity.author.twitter_login }}</a> {{ t_activity_feed_retweeted }}
+      {% if activity.has_broadcaster? %}<a href="{{ activity.broadcaster.twitter_profile_url }}">@{{ activity.broadcaster.twitter_login }}</a>{% endif %}
+      {% if activity.page %}{{ t_activity_feed_linking_to }} <a href="{{ activity.page.admin_url }}">{{ activity.page.name }}</a>{% endif %}
+  {% when "rule-created" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_added_a_rule }} {{ activity.data.name }} {{ t_general_to }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "rule-status-change" %}
+    {{ activity.author.published_name_linked }}
+    {{ activity.data.status }} {{ activity.data.name }} {{ t_general_on }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>
+  {% when "rule-violation-1" %}
+    <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a> {{ t_activity_feed_booked }}
+    <a href="{{ activity.signup.admin_url }}">{{ activity.signup.name_or_email }}</a> {{ t_activity_feed_for_violating_rule }}
+    {{ activity.data.rule_name }} {{ t_activity_feed_their_first_offense }}
+  {% when "rule-violation-2" %}
+    <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a> {{ t_activity_feed_booked }}
+    <a href="{{ activity.signup.admin_url }}">{{ activity.signup.name_or_email }}</a> {{ t_activity_feed_for_violating_rule }}
+    {{ activity.data.rule_name }} {{ t_activity_feed_their_second_offense }}
+  {% when "rule-violation-3" %}
+    <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a> {{ t_activity_feed_kicked_out }}
+    <a href="{{ activity.signup.admin_url }}">{{ activity.signup.name_or_email }}</a> {{ t_activity_feed_for_violating_rule }}
+    {{ activity.data.rule_name }} {{ t_activity_feed_their_third_and_final_offense }}
+  {% when "rule-violation-warning" %}
+    <a href="{{ activity.author.admin_url }}">{{ activity.author.name_or_email }}</a>
+    {{ t_activity_feed_gave_a_warning_to }} <a href="{{ activity.signup.admin_url }}">{{ activity.signup.name_or_email }}</a>
+    {{ t_activity_feed_for_violating_rule }} {{ activity.data.rule_name }}
+  {% when "signup" %}
+      {{ activity.signup.published_name_linked }} {{ t_activity_feed_signed_up }}
+      {% if activity.has_page? %} {{ t_general_on }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>{% endif %}
+      {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "suggestion" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_suggested }} <a href="{{ activity.data.page.url_path }}">{{ activity.data.page.headline }}</a> {{ t_activity_feed_for }} <a href="{{ activity.page.url }}">{{ activity.page.headline }}</a>
+  {% when "suggestion-answer" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_responded }}
+    {{ t_general_to }} <a href="{{ activity.page.url }}">{{ activity.page.headline }}</a>
+    {% if activity.data.answer_type.size > 0 %}{{ t_activity_feed_with }} {{ activity.data.answer_type_html }}{% endif %}
+  {% when "supporter" or "supporter-imported" or "supporter-auto-imported" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_a_supporter }}
+  {% when "supporter-pledge-no" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_an_opposer }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-pledge-no-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_their_opposition }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-pledge-unsure" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_unsure_about_supporting }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-pledge-unsure-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_no_longer_unsure_about_supporting }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-pledge-yes" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_pledged_support }}
+    {% if activity.data.text_message %}{{ t_activity_feed_via_text_message }}{% endif %}
+    {% if activity.has_recruiter? %}{{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-pledge-yes-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_their_pledge_of_support }}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "supporter-quit" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_is_no_longer_a_supporter }}
+  {% when "survey-question-response" %}
+    {% if activity.has_signup? %}{{ activity.signup.published_name_linked }}{% else %}{{ t_auth_anonymous }}{% endif %}
+    {{ t_activity_feed_answered }}
+    {% if activity.data.question_format_name == 'Yes/No' %} {{ activity.data.response.name }} {% endif %}
+  {% when "text-blast-created" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_started_a_new_text_blast_from }} {{ activity.broadcaster.name }}
+  {% when "text-blast-queued" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_sent_a_text_blast_from }} {{ activity.broadcaster.name }} {{ t_general_to }} {{ activity.data.to_send_count }} {{ t_activity_feed_people }}
+  {% when "text-message-sent" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_sent_a_text_message_to }} {{ activity.broadcaster.name }}
+  {% when "text-message-subscribe" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_subscribed_to_text_messages }}
+  {% when "text-message-unsubscribe" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_unsubscribed_from_text_messages }}
+  {% when "tweet" %}
+    <a href="{{ activity.author.twitter_profile_url }}">@{{ activity.author.twitter_login }}</a>
+    {% if activity.has_broadcaster? %}
+      {{ t_activity_feed_mentioned }} <a href="{{ activity.broadcaster.twitter_profile_url }}">@{{ activity.broadcaster.twitter_login }}</a>
+    {% else %}
+      {{ t_activity_feed_tweeted }}
+    {% endif %}
+    {% if activity.page %}{{ t_activity_feed_link_to }} <a href="{{ activity.page.url }}">{{ activity.page.name }}</a>.{% endif %}
+  {% when "twitter-follower" %}
+    {{ activity.signup.published_name_linked }} (<a href="{{ activity.signup.twitter_profile_url }}">@{{ activity.signup.twitter_login }}</a>)
+    {{ t_activity_feed_is_following }} <a href="{{ activity.broadcaster.twitter_profile_url }}">@{{ activity.broadcaster.twitter_login }}</a> {{ t_general_on }} Twitter
+  {% when "twitter-unfollow" %}
+    {{ activity.signup.published_name_linked }} (<a href="{{ activity.signup.twitter_profile_url }}">@{{ activity.signup.twitter_login }}</a>)
+    {{ t_activity_feed_stopped_following }} <a href="{{ activity.broadcaster.twitter_profile_url }}">@{{ activity.broadcaster.twitter_login }}</a> {{ t_general_on }} Twitter
+  {% when "unfollow" %}
+    {{ activity.author.published_name_linked }} {{ t_activity_feed_stopped_following }} {{ activity.signup.published_name_linked }}.
+  {% when "unsubscribe" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_unsubscribed_from_email_updates }}
+  {% when "volunteer-quit" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_quit_volunteering }}
+  {% when "volunteer-role-quit" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled }} {% if activity.data.tag_list.size > 0 %}<span class="tag">{{ activity.data.tag_list }}</span>{% else %}{{ activity.data.name | downcase }}{% endif %}
+  {% when "volunteer-role-signup" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_signed_up_for }} {% if activity.data.tag_list.size > 0 %}<span class="tag">{{ activity.data.tag_list }}</span>{% else %}{{ activity.data.name | downcase }}{% endif %}
+  {% when "volunteer-signup" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_wants_to_volunteer }}
+  {% when "vote-pledge-no" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_will_vote_against }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "vote-pledge-no-cancel" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_canceled_their_opposing_vote }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "vote-pledge-unsure" %}
+    {{ activity.signup.published_name_linked }}
+    {{ t_activity_feed_is_an_unsure_potential_voter }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "vote-pledge-unsure-cancel" %}
+    {{ activity.signup.published_name_linked }}
+    {{ t_activity_feed_is_no_longer_an_unsure_potential_voter }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "vote-pledge-yes" %}
+    {{ activity.signup.published_name_linked }} {{ t_activity_feed_pledged_to_vote }}
+    {% if activity.data.text_message %} {{ t_activity_feed_via_text_message }}{% endif %}
+    {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% when "vote-pledge-yes-cancel" %}
+    {{ activity.signup.published_name_linked }}
+    {{ t_activity_feed_is_no_longer_a_yes_vote }} {% if activity.has_recruiter? %} {{ t_activity_feed_via }} {{ activity.recruiter.published_name_linked }}{% endif %}
+  {% endcase %}
+{% endcapture %}
+
+{% if oneliner %}
+  {{ activity_oneliner }}
+{% else %}
+  {% case activity_type %}
+
+    {% when "blog-post", "called", "contacted", "donation", "donation-cancel", "donation-deleted", "donation-problem", "donation-raised", "event-attended", "event-created", "event-host", "event-rsvp", "event-rsvp-cancel", "event-rsvp-transfer", "facebook-post-like", "flagged-email-as-spam", "follower", "invoice-closed", "invoice-created", "invoice-overdue", "invoice-payment", "invoice-payment-cancel", "invoice-payment-problem", "invoice-payment-referral", "membership", "membership-canceled", "membership-changed", "membership-deleted", "membership-renewed", "nation-created", "nation-signup", "nation-staffer", "nation-staffer-quit", "non-supporter", "non-supporter-auto-imported", "non-supporter-imported", "page-created", "page-follow", "page-published", "page-unfollow", "page-user-tag", "pledge", "pledge-cancel", "point-person", "political-capital", "prospect", "prospect-auto-imported", "prospect-follower", "prospect-imported", "recruited-signup", "recurring-donation", "rule-created", "rule-status-change", "rule-violation-1", "rule-violation-2", "rule-violation-3", "rule-violation-warning", "signup", "suggestion", "suggestion-answer", "supporter", "supporter-auto-imported", "supporter-imported", "supporter-pledge-no", "supporter-pledge-no-cancel", "supporter-pledge-unsure-cancel", "supporter-pledge-yes-cancel", "supporter-quit", "unfollow", "unsubscribe", "volunteer-quit", "volunteer-role-quit", "volunteer-role-signup", "volunteer-signup", "vote-pledge-no", "vote-pledge-no-cancel", "vote-pledge-unsure-cancel" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      </div>
+
+    {% when "comment" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content_html }}
+      </div>
+      </div>
+
+    {% when "comment-flag" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      {% if activity.data.content.size > 0 %}
+        <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content | link_urls | newline_to_br }}
+        </div>
+      {% endif %}
+      </div>
+
+    {% when "endorsement" or "petition-signature" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      {% if activity.data.content.size > 0 %}
+        <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content | newline_to_br }}
+        </div>
+      {% endif %}
+      </div>
+
+    {% when "facebook-post" or "facebook-post-broadcast" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content | link_urls }}
+      </div>
+      </div>
+
+    {% when "feedback" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      {% if activity.data.feedback.content.size > 0 %}
+        <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.feedback.content | newline_to_br }}
+        </div>
+      {% endif %}
+      </div>
+
+    {% when "mailing-created" or "mailing-created-from-modal" or "mailing-queued" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      {% if activity.data.description.size > 0 %}
+        <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.description }}
+        </div>
+      {% endif %}
+      </div>
+
+    {% when "profile-note" or "profile-private-note" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      {% if activity.data.note.size > 0 %}
+        <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.note | escape | link_urls | newline_to_br }}
+        </div>
+      {% endif %}
+      </div>
+
+    {% when "retweet-broadcast" or "retweet" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {% if activity.data.retweet.content != nil %}{{ activity.data.retweet.content | link_urls }}{% endif %}
+        <small class="d-block mt-2">
+        <a href="http://twitter.com/intent/tweet?in_reply_to={{ activity.data.retweet.id }}">Reply</a> / <a href="http://twitter.com/intent/retweet?tweet_id={{ activity.data.retweet.id }}">Retweet</a> / <a href="http://twitter.com/intent/favorite?tweet_id={{ activity.data.retweet.id }}">Favorite</a>
+        </small>
+      </div>
+      </div>
+
+    {% when "supporter-pledge-unsure" or "supporter-pledge-yes" or "vote-pledge-unsure" or "vote-pledge-yes" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content | newline_to_br }}
+      </div>
+      </div>
+
+    {% when "survey-question-response" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        <b>Q</b>: {{ activity.data.survey_question.content }}<br/>
+        <b>A</b>: {{ activity.data.response.name }}<br/>
+      </div>
+      </div>
+
+    {% when "text-blast-created" or "text-blast-queued" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.content }}
+      </div>
+      </div>
+
+    {% when "text-message-sent" or "text-message-subscribe" or "text-message-unsubscribe" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {{ activity.data.text_message.content }}
+      </div>
+      </div>
+
+    {% when "tweet" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {% if activity.data.tweet.content != nil %}
+        {{ activity.data.tweet.content | link_urls }}
+        {% endif %}
+        <small class="d-block mt-2"><a href="http://twitter.com/intent/tweet?in_reply_to={{ activity.data.tweet.id }}">Reply</a> / <a href="http://twitter.com/intent/retweet?tweet_id={{ activity.data.tweet.id }}">Retweet</a> / <a href="http://twitter.com/intent/favorite?tweet_id={{ activity.data.tweet.id }}">Favorite</a></small>
+      </div>
+      </div>
+
+    {% when "twitter-follower" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        {% if activity.signup.bio.size > 0 %}{{ activity.signup.bio | link_urls }}{% endif %}
+        <small class="d-block mt-2"><a href="{{ activity.signup.twitter_profile_url }}">Follow</a> / <a href="http://twitter.com/intent/tweet?text=@{{ activity.signup.twitter_login }}+">Tweet</a></small>
+      </div>
+      </div>
+
+    {% when "twitter-unfollow" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      <div class="activity-content mt-3 card px-3 py-2">
+        <small class="d-block mt-2"><a href="{{ activity.signup.twitter_profile_url }}">Unfollow</a> / <a href="http://twitter.com/intent/tweet?text=@{{ activity.signup.twitter_login }}+">Tweet</a></small>
+      </div>
+      </div>
+
+    {% when "vote-pledge-yes-cancel" %}
+      <div class="activity activity-{{ activity.id }}" data-activity-type="{{ activity_type }}">
+      <div class="activity-oneliner">
+        {{ activity_oneliner }}
+        {% include "activity_timestamp" %}
+      </div>
+      </div>
+
+    {% else %}
+      {{ activity.show }}
+
+  {% endcase %}
+
+{% endif %}

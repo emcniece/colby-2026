@@ -1,0 +1,12 @@
+{{ recipient.first_name_or_friend }} --
+<br /><br />
+Thank you for signing up.
+<br /><br />
+{% if recipient.has_a_login? == false %}
+  <a href="{{ recipient.account_activation_url }}">Click here to create a password for your account</a>.{% else %}It looks like you already have a password set up for your account, so you can log in at <a href="{{ site.full_url }}login">{{ site.full_url }}login</a>. If you forgot your password or need to reset it, <a href="{{ site.full_url }}users/password_resets/new">request a password reset</a>.
+{% endif %}
+<br /><br />
+<a href="{{ site.full_url }}forms/signups/{{ recipient.id }}/edit">You can manage your account settings and personal information here</a>{% if site.show_public_profiles? %}, and <a href="{{ site.full_url }}{{ recipient.id }}">view your public profile here</a>{% endif %}.
+<br /><br />
+{{ broadcaster.name }}<br />
+<a href="{{ site.full_url }}">{{ site.full_url }}</a>

@@ -1,0 +1,61 @@
+{% include "translation" %}
+
+{% if page.faq.content.size > 0 %}
+  <div id="intro" class="intro">
+    {{ page.faq.content }}
+  </div>
+{% endif %}
+
+<ul class="list-unstyled mb-4 faq faq-{{ page.id }}">
+  {% for child in page.children %}
+    <li class="{% unless forloop.last == true %}mb-4{% endunless %} question-page-{{ child.id }}">
+      {% if child.type_name == 'Question' %}
+        <h3>
+          <a href="#{{ child.slug }}" class="faq-question-link d-flex align-items-center" data-toggle="collapse" aria-expanded="false" aria-controls="{{ child.slug }}">
+            <i class="faq-question-icon position-absolute fas fa-minus-circle mr-2"></i><i class="faq-question-icon position-absolute fas fa-plus-circle mr-2"></i>
+            <span>{{ child.headline }}</span>
+          </a>
+        </h3>
+
+        <div class="excerpt">
+          {% if child.question.content.size > 0 %}
+            <div class="intro faq-question-content m-0">
+              {{ child.question.content }}
+            </div>
+          {% endif %}
+
+          {% if child.question.answer.size > 0 %}
+            <div id="{{ child.slug }}" class="intro faq-question-answer collapse m-0">
+              {% if child.question.content.size > 0 %}
+                <hr class="border-top border-light m-0 my-2" />
+              {% endif %}
+
+              {{ child.question.answer }}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </li>
+  {% endfor %}
+</ul>
+
+<script>
+  ;(function() {
+    var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+    $(previous).find('.faq-question-answer').on('show.bs.collapse', toggleIcon);
+    $(previous).find('.faq-question-answer').on('hide.bs.collapse', toggleIcon);
+
+    function toggleIcon(e) {
+      $(e.target.closest('li')).find('.faq-question-icon.fa-minus-circle').fadeToggle();
+    }
+  })();
+</script>
+
+{% if page.tags_count > 0 %}
+  <div id="page-tags" class="page-tags">
+    {% include "page_tags" with page %}
+  </div>
+{% endif %}
+
+{% include "like_page" %}

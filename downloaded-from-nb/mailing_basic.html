@@ -1,0 +1,54 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+
+<head>
+  <title></title>
+  <style type="text/css">
+    body,
+    td,
+    font {
+      font-size: 10pt;
+    }
+
+    td p {
+      margin: 0em;
+    }
+
+    p {
+      margin: 1em 0em;
+    }
+
+    td div p {
+      margin: 1em 0em;
+    }
+  </style>
+</head>
+
+<body marginheight=5 topmargin=5>
+  <font face="Arial, Verdana, sans-serif" size=2>
+
+    {{ body }}
+
+    <br /><br />
+    -=-=-<br />
+    {{ settings.official_name }}{% if settings.has_address? %} &middot; {{ settings.address.one_line }} {% endif %}
+    <br />{{ t_email_this_email_was_sent_to }} {{ recipient.email }}. {{ t_email_to_stop_receiving_emails }}, <a
+      href="{{ settings.site.unsubscribe_url }}">{{ t_general_click_here }}</a>.
+    {% if broadcaster.has_twitter? or broadcaster.has_facebook? %}
+      <br />{{ t_general_you_can_also_keep_up_with }} {{ broadcaster.name }}
+      {% if broadcaster.has_twitter? and broadcaster.has_facebook_page? %}
+        {{ t_general_on }} <a href="{{ broadcaster.twitter_profile_url }}">{{ t_social_twitter }}</a> {{ t_general_or }} <a
+          href="{{ broadcaster.facebook_page_profile_url }}">{{ t_social_facebook }}</a>.
+      {% elsif broadcaster.has_twitter? %}
+        {{ t_general_on }} <a href="{{ broadcaster.twitter_profile_url }}">{{ t_social_twitter }}</a>.
+      {% elsif broadcaster.has_facebook_page? %}
+        {{ t_general_on }} <a href="{{ broadcaster.facebook_page_profile_url }}">{{ t_social_facebook }}</a>.
+      {% endif %}
+    {% endif %}
+    <br />
+    -=-=-<br /><br />
+{{ t_general_created_with }} <a href="https://nationbuilder.com/">NationBuilder</a>, {{ t_general_software_for_leaders }}.
+  </font>
+</body>
+
+</html>

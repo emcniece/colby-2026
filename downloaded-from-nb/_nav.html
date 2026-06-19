@@ -1,0 +1,101 @@
+<nav class="collapse navbar-collapse" id="primaryNav" aria-label="Main navigation">
+  <ul class="navbar-nav flex-wrap ml-auto">
+    {% assign toolbar_html = "" %}
+
+    {% for child in site.root_nav_pages %}
+      {% unless child.id == site.donation_page.id %}
+        {% assign is_btn = nil %}
+        {% for tag in child.tags %}
+          {% assign tag_name = tag.name | downcase %}
+
+          {% if tag_name contains "nav button" %}
+            {% capture toolbar_html %}
+              {{ toolbar_html }}
+              <li class="navbar-toolbar-item mr-2 flex-shrink-0">
+                <a href="{{ child.url }}" class="btn btn-primary btn-nav">{{ child.name }}</a>
+              </li>
+            {% endcapture %}
+
+            {% assign is_btn = true %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
+        {% unless is_btn %}
+          {% if child.leaf? or child.nav_children.size == 0 %}
+            <li class="nav-item">
+              <a href="{{ child.url }}" class="nav-link">{{ child.name }}</a>
+            </li>
+          {% else %}
+            <li class="nav-item dropdown">
+              <a href="{{ child.url }}" class="nav-link dropdown-toggle" id="{{ child.slug }}{{ child.id }}" aria-haspopup="true" aria-expanded="false">
+                {{ child.name }}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="{{child.slug}}{{child.id}}">
+                <a class="dropdown-item copy" href="{{ child.url }}">{{ child.name }}</a>
+
+                {% if site.show_parent_in_nav_dropdown? %}
+                  <a class="dropdown-item d-none d-md-block" href="{{ child.url }}">{{ child.name }}</a>
+                {% endif %}
+                {% for child2 in child.nav_children %}
+                  <a class="dropdown-item" href="{{ child2.url }}">{{ child2.name }}</a>
+                {% endfor %}
+              </div>
+            </li>
+          {% endif %}
+        {% endunless %}
+      {% endunless %}
+    {% endfor %}
+  </ul>
+
+  <ul id="navbar-toolbar" class="navbar-toolbar list-unstyled d-flex align-items-center mt-2 mt-md-0 mb-2 mb-md-0 ml-3">
+    {{ toolbar_html }}
+
+    {% if site.has_donation_page? and site.donation_page.is_nav? %}
+      <li class="navbar-toolbar-item mr-2 flex-shrink-0">
+        <a href="{{ site.donation_page.url }}" class="btn btn-color-1" title="{{ site.donation_page.headline}}">{{ site.donation_page.name }}</a>
+      </li>
+    {% endif %}
+
+    <li class="navbar-toolbar-item mb-2 mb-md-0 flex-shrink-0 {% if request.sorta_logged_in? or request.logged_in? %}d-flex align-items-center ml-2{% endif %}">
+      {% assign aria_label = t_nav_sign_in_or_sign_up %}
+      {% if request.logged_in? or request.sorta_logged_in? %}
+        {% assign aria_label = t_nav_open_profile_menu_for | append: " " | append: request.current_signup.name_or_email %}
+      {% endif %}
+      <button
+        type="button"
+        class="btn-rounded {% unless request.sorta_logged_in? or request.logged_in? %}btn btn-outline-color-2{% endunless %}"
+        data-toggle="modal"
+        data-target="#supporter-nav"
+        aria-label="{{ aria_label }}"
+      >
+        {% if request.sorta_logged_in? or request.logged_in? %}
+          {% include "avatar" signup: request.current_signup, size: 46 %}
+        {% else %}
+          {{ t_login }}
+        {% endif %}
+      </button>
+    </li>
+  </ul>
+
+  <script>
+    ;(function() {
+      if (navigator.userAgent.match(/Android/i)
+        || navigator.userAgent.match(/webOS/i)
+        || navigator.userAgent.match(/iPhone/i)
+        || navigator.userAgent.match(/iPad/i)
+        || navigator.userAgent.match(/iPod/i)
+        || navigator.userAgent.match(/BlackBerry/i)
+        || navigator.userAgent.match(/Windows Phone/i)
+      ) {
+        var gridBreakpoint = Media.BREAKPOINT.XL;
+      } else {
+        var gridBreakpoint = Media.BREAKPOINT.MD;
+      }
+
+      var nav = new Nav('#primaryNav', {
+        gridBreakpoint: gridBreakpoint
+      });
+    })();
+  </script>
+</nav>

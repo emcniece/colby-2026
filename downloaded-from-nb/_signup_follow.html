@@ -1,0 +1,9 @@
+{% if request.logged_in? %}
+  {% if signup_follow.id != request.current_signup.id %}
+    {% if request.current_signup.following_ids contains signup_follow.id %}
+      <a href="{{ signup_follow.unfollow_url }}" class="btn btn-sm btn-link delete">{{ t_unfollow }} <i class="fa fa-star text-warning"></i></a>
+    {% else %}
+      <a href="{{ signup_follow.follow_url }}" class="btn btn-sm btn-link post">{{ t_follow }} <i class="fa fa-star text-muted"></i></a>
+    {% endif %}
+  {% endif %}
+{% endif %}

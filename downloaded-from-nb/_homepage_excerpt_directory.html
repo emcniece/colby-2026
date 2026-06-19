@@ -1,0 +1,45 @@
+{% if page.directory.content.size > 0 or page.headline.size > 0 %}
+  <div class="row mb-4">
+    <div class="col-12 col-lg-9 mx-auto">
+      {% if page.headline.size > 0 %}
+        {% if page.is_homepage? and page.features_count == 0 %}
+          <h1 class="headline">{{ page.headline }}</h1>
+        {% else %}
+          <h2 class="headline">{{ page.headline }}</h2>
+        {% endif %}
+      {% endif %}
+
+      {% if page.directory.content.size > 0 %}
+        <div id="intro">
+          {{ page.directory.content }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+{% if site.show_public_profiles? %}
+
+  <div class="row">
+    {% for profile in page.directory.listings limit: 3 %}
+      {% if profile.is_profile_published? %}
+        <div class="col-12 col-lg-4 col-md-6 mb-4 {% if forloop.last %}d-md-none d-lg-block{% endif %}">
+          {% include "profile_card" profile: profile %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if page.directory.listings_count >3 %}
+    <div class="row">
+      <div class="col-12 text-center">
+        <a href="{{ page.slug }}" class="btn btn-primary">{{ t_general_see_more_profiles }}</a>
+      </div>
+    </div>
+  {% endif %}
+
+{% else %}
+  <div class="text-warning">
+    <i class="fas fa-exclamation-circle mr-2"></i> {{ t_general_public_profiles_must_be_enabled_for_directory_to_d }}
+  </div>
+{% endif %}

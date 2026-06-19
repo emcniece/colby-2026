@@ -1,0 +1,27 @@
+{% include "translation" %}
+
+{% if request.logged_in? %}
+
+  <p>{{ t_general_you_are_following }} <b>{{ request.current_signup.followings_count }}</b> {{ t_general_people }}</p>
+
+  <div class="row my-4">
+    {% for following in request.current_signup.followings %}
+      <div class="col-lg-6 mb-4">
+        {% include "profile_card" profile: following.following %}
+      </div>
+    {% endfor %}
+  </div>
+
+  {% include "pagination" source: request.current_signup.followings %}
+
+{% else %}
+
+  <h2 class="h4">
+    {{ t_auth_sign_in_to_find_people_you_follow }}
+  </h2>
+
+  <div class="user-session-form-container mt-4 mt-md-0">
+    {% include "user_session_form" %}
+  </div>
+
+{% endif %}

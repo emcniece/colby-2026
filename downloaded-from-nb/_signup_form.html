@@ -1,0 +1,11 @@
+{% if request.logged_in? %}
+
+{% elsif request.sorta_logged_in? %}
+  <p class="mb-0">
+    {{ t_general_hi_user }} <strong>{{ request.current_signup.name_or_email }}!</strong><br/>
+    <a href="/login">{{ t_login }}</a><br/>
+    <small class="d-block text-muted">{{ t_if_youre_not }} {{ request.current_signup.name_or_email }}, <a href="{{ request.current_signup.logout_url }}" class="text-reset">{{ t_logout }}</a>.</small>
+  </p>
+{% else %}
+  <a class="btn btn-link w-100" href="/login">{{ t_login }}</a>
+{% endif %}

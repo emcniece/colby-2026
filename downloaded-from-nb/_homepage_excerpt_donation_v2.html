@@ -1,0 +1,107 @@
+<div class="donation" data-confirmation-amount="{{ page.donation_v2.confirmation_amount }}" data-is-excerpt="true">
+  <div class="row">
+    <div class="col-12 col-lg-9 mx-auto">
+      {% if page.headline.size > 0 %}
+        {% if page.is_homepage? and page.features_count == 0 %}
+          <h1 class="headline">{{ page.headline }}</h1>
+        {% else %}
+          <h2 class="headline">{{ page.headline }}</h2>
+        {% endif %}
+      {% endif %}
+
+      {% if page.donation_v2.content.size > 0 %}
+        <div class="intro mb-5">
+          {{ page.donation_v2.content }}
+        </div>
+      {% endif %}
+
+      {% if page.donation_v2.has_amount_goal? %}
+        <div class="mb-3">
+          {% include "progress"
+            percent: page.donation_v2.percent_of_amount_goal,
+            amount: page.donations_amount_format,
+            goal: page.donation_v2.amount_goal_format,
+            label: t_donation_raised,
+            headlineClasses: "d-block mb-2 h5"
+          %}
+        </div>
+      {% elsif page.donation_v2.has_donor_goal? %}
+        <div class="mb-3">
+          {% include "progress"
+            percent: page.donation_v2.percent_of_donor_goal,
+            count: page.donations_count,
+            goal: page.donation_v2.donor_goal,
+            label: t_general_donors,
+            headlineClasses: "d-block mb-2 h5"
+          %}
+        </div>
+      {% endif %}
+
+      {% if page.show_social_slider? and page.public_activities_count > 0 %}
+        {% include "social_slider" %}
+      {% endif %}
+
+      {% if page.donation_v2.amount_in_cents != 0 %}
+        <div class="d-flex flex-wrap flex-md-nowrap align-items-center my-4">
+          <a href="{{ page.slug }}" class="btn btn-primary mb-3 p-3 mr-sm-3">{{ t_general_give }} {{ page.donation_v2.amount_formatted }}</a>
+        </div>
+      {% else %}
+        <h3 class="h4 mt-3">{{ t_donation_select_an_amount }}</h3>
+        <div class="d-flex flex-wrap flex-md-nowrap align-items-center my-4">
+          {% assign amount_options_label_class = 'btn input__label--btn' %}
+          <div id="donation-v2-amounts" class="donation-v2-amounts btn-group-toggle">{{ page.donation_v2.form_amount_options }}</div>
+          <a href="{{ page.slug }}" class="btn btn-primary mb-3 p-3 mr-sm-3">{{ t_donate }}</a>
+        </div>
+      {% endif %}
+    </div><!--/.col-12 -->
+  </div><!--/.row -->
+</div><!--/.donation -->
+
+<script>
+  ;(function() {
+    var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+    var fields = previous.querySelectorAll('input[id]:not([type="button"]), textarea[id], select[id]');
+
+    if (fields) {
+      fields.forEach(function(field) {
+        field.id += '_' + '{{ page.id }}';
+      });
+    }
+
+    var labels = previous.querySelectorAll('label[for]');
+
+    if (labels) {
+      labels.forEach(function(label) {
+        label.htmlFor += '_' + '{{ page.id }}';
+      });
+    }
+  })();
+</script>
+
+<script src="vcs-donation-v2.js"></script>
+
+<script>
+  ;(function() {
+    var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+    while(!previous.matches('.donation')) {
+      previous = previous.previousElementSibling;
+    }
+
+    var otherAmount = previous.querySelector('[id^="donation_amount_other"]');
+    otherAmount.parentElement.classList.add('d-none');
+
+    previous.addEventListener('click', function(e) {
+      if (!e.target.matches('#donation-v2-amounts label.btn')) return;
+
+      var matches = /^\D+(\d+)(?:_\d+$|$)/.exec(e.target.htmlFor);
+
+      if (matches) {
+        e.preventDefault();
+
+        window.location.href = "{{ page.slug }}?amount=" + matches[1];
+      }
+    });
+  })();
+</script>

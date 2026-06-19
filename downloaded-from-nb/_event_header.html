@@ -1,0 +1,73 @@
+{% comment %}
+  Show event details
+
+  @param {Object} event - Event object
+  @returns {void}
+{% endcomment %}
+
+{% include "translation" %}
+
+<section class="event-header bg-color-2 text-white rounded mb-4" aria-label="Event info">
+  <div class="row">
+    <div class="col-12 col-lg text-center my-3 my-lg-0">
+      <div class="d-flex flex-column align-items-center">
+        <span class="event-header-column-headline border-bottom border-white mb-3">{{ t_general_when }}</span>
+        {% assign event_timestamp = event.local_start_at | date: "%s" %}
+        {% assign now_timestamp = 'now' | date: "%s" %}
+        {% assign diff = event_timestamp | minus: now_timestamp %}
+        {% assign days = diff | divided_by: 86400 %}
+
+        {% if days < 1 %}
+        {% elsif days < 365 %}
+          <span class="h4 text-white mb-2">{{ days }} {{ t_general_day }}{% unless days == 1 %}s{% endunless %} {{ t_general_to_go }}</span>
+        {% else %}
+          {% assign years = days | divided_by: 365 %}
+        	{% assign year_days = days | modulo: 365 %}
+          <span class="h4 text-white mb-2">{{ years }} {{ t_general_year }}{% unless years == 1 %}s{% endunless %}{% if year_days > 0 %} {{ year_days }} {{ t_general_day }}{% unless year_days == 1 %}s{% endunless %}{% endif %} {{ t_general_to_go }}</span>
+        {% endif %}
+
+        <span class="mb-2"><i class="fas fa-calendar mr-2"></i>{{ t_local_start_at_date_label }} {{ t_at }} {{ t_local_start_at_time_label }}</span>
+        <span><i class="fas fa-clock mr-2"></i>{{ t_event_duration }}</span>
+      </div>
+    </div>
+
+    {% if event.has_venue? or page.event.is_location? %}
+      <div class="col-12 col-lg text-center my-3 my-lg-0">
+        <div class="d-flex flex-column align-items-center">
+          <span class="event-header-column-headline border-bottom border-white mb-3">{{ t_general_where }}</span>
+
+          {% if event.has_venue? %}
+            <span class="h4 text-white mb-2">{{ event.venue_name }}</span>
+          {% endif %}
+
+          {% if event.is_location? %}
+            <span>
+              <i class="fas fa-map-marker mr-2"></i><a href="{{ event.venue_address.google_map_link }}" class="text-white" target="_blank">{{ event.venue_address.one_line }}</a>
+            </span>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if event.has_contact? %}
+      <div class="col-12 col-lg text-center my-3 my-lg-0">
+        <div class="d-flex flex-column align-items-center">
+          <span class="event-header-column-headline border-bottom border-white mb-3">{{ t_contact | upcase }}</span>
+          <span class="h4 text-white mb-2">{{ event.contact_name }}</span>
+
+          {% if event.has_public_contact_email? %}
+            <span class="w-100 {% if event.has_public_contact_phone_number? %}mb-2{% endif %}">
+              <a href="mailto:{{ event.contact_email }}" class="text-white">{{ event.contact_email }}</a>
+            </span>
+          {% endif %}
+
+          {% if event.has_public_contact_phone_number? %}
+            <span class="w-100">
+              <i class="fas fa-phone mr-2"></i><a href="tel:{{ event.contact_phone_number }}" class="text-white">{{ event.contact_phone_number }}</a>
+            </span>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>

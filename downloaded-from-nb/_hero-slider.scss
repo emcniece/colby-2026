@@ -1,0 +1,136 @@
+// Hero Slider Styles
+// When a page is tagged with "include hero slider", the featured content slider
+// dimensions are determined by the first image's aspect ratio
+
+// First, override the general .carousel-item img styles from _vcs-custom.scss
+.carousel.slide.hero-slider .carousel-item img.hero-slider-img {
+  // Reset all the default carousel img styles
+  object-fit: initial;
+  object-position: initial;
+  font-family: inherit;
+}
+
+// Override default carousel-item height from _vcs-custom.scss
+.carousel.slide.hero-slider .carousel-item {
+  // Override the fixed height
+  height: auto;
+
+  @include media-breakpoint-up(md) {
+    height: auto;
+  }
+}
+
+// Main hero slider styles
+.carousel.slide.hero-slider {
+  // Simple approach - let the carousel work naturally
+  .carousel-inner {
+    width: 100%;
+    position: relative;
+  }
+
+  // Carousel items - keep it simple
+  .carousel-item {
+    // Only show active items
+    display: none;
+
+    &.active,
+    &.carousel-item-next,
+    &.carousel-item-prev {
+      display: block;
+
+      @include media-breakpoint-down(sm) {
+        // On mobile, use flex for caption below image
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    > a {
+      display: block;
+      position: relative;
+      width: 100%;
+      // Use aspect ratio to maintain consistent height
+      aspect-ratio: var(--hero-aspect-ratio, 16/9);
+      overflow: hidden;
+    }
+
+    // Images fill their container
+    img.hero-slider-img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  // Carousel caption positioning
+  .carousel-caption {
+    @include media-breakpoint-up(md) {
+      // On desktop, caption overlays the image
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+    }
+
+    @include media-breakpoint-down(sm) {
+      // On mobile, caption appears below the image
+      position: relative;
+      bottom: auto;
+      left: auto;
+      right: auto;
+      background-color: theme-color('color-3');
+      padding: $carousel-caption-padding-top $carousel-caption-padding-x $carousel-caption-padding-bottom;
+    }
+  }
+}
+
+// Homepage-specific hero slider adjustments
+.homepage-section {
+  .carousel.slide.hero-slider {
+    // Full width on homepage sections
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    width: 100vw;
+
+    .carousel-caption .container {
+      // Ensure container maintains proper width
+      max-width: 100%;
+      padding-left: 15px;
+      padding-right: 15px;
+
+      @include media-breakpoint-up(sm) {
+        max-width: 540px;
+      }
+
+      @include media-breakpoint-up(md) {
+        max-width: 720px;
+      }
+
+      @include media-breakpoint-up(lg) {
+        max-width: 960px;
+      }
+
+      @include media-breakpoint-up(xl) {
+        max-width: 1140px;
+      }
+    }
+  }
+}
+
+// Ensure proper z-index layering
+.carousel.slide.hero-slider {
+  .carousel-indicators {
+    z-index: 15;
+  }
+
+  .carousel-control-prev,
+  .carousel-control-next {
+    z-index: 16;
+  }
+}

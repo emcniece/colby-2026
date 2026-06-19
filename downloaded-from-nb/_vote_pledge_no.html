@@ -1,0 +1,87 @@
+{% include "translation" %}
+
+{% form_for vote_pledge %}
+
+  {% if vote_pledge.could_vote? %}
+    <p class="text-danger font-weight-bold">{{ t_vote_no_i_will_not_vote_for }} {{ site.candidate_first_name_or_site_name }}.</p>
+  {% else %}
+    <p class="text-danger font-weight-bold">{{ t_vote_no_i_will_not_pledge_support }} {{ site.candidate_first_name_or_site_name }}.</p>
+  {% endif %}
+
+  {% if page.vote_pledge.no_content.size > 0 %}
+    <div class="mb-4">{{ page.vote_pledge.no_content }}</div>
+  {% endif %}
+
+  {% hidden_field_tag "vote_pledge[will_vote_status]", "-1" %}
+
+  <div class="form-errors" role="alert">{% error_messages_for vote_pledge %}</div>
+
+  <div class="form-group">
+    <div class="custom-control custom-checkbox">
+      {% check_box "do_not_contact", class:"custom-control-input" %}
+      <label class="custom-control-label" for="vote_pledge_do_not_contact">{{ t_general_do_not_contact_me }}</label>
+    </div>
+  </div>
+
+  {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
+    <div class="form-group">
+      <div class="form-control-material">
+        <label for="vote_pledge_first_name" class="floating-label floating-label--float-above">{{ t_first_name }}*</label>
+        {% text_field "first_name", class:"form-control", required:"required" %}
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-control-material">
+        <label for="vote_pledge_last_name" class="floating-label floating-label--float-above">{{ t_last_name }}*</label>
+        {% text_field "last_name", class:"form-control", required:"required" %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if request.sorta_logged_in? == false or request.current_signup.has_mobile? == false %}
+    <div class="form-group">
+      <div class="form-control-material">
+        <label for="vote_pledge_email" class="floating-label floating-label--float-above">{{ t_email }}*</label>
+        {% email_field "email", class:"form-control", required:"required" %}
+      </div>
+    </div>
+  {% endif %}
+
+  {% if request.sorta_logged_in? == false or request.current_signup.has_full_address? == false %}
+    {% assign has_split_address_tag = false %}
+    {% for tag in page.tags %}
+      {% assign tag_name_lower = tag.name | downcase %}
+      {% if tag_name_lower == "include split address fields" %}
+        {% assign has_split_address_tag = true %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+
+    {% if has_split_address_tag %}
+      {% include "split_address_fields" with prefix: "vote_pledge", required: false, sidebar: true %}
+    {% else %}
+      <div class="form-group">
+        <div class="form-control-material">
+          <label for="vote_pledge_submitted_address" class="floating-label floating-label--float-above">
+            {{ t_forms_full_address }} <small class="text-muted">{{ t_general_to_see_if_you_can_vote }}</small>
+          </label>
+          {% text_field "submitted_address", class:"form-control" %}
+        </div>
+      </div>
+    {% endif %}
+  {% endif %}
+
+  {% if page.show_consent_form? %}
+    {% include "consent_form" %}
+  {% endif %}
+
+  {% submit_tag t_save, class:"btn btn-primary submit-button" %}
+  <div class="form-submit"></div>
+
+{% endform_for %}
+
+<script>
+;(function() {
+  new CustomControls();
+})();
+</script>

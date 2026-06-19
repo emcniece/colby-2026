@@ -1,0 +1,302 @@
+/*! Raise: style_yellow */
+ $primary: #EFC30C; /* yellow */
+$color-1: $primary;
+$color-2: #DD147A; /* hot-pink */
+$color-3: #2955D8; /* blue */
+$color-4: #143390; /* dark-blue */
+$color-5: #fff9fc; /* light-pink */
+
+@import 'theme-colors';
+@import 'theme-fonts';
+
+/*!
+ * Bootstrap v4.3.1 (https://getbootstrap.com/)
+ * Copyright 2011-2019 The Bootstrap Authors
+ * Copyright 2011-2019 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ */
+
+@import 'functions';
+@import 'vcs-functions';
+@import 'variables';
+@import 'mixins';
+@import 'vcs-mixins_alerts';
+@import 'reboot';
+@import 'type';
+@import 'fonts';
+@import 'images';
+@import 'code';
+@import 'navbar-logo-sizing';
+@import 'grid';
+@import 'tables';
+@import 'forms';
+
+@import 'buttons';
+@import 'vcs-buttons';
+@import 'transitions';
+@import 'dropdown';
+@import 'button-group';
+@import 'input-group';
+@import 'custom-forms';
+@import 'nav';
+@import 'navbar';
+@import 'card';
+@import 'breadcrumb';
+@import 'pagination';
+
+@import 'badge';
+@import 'jumbotron';
+@import 'alert';
+
+@import 'progress';
+@import 'media';
+@import 'list-group';
+@import 'close';
+@import 'toasts';
+@import 'modal';
+@import 'tooltip';
+@import 'popover';
+@import 'carousel';
+
+@import 'spinners';
+@import 'utilities';
+
+@import 'print';
+
+/* NationBuilder Add-ons
+-----------------------------------------------*/
+@import 'moneybomb';
+@import 'slider-card';
+@import 'stripe';
+
+/* reCaptcha
+-----------------------------------------------*/
+.grecaptcha-badge {
+  z-index: 9994;
+}
+#recaptcha-input {
+	margin-top: 3rem;
+}
+.g-recaptcha {
+	> * {
+		margin: 0 auto;
+	}
+}
+
+/* VCS
+-----------------------------------------------*/
+@import 'vcs-animations';
+@import 'vcs-dropzone';
+@import 'vcs-nav';
+@import 'vcs-custom';
+@import 'hero-slider';
+
+/* Express payment options
+-----------------------------------------------*/
+#payment-methods {
+  display: none;
+  .StripeElement {
+    border: 0;
+    padding: 0;
+    box-shadow: none;
+    height: 0;
+  }
+}
+
+#cc-request-button {
+  padding-top: 3.5rem;
+  button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1em;
+    border-radius: 4px;
+    width: 100%;
+    height: 40px;
+  }
+}
+
+#credit-card-icon {
+  display: inline-block;
+  background-image: url("/assets/icons/ic_creditcard.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 32px 32px;
+  width: 32px;
+  height: 32px;
+  margin-right: 0.5em;
+}
+
+#selected-payment-method {
+  display: none;
+  border-radius: 2px;
+  text-align: center;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  a,
+  p  {
+    font-size: 1em;
+  }
+}
+
+#payment-method-icon {
+  display: inline-block;
+  background-image: url("/assets/icons/ic_expresspay-other.svg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 40px 24px;
+  width: 40px;
+  height: 24px;
+  margin-right: 1em;
+  &[data-type="apple_pay"] {
+    background-image: url("/assets/icons/ic_applepay.svg");
+  }
+  &[data-type="google_pay"] {
+    background-image: url("/assets/icons/ic_googlepay.svg");
+  }
+}
+
+#submitted-payment-method,
+#demographics-read-only,
+#address-read-only,
+#apple-pay-notice,
+#your-info,
+#cc-info {
+  display: none;
+}
+
+#edit-demographics,
+#edit-address {
+  float: right;
+}
+
+.address-line {
+  display: block;
+}
+
+.floating-donation-label {
+  -webkit-transform: translate(0.07em, -75%) scale(0.55);
+  transform: translate(0.07em, -75%) scale(0.55);
+  color: $color-2;
+}
+
+/* Split Address Fields
+-----------------------------------------------*/
+.split-address-field {
+  margin-bottom: 1rem;
+  .form-control-material {
+    input, select {
+      border-bottom: 0.0625rem solid #e9ecef !important;
+    }
+  }
+}
+
+.input-group-vertical {
+  .split-address-field {
+    margin-bottom: 0;
+  }
+}
+
+/* ActionButton Wrapper Styling
+-----------------------------------------------*/
+.actionbutton-wrapper {
+  height: 520px;
+  overflow: hidden;
+  max-width: 680px;
+  margin: 2rem auto;
+  border: 1px solid #333;
+  border-radius: 2rem;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 1rem;
+
+  iframe.actionbutton {
+    scale: 1.2;
+  }
+}
+
+@media (min-width: 538px) {
+  .actionbutton-wrapper {
+    height: 400px;
+    padding: 0 0.75rem;
+  }
+
+  .actionbutton-wrapper iframe.actionbutton {
+    position: relative;
+    top: -45px;
+    scale: 1.0 !important;
+  }
+}
+
+/* Special styling for moved ActionButtons on basic pages */
+.actionbutton-moved {
+  margin-bottom: 3rem;
+  margin-top: -6rem;
+  /* Ensure it appears above other content */
+  position: relative;
+  z-index: 10;
+}
+
+/* Social Media Icons
+-----------------------------------------------*/
+.social-icon-link {
+  color: inherit;
+  transition: color 0.2s ease;
+
+  .social-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: currentColor;
+    margin: 0 3px;
+    filter: brightness(0) saturate(100%) invert(95%) sepia(0%) saturate(19%) hue-rotate(312deg) brightness(104%) contrast(106%);
+  }
+
+  &:hover, &:focus {
+    color: $color-1;
+    text-decoration: none;
+  }
+}
+
+/* Custom CSS for Colby Harder 
+-------------------------------------------------*/
+.hero-homepage {
+  display: none !important;
+}
+.homepage #sign-up {
+  background-size: cover;
+  background-position: center top;
+  background-image: url("https://assets.nationbuilder.com/langford2026electioncampaign/pages/34/attachments/original/1776306364/colby-banner.jpg?1776306364");
+}
+.homepage #sign-up .col-lg-9 {
+  max-width: 50%;
+  margin-right: 0 !important;
+}
+body {
+  color: $color-4;
+  background-color: $color-5;
+  font-size: 1.3rem;
+}
+p {
+  line-height: 1.9rem;
+}
+.btn-primary, .subnav li>a:hover, .analytics-consent .analytics-banner .submit button, .btn-color-1 {
+  color: $color-3;
+}
+h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  color: $color-4;
+  font-weight: 500;
+}
+h1, h2 {
+  margin-bottom: 2rem;
+}
+@media (min-width: 576px) {
+    .donation-v2-amounts label.btn, .donation-amounts label.btn, .moneybomb-amounts label.btn {
+        width: auto ;
+    }
+}
+.card {
+  color: $color-4;
+}

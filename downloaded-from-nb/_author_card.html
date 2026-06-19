@@ -1,0 +1,8 @@
+<section class="author-card d-flex shadow-sm rounded mb-4" aria-label="Author info">
+  <div class="author-card-avatar flex-shrink-0 mr-4">{% include "avatar" signup: page.author, size: 74 %}</div>
+
+  <div class="author-card-info">
+    <h1 class="h5 mb-2">{{ t_about }} {{ page.author.published_name_linked }}</h1>
+    <div>{{ page.author.bio }}</div>
+  </div>
+</section>

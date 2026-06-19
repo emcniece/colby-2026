@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-12 col-lg-9 mx-auto">
+    {% if page.headline.size > 0 %}
+      {% if page.is_homepage? and page.features_count == 0 %}
+        <h1 class="headline">{{ page.headline }}</h1>
+      {% else %}
+        <h2 class="headline">{{ page.headline }}</h2>
+      {% endif %}
+    {% endif %}
+
+    <div class="post-byline mb-4 text-center">
+      {% if page.has_author? %}
+        {% if site.show_public_profiles? %}
+          <a href="{{ signup.parent.profile_url }}" class="mx-1 text-decoration-none">{% include "avatar" signup: page.author, size: 34 %}</a>{{ page.author.published_name_linked }}
+        {% else %}
+          {% include "avatar" signup: page.author, size: 34 %} {{ page.author.published_name }}
+        {% endif %}
+        <span class="mx-2">|</span>
+      {% endif %}
+
+      {{ t_published_at_long }}
+    </div>
+
+    <div id="intro" class="intro">
+      {{ page.blog_post.content_full }}
+    </div>
+
+    {% if page.tags_count > 0 %}
+      <div class="page-tags mt-4">
+        {% include "page_tags" with page %}
+      </div>
+    {% endif %}
+
+    {% if page.author.has_bio? %}
+      {% include "author_card" %}
+    {% endif %}
+  </div>
+</div>

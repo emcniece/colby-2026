@@ -1,0 +1,160 @@
+{% include "translation" %}
+
+<div class="row">
+  <div class="col-12 mx-auto">
+    {% if page.calendar.content.size > 0 %}
+      <div id="intro" class="intro">
+        {{ page.calendar.content }}
+      </div>
+    {% endif %}
+
+    <!-- HEADLINE & USER SUBMITTED EVENTS -->
+    <div class="d-flex flex-column flex-md-row align-items-md-center">
+      <h3>{{ page.calendar.event_name | pluralize }}</h3>
+
+      {% if page.calendar.allow_user_submitted? %}
+        <div class="btn-group ml-md-auto mb-3">
+          <span class="btn btn-sm btn-primary border-0 flex-grow-0">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+          </span>
+          <a href="{{ page.calendar.new_event_url }}" class="btn btn-sm btn-primary border-0 flex-grow-0 pr-3" aria-role="button">{{ t_add_event }}</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- EVENTS MAP -->
+    {% if page.calendar.show_map? %}
+      {% if page.calendar.is_proximity? and page.calendar.events_upcoming_nearby_count > 0 %}
+        <div class="map mb-4">
+          {{ page.calendar.events_upcoming_nearby_map }}
+        </div>
+      {% else %}
+        <div class="map mb-4">
+          {{ page.calendar.events_upcoming_map }}
+        </div>
+      {% endif %}
+    {% endif %}
+    <!--./ EVENTS MAP -->
+
+    <!-- DISTANCE FILTER -->
+    {% if page.calendar.is_proximity? and page.calendar.events_upcoming_count > 0 %}
+      <div class="form-wrap mb-4">
+        {% form_for address_change %}
+
+          {% if page.calendar.events_upcoming_nearby_count > 0 %}
+
+            <!-- SHOW # OF NEARBY EVENTS & CLEAR SEARCH OPTION -->
+            <div class="h6 my-3 d-flex flex-wrap align-items-center">
+              <div class="mr-3 mb-2">
+                {{ t_general_found }} {{ page.calendar.events_upcoming_nearby_count }} {{ page.calendar.event_name | pluralize | downcase }} {{ t_general_near_you }}
+              </div>
+
+              <div class="input-group w-auto mb-2">
+                <div class="form-control-material form-control-material-sm">
+                  <label for="address_change_submitted_address" class="floating-label floating-label-sm floating-label--float-above">{{ t_address_or_postal_code }}</label>
+                  {% text_field "submitted_address", class:"form-control form-control-sm d-none text" %}
+                </div>
+
+                <div class="input-group-append">
+                  {% submit_tag t_general_clear_search, class:"btn btn-primary submit-button rounded-pill" %}
+                </div>
+              </div>
+              <span class="form-submit mb-2"></span>
+            </div>
+
+          {% else %}
+
+            <!-- SHOW ALL EVENTS & DISTANCE FILTER OPTIONS -->
+            <div class="h6 mb-2">
+                {{ t_event_no_events_found_nearby_showing_all }} {{ page.calendar.events_upcoming_count }}{{ t_event_upcoming }}{{ page.calendar.event_name | pluralize | downcase }} {{ t_general_instead }}
+            </div>
+
+            <div class="h6 my-3 d-flex flex-wrap align-items-center">
+              <div class="mr-2 mb-2">{{ t_event_filter_for_events_within }}</div>
+
+              <select name="address_change[distance]" class="custom-select custom-select-sm h-auto w-auto py-0 mr-2 mb-2">
+                <option value="1">1</option>
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+
+              <div class="mr-2 mb-2">{{ t_general_miles_of }}</div>
+
+              <div class="input-group w-auto mb-2">
+                <div class="form-control-material form-control-material-sm">
+                  <label for="address_change_submitted_address" class="floating-label floating-label-sm floating-label--float-above">{{ t_address_or_postal_code }}</label>
+                  {% text_field "submitted_address", class:"form-control form-control-sm text" %}
+                </div>
+
+                <div class="input-group-append">
+                  {% submit_tag t_search, class:"btn btn-primary submit-button" %}
+                </div>
+              </div>
+
+              <span class="form-submit mb-2"></span>
+            </div>
+
+          {% endif %}
+
+        {% endform_for %}
+      </div><!--/.form-wrap -->
+    {% endif %}
+    <!-- /.DISTANCE FILTER -->
+
+  </div>
+</div><!--/. row -->
+
+<!-- EVENT TILES -->
+{% if page.calendar.events_upcoming_count == 0 %}
+  <div class="row">
+    <div class="col-12 mx-auto">
+      <h6>{{ t_event_no_events_yet }}{% if page.calendar.allow_user_submitted? %} <a href="{{ page.calendar.new_event_url }}">{% if request.logged_in? == false %}{{ t_login }} {% else %}{{ t_general_click_here }} {% endif %}{{ t_general_to_add_your_own }}</a>{% endif %}</h6>
+    </div>
+  </div>
+{% else %}
+  <div class="row">
+    <div class="col-md-12">
+      {% if page.calendar.is_proximity? and page.calendar.events_upcoming_nearby.size > 0 %}
+        <div class="row">
+          {% for event in page.calendar.events_upcoming_nearby_all %}
+            <div class="col-md-6 col-lg-4 mb-4">
+              {% include "event" page: event %}
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="row">
+          {% for event in page.calendar.events_upcoming_all %}
+            <div class="col-md-6 col-lg-4 mb-4">
+              {% include "event" page: event %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <script>
+        ;(function() {
+          var previous = document.scripts[document.scripts.length - 1].previousElementSibling;
+
+          objectFitImages(previous.querySelectorAll('.event-card .card-img'));
+        })();
+      </script>
+    </div>
+  </div>
+{% endif %}
+<!-- /.EVENT TILES -->
+
+<div class="row">
+  <div class="col-12 mx-auto">
+    {% if page.tags_count > 0 %}
+      <div id="page-tags" class="page-tags">
+        {% include "page_tags" with page %}
+      </div>
+    {% endif %}
+
+    {% include "like_page" %}
+  </div>
+</div>

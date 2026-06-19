@@ -1,0 +1,219 @@
+{% comment %}
+  Unified Split Address Fields Template
+
+  Parameters:
+  - prefix: Form field prefix (required)
+  - required: Whether fields are required (boolean)
+  - style: 'floating' (default) or 'basic' for styling approach
+  - sidebar: true if in sidebar context (forces vertical stacking)
+{% endcomment %}
+
+{% assign use_floating = true %}
+{% if style == 'basic' %}
+  {% assign use_floating = false %}
+{% endif %}
+
+{% assign use_sidebar_layout = false %}
+{% if sidebar == true %}
+  {% assign use_sidebar_layout = true %}
+{% endif %}
+
+<!-- Address Line 1 -->
+<div class="form-group{% if use_floating %} split-address-field{% endif %}">
+  {% if use_floating %}
+    <div class="form-control-material">
+      <label for="{{ prefix }}_home_address_address1" class="floating-label floating-label--float-above">
+        {{ t_address_1 }}{% if required %}*{% endif %}
+      </label>
+      {% if required %}
+        {% text_field "home_address.address1", class:"form-control text", required:"required" %}
+      {% else %}
+        {% text_field "home_address.address1", class:"form-control text" %}
+      {% endif %}
+    </div>
+  {% else %}
+    <label for="{{ prefix }}_home_address_address1">{{ t_address_1 }}{% if required %}*{% endif %}</label>
+    {% if required %}
+      {% text_field "home_address.address1", class:"form-control text", required:"required" %}
+    {% else %}
+      {% text_field "home_address.address1", class:"form-control text" %}
+    {% endif %}
+  {% endif %}
+</div>
+
+<!-- Address Line 2 -->
+<div class="form-group{% if use_floating %} split-address-field{% endif %}">
+  {% if use_floating %}
+    <div class="form-control-material">
+      <label for="{{ prefix }}_home_address_address2" class="floating-label floating-label--float-above">
+        {{ t_address_2 }}
+      </label>
+      {% text_field "home_address.address2", class:"form-control text" %}
+    </div>
+  {% else %}
+    <label for="{{ prefix }}_home_address_address2">{{ t_address_2 }}</label>
+    {% text_field "home_address.address2", class:"form-control text" %}
+  {% endif %}
+</div>
+
+<!-- City/State/Zip: Responsive Grid or Sidebar Stacked -->
+{% if use_sidebar_layout %}
+  <!-- Sidebar Layout: Stack vertically -->
+  <div class="form-group{% if use_floating %} split-address-field{% endif %}">
+    {% if use_floating %}
+      <div class="form-control-material">
+        <label for="{{ prefix }}_home_address_city" class="floating-label floating-label--float-above">
+          {{ t_city }}{% if required %}*{% endif %}
+        </label>
+        {% if required %}
+          {% text_field "home_address.city", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.city", class:"form-control text" %}
+        {% endif %}
+      </div>
+    {% else %}
+      <label for="{{ prefix }}_home_address_city">{{ t_city }}{% if required %}*{% endif %}</label>
+      {% if required %}
+        {% text_field "home_address.city", class:"form-control text", required:"required" %}
+      {% else %}
+        {% text_field "home_address.city", class:"form-control text" %}
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="form-group{% if use_floating %} split-address-field{% endif %}">
+    {% if use_floating %}
+      <div class="form-control-material">
+        <label for="{{ prefix }}_home_address_state" class="floating-label floating-label--float-above">
+          {{ t_forms_stateprovince }}{% if required %}*{% endif %}
+        </label>
+        {% if required %}
+          {% text_field "home_address.state", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.state", class:"form-control text" %}
+        {% endif %}
+      </div>
+    {% else %}
+      <label for="{{ prefix }}_home_address_state">{{ t_forms_stateprovince }}{% if required %}*{% endif %}</label>
+      {% if required %}
+        {% text_field "home_address.state", class:"form-control text", required:"required" %}
+      {% else %}
+        {% text_field "home_address.state", class:"form-control text" %}
+      {% endif %}
+    {% endif %}
+  </div>
+
+  <div class="form-group{% if use_floating %} split-address-field{% endif %}">
+    {% if use_floating %}
+      <div class="form-control-material">
+        <label for="{{ prefix }}_home_address_zip" class="floating-label floating-label--float-above">
+          {{ t_postal_code }}{% if required %}*{% endif %}
+        </label>
+        {% if required %}
+          {% text_field "home_address.zip", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.zip", class:"form-control text" %}
+        {% endif %}
+      </div>
+    {% else %}
+      <label for="{{ prefix }}_home_address_zip">{{ t_postal_code }}{% if required %}*{% endif %}</label>
+      {% if required %}
+        {% text_field "home_address.zip", class:"form-control text", required:"required" %}
+      {% else %}
+        {% text_field "home_address.zip", class:"form-control text" %}
+      {% endif %}
+    {% endif %}
+  </div>
+{% else %}
+  <!-- Standard Layout: Responsive Grid -->
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      {% if use_floating %}
+        <div class="form-control-material">
+          <label for="{{ prefix }}_home_address_city" class="floating-label floating-label--float-above">
+            {{ t_city }}{% if required %}*{% endif %}
+          </label>
+          {% if required %}
+            {% text_field "home_address.city", class:"form-control text", required:"required" %}
+          {% else %}
+            {% text_field "home_address.city", class:"form-control text" %}
+          {% endif %}
+        </div>
+      {% else %}
+        <label for="{{ prefix }}_home_address_city">{{ t_city }}{% if required %}*{% endif %}</label>
+        {% if required %}
+          {% text_field "home_address.city", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.city", class:"form-control text" %}
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="form-group col-md-4">
+      {% if use_floating %}
+        <div class="form-control-material">
+          <label for="{{ prefix }}_home_address_state" class="floating-label floating-label--float-above">
+            {{ t_forms_stateprovince }}{% if required %}*{% endif %}
+          </label>
+          {% if required %}
+            {% text_field "home_address.state", class:"form-control text", required:"required" %}
+          {% else %}
+            {% text_field "home_address.state", class:"form-control text" %}
+          {% endif %}
+        </div>
+      {% else %}
+        <label for="{{ prefix }}_home_address_state">{{ t_forms_stateprovince }}{% if required %}*{% endif %}</label>
+        {% if required %}
+          {% text_field "home_address.state", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.state", class:"form-control text" %}
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <div class="form-group col-md-4">
+      {% if use_floating %}
+        <div class="form-control-material">
+          <label for="{{ prefix }}_home_address_zip" class="floating-label floating-label--float-above">
+            {{ t_postal_code }}{% if required %}*{% endif %}
+          </label>
+          {% if required %}
+            {% text_field "home_address.zip", class:"form-control text", required:"required" %}
+          {% else %}
+            {% text_field "home_address.zip", class:"form-control text" %}
+          {% endif %}
+        </div>
+      {% else %}
+        <label for="{{ prefix }}_home_address_zip">{{ t_postal_code }}{% if required %}*{% endif %}</label>
+        {% if required %}
+          {% text_field "home_address.zip", class:"form-control text", required:"required" %}
+        {% else %}
+          {% text_field "home_address.zip", class:"form-control text" %}
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+<!-- Country -->
+<div class="form-group{% if use_floating %} split-address-field{% endif %}">
+  {% if use_floating %}
+    <div class="form-control-material form-control-material-custom-select">
+      <label for="{{ prefix }}_country_code" class="floating-label floating-label-select floating-label--float-above">
+        {{ t_country }}{% if required %}*{% endif %}
+      </label>
+      {% if required %}
+        {% select_field "home_address.country_code", page.countries, "code", "name", class:"custom-select address-inputs-toggle", required:"required" %}
+      {% else %}
+        {% select_field "home_address.country_code", page.countries, "code", "name", class:"custom-select address-inputs-toggle" %}
+      {% endif %}
+    </div>
+  {% else %}
+    <label for="{{ prefix }}_country_code">{{ t_country }}{% if required %}*{% endif %}</label>
+    {% if required %}
+      {% select_field "home_address.country_code", page.countries, "code", "name", class:"custom-select address-inputs-toggle", required:"required" %}
+    {% else %}
+      {% select_field "home_address.country_code", page.countries, "code", "name", class:"custom-select address-inputs-toggle" %}
+    {% endif %}
+  {% endif %}
+</div>
