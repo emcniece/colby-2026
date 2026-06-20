@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-20h
+   COLBY 2026 CUSTOM STYLES — 2026-06-20x
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1117,8 +1117,10 @@ body {
 
 .progress-counter {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: var(--size-half);
+  flex: none;
   width: 200px;
   height: 188px;
   padding: var(--size-base);
@@ -1127,23 +1129,24 @@ body {
   overflow: hidden;
 }
 
-.progress-counter__value {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: var(--size-half);
-  text-align: right;
-}
-
 .progress-counter__number {
+  display: block;
   font-family: var(--font-questrial);
   font-weight: 400;
   font-size: 60px;
   line-height: 72px;
   color: var(--section-3-accent);
+  text-align: right;
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  width: 100%;
+}
+
+.progress-counter__footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .progress-counter__label {
@@ -1152,7 +1155,7 @@ body {
   font-size: 14px;
   line-height: 18px;
   color: var(--color-white);
-  white-space: pre-wrap;
+  white-space: normal;
 }
 
 
@@ -1254,13 +1257,15 @@ body {
 }
 
 /* Size tokens — tri widths computed from height to guarantee a consistent angle */
-.colby-logo--default { --logo-h: 80px; --logo-re-h: 31px; }
-.colby-logo--small   { --logo-h: 65px; --logo-re-h: 25px; }
+.colby-logo--default { --logo-h: 80px;  --logo-re-h: 31px; --logo-sub-h: 31px; }
+.colby-logo--small   { --logo-h: 65px;  --logo-re-h: 25px; --logo-sub-h: 25px; }
+.colby-logo--large   { --logo-h: 116px; --logo-re-h: 45px; --logo-sub-h: 45px; }
 
 /* Derive triangle widths: width = height × tan(angle) ⟹ angle stays fixed across all sizes */
 .colby-logo {
-  --logo-tri:    calc(var(--logo-h)    * tan(var(--para-angle)));
-  --logo-re-tri: calc(var(--logo-re-h) * tan(var(--para-angle)));
+  --logo-tri:     calc(var(--logo-h)     * tan(var(--para-angle)));
+  --logo-re-tri:  calc(var(--logo-re-h)  * tan(var(--para-angle)));
+  --logo-sub-tri: calc(var(--logo-sub-h) * tan(var(--para-angle)));
 }
 
 /* ── Wordmark ─────────────────────────────────────────────── */
@@ -1378,6 +1383,115 @@ body {
 .colby-logo--v4 .colby-logo__re-elect-text  { color: var(--color-yellow-300); }
 .colby-logo--v4 .colby-logo__re-tri--right  { background: var(--color-yellow-300); }
 
+/* ═══════════════════════════════════════════════════════════
+   COLBY LOGO XL — footer CTA three-row lockup
+   Row 1: RE-ELECT band (left-aligned)
+   Row 2: / COLBY / HARDER / alternating colours
+   Row 3: FOR LANGFORD CITY COUNCIL (right-aligned)
+   Same clip-path triangle technique as .colby-logo
+   ═══════════════════════════════════════════════════════════ */
+
+.colby-logo-xl {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-decoration: none;
+
+  --xl-name-h:   116px;
+  --xl-band-h:    45px;
+  --xl-name-tri: calc(var(--xl-name-h) * tan(var(--para-angle)));
+  --xl-band-tri: calc(var(--xl-band-h) * tan(var(--para-angle)));
+}
+
+.colby-logo-xl__re-row,
+.colby-logo-xl__names,
+.colby-logo-xl__sub-row {
+  display: flex;
+  align-items: stretch;
+  overflow: clip;
+}
+
+.colby-logo-xl__re-row  { height: var(--xl-band-h); }
+.colby-logo-xl__names   { height: var(--xl-name-h); }
+.colby-logo-xl__sub-row { height: var(--xl-band-h); align-self: flex-end; }
+
+.colby-logo-xl__tri { flex-shrink: 0; }
+
+.colby-logo-xl__tri--band-l,
+.colby-logo-xl__tri--band-r,
+.colby-logo-xl__tri--sub-l,
+.colby-logo-xl__tri--sub-r  { width: var(--xl-band-tri); height: var(--xl-band-h); }
+
+.colby-logo-xl__tri--name-l,
+.colby-logo-xl__tri--name-colby-r,
+.colby-logo-xl__tri--name-m,
+.colby-logo-xl__tri--name-r { width: var(--xl-name-tri); height: var(--xl-name-h); }
+
+.colby-logo-xl__tri--band-l,
+.colby-logo-xl__tri--sub-l,
+.colby-logo-xl__tri--name-l,
+.colby-logo-xl__tri--name-m { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
+
+.colby-logo-xl__tri--band-r,
+.colby-logo-xl__tri--sub-r,
+.colby-logo-xl__tri--name-colby-r,
+.colby-logo-xl__tri--name-r { clip-path: polygon(0% 0%, 100% 0%, 0% 100%); }
+
+.colby-logo-xl__re-swatch,
+.colby-logo-xl__sub-swatch {
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  white-space: nowrap;
+}
+
+.colby-logo-xl__re-text,
+.colby-logo-xl__sub-text {
+  font-family: var(--font-lexend);
+  font-weight: 700;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: -0.5px;
+  text-transform: uppercase;
+  color: var(--color-white);
+}
+
+.colby-logo-xl__name-swatch {
+  display: flex;
+  align-items: center;
+  padding: 16px 28px;
+  font-family: var(--font-lexend);
+  font-weight: 800;
+  font-size: 70px;
+  line-height: 1;
+  letter-spacing: -3.5px;
+  white-space: nowrap;
+}
+
+/* Colors */
+.colby-logo-xl__tri--band-l,
+.colby-logo-xl__tri--band-r,
+.colby-logo-xl__re-swatch    { background: var(--color-pink-500); }
+
+.colby-logo-xl__tri--name-l,
+.colby-logo-xl__tri--name-colby-r { background: var(--color-blue-900); }
+.colby-logo-xl__name-swatch--colby {
+  background: var(--color-blue-900);
+  color: var(--color-yellow-300);
+}
+
+/* Mid-tri is HARDER-coloured — creates the colour-change diagonal */
+.colby-logo-xl__tri--name-m,
+.colby-logo-xl__tri--name-r  { background: var(--color-yellow-300); }
+.colby-logo-xl__name-swatch--harder {
+  background: var(--color-yellow-300);
+  color: var(--color-blue-900);
+}
+
+.colby-logo-xl__tri--sub-l,
+.colby-logo-xl__tri--sub-r,
+.colby-logo-xl__sub-swatch   { background: var(--color-pink-500); }
+
 
 /* ═══════════════════════════════════════════════════════════
    SOCIAL ICONS
@@ -1472,6 +1586,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  --hero-h: 851px;
+  --hero-fg-spacer: 430px;
+  /* Left edge of .hero__text — moves with the centred container, not viewport % */
+  --hero-text-start: calc(
+    (100vw - min(100vw, var(--container-std))) / 2
+    + var(--page-pad-h)
+    + var(--hero-fg-spacer)
+  );
 }
 
 .hero__bg {
@@ -1485,19 +1607,23 @@ body {
 
 .hero__diagonal {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: calc(var(--hero-text-start) - 200px);
+  --hero-diagonal-width: 1000px;
+  width: var(--hero-diagonal-width);
+  height: 100%;
   z-index: 0;
   pointer-events: none;
-  overflow: hidden;
-}
-
-.hero__diagonal img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  max-width: 1400px;
-  height: 100%;
+  background-color: var(--color-pink-500);
+  /* Parallel 12° edges — same geometry as hero-diagonal.svg */
+  --hero-diagonal-offset: calc(var(--hero-h) * tan(var(--para-angle)));
+  --hero-diagonal-right: calc(var(--hero-diagonal-width) - var(--hero-diagonal-offset));
+  clip-path: polygon(
+    var(--hero-diagonal-offset) 0,
+    100% 0,
+    var(--hero-diagonal-right) 100%,
+    0 100%
+  );
 }
 
 .hero__inner {
@@ -1512,15 +1638,19 @@ body {
   gap: 96px;
 }
 
-/* Header bar */
+/* Header bar — same width/centering as .hero__inner */
 .hero__header {
+  position: relative;
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 46px;
+  width: 100%;
+  max-width: var(--container-std);
+  margin: 0 auto;
   padding: 8px var(--page-pad-h);
   background-color: var(--header-bg);
-  width: 100%;
 }
 
 /* Hero content — right-aligned panel */
@@ -1668,7 +1798,7 @@ body {
 
 /* Left variant — colour occupies left 75%, diagonal top-right → bottom-left */
 .split-section--left .split-section__panel {
-  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 3 / 4);
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 9 / 10);
   --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
   clip-path: polygon(
     0 0,
@@ -1680,7 +1810,7 @@ body {
 
 /* Right variant — colour occupies right 75%, same diagonal direction */
 .split-section--right .split-section__panel {
-  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) / 4);
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 1 / 10);
   --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
   clip-path: polygon(
     calc(var(--_cut) + var(--_offset) / 2) 0,
@@ -1694,12 +1824,14 @@ body {
 .split-section__inner {
   position: relative;
   z-index: 2;
+  width: 100%;
   max-width: var(--container-std);
   margin: 0 auto;
   padding: 0 var(--page-pad-h);
   min-height: var(--split-h, 800px);
   display: flex;
   align-items: center;
+  box-sizing: border-box;
 }
 
 /* The 75%-wide content column */
@@ -1711,9 +1843,13 @@ body {
   padding: var(--section-pad-v) 0;
 }
 
-/* The 25%-wide spacer aligned with the photo side */
+/* The 15%-wide spacer aligned with the photo side */
 .split-section__gap {
   flex: 0 0 25%;
+}
+
+.section-progress .split-section__content > .btn {
+  align-self: flex-end;
 }
 
 /* Right variant — visually push content to the right */
@@ -1745,17 +1881,19 @@ body {
 /* Left column — heading, body, landscape photo */
 .section-progress__col-text {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 32px;
 }
 
-/* Right column — 2×2 counter grid + slider */
+/* Right column — 2×2 counter grid + slider (natural width from counter content) */
 .section-progress__col-counters {
-  flex: 1;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 16px;
+  overflow: hidden;
 }
 
 .section-progress__photo {
@@ -1787,18 +1925,38 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   padding: 8px;
   background-color: var(--color-blue-900);
   border-radius: var(--radius-card);
-  width: 100%;
+  width: 416px; /* 2 × 200px cards + 16px gap */
+  max-width: 100%;
+}
+
+.progress-slider__viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.progress-slider__track {
+  display: flex;
 }
 
 .progress-slider__item {
   display: flex;
   align-items: center;
   gap: 12px;
-  flex: 1;
+  flex: 0 0 100%;
+  min-width: 0;
   justify-content: center;
+  padding: 0 4px;
+}
+
+.progress-slider__item i {
+  flex-shrink: 0;
+  font-size: 20px;
+  color: var(--color-white);
 }
 
 .progress-slider__label {
@@ -1810,6 +1968,12 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-slider__track {
+    transition: none;
+  }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2170,6 +2334,32 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   CTA SECTION
+   ═══════════════════════════════════════════════════════════ */
+
+.section-cta {
+  background-color: var(--section-1-bg);
+}
+
+.section-cta__inner {
+  max-width: var(--container-std);
+  margin: 0 auto;
+  padding: var(--section-pad-v) var(--page-pad-h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.section-cta__actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+
+/* ═══════════════════════════════════════════════════════════
    FOOTER
    ═══════════════════════════════════════════════════════════ */
 
@@ -2461,6 +2651,7 @@ body {
   .section-powered__content { flex: unset; width: 100%; }
 
   .hero__foreground-spacer { display: none; }
+  .hero { --hero-fg-spacer: 0px; }
   .hero__sub-photo { display: none; }
 
   .section-faqs__cols { flex-direction: column; }

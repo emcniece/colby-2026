@@ -81,37 +81,46 @@
       });
     });
 
-    /* Progress slider (carousel stub — replace with real data when content is ready) */
-    var slides = [
-      { icon: 'fa-tree-city',     label: 'Westshore Parks & Recreation expansion' },
-      { icon: 'fa-stethoscope',   label: 'New Langford Medical Clinic approved' },
-      { icon: 'fa-road',          label: '47km of new trails completed' },
-      { icon: 'fa-child-reaching',label: '1,200+ childcare spaces created' },
-    ];
+    /* Progress slider */
+    var progressSlider = document.querySelector('.progress-slider');
 
-    var sliderLabel = document.querySelector('.progress-slider__label');
-    var sliderIcon  = document.querySelector('.progress-slider__item i');
-    var prevBtn     = document.querySelector('.progress-slider .btn-mini:first-child');
-    var nextBtn     = document.querySelector('.progress-slider .btn-mini:last-child');
-    var current     = 0;
+    if (progressSlider) {
+      var sliderTrack = progressSlider.querySelector('.progress-slider__track');
+      var sliderItems = progressSlider.querySelectorAll('.progress-slider__item');
+      var sliderPrev = progressSlider.querySelector('.progress-slider__prev');
+      var sliderNext = progressSlider.querySelector('.progress-slider__next');
+      var sliderCurrent = 0;
+      var sliderReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    function updateSlide() {
-      if (!sliderLabel || !sliderIcon) return;
-      sliderLabel.textContent = slides[current].label;
-      sliderIcon.className = 'fa-solid ' + slides[current].icon;
-    }
+      function updateProgressSlider(animate) {
+        if (!sliderTrack || !sliderItems.length) return;
 
-    if (prevBtn) {
-      prevBtn.addEventListener('click', function () {
-        current = (current - 1 + slides.length) % slides.length;
-        updateSlide();
-      });
-    }
+        sliderTrack.style.transition = animate && !sliderReducedMotion
+          ? 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)'
+          : 'none';
+        sliderTrack.style.transform = 'translateX(-' + (sliderCurrent * 100) + '%)';
 
-    if (nextBtn) {
-      nextBtn.addEventListener('click', function () {
-        current = (current + 1) % slides.length;
-        updateSlide();
+        sliderItems.forEach(function (item, index) {
+          item.setAttribute('aria-hidden', index === sliderCurrent ? 'false' : 'true');
+        });
+      }
+
+      if (sliderPrev) {
+        sliderPrev.addEventListener('click', function () {
+          sliderCurrent = (sliderCurrent - 1 + sliderItems.length) % sliderItems.length;
+          updateProgressSlider(true);
+        });
+      }
+
+      if (sliderNext) {
+        sliderNext.addEventListener('click', function () {
+          sliderCurrent = (sliderCurrent + 1) % sliderItems.length;
+          updateProgressSlider(true);
+        });
+      }
+
+      requestAnimationFrame(function () {
+        updateProgressSlider(false);
       });
     }
 
