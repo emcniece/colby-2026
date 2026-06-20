@@ -6,16 +6,13 @@
 #   Subsequent runs: diffs against the SHA recorded in .last-deploy-sha.
 #   Uncommitted working-tree changes are always included.
 #
-# UPLOADING (static assets only)
+# UPLOADING
 #   Requires .nb-cookies — copy the full Cookie header value from DevTools
 #   while logged into NationBuilder admin and paste it into that file.
 #   Refresh the file when your session expires (~24 h for Cloudflare cookies).
 #
-#   HTML templates cannot be uploaded via the file manager API — paste those
-#   manually into the NationBuilder template code editor.
-#
 # FLAGS
-#   --upload   Also upload staged static assets to NationBuilder via curl.
+#   --upload   Also upload all staged files to NationBuilder via curl.
 #              Without this flag, deploy.sh only stages files into upload-to-nb/.
 
 set -euo pipefail
@@ -52,16 +49,9 @@ is_source_file() {
   esac
 }
 
-is_uploadable() {
-  # HTML templates must be pasted manually into the template code editor.
-  case "$1" in
-    *.html) return 1 ;;
-    *)      return 0 ;;
-  esac
-}
-
 mime_for() {
   case "$1" in
+    *.html)        echo "text/html" ;;
     *.scss|*.css)  echo "text/css" ;;
     *.js)          echo "application/javascript" ;;
     *.svg)         echo "image/svg+xml" ;;
@@ -115,32 +105,12 @@ $UPLOAD || exit 0
 
 # ── Upload ────────────────────────────────────────────────────────────────────
 
-# Count uploadable files
 uploadable=()
-html_files=()
 for filepath in upload-to-nb/*; do
-  [[ -f "$filepath" ]] || continue
-  filename="$(basename "$filepath")"
-  if is_uploadable "$filename"; then
-    uploadable+=("$filepath")
-  else
-    html_files+=("$filename")
-  fi
+  [[ -f "$filepath" ]] && uploadable+=("$filepath")
 done
 
-if [[ ${#uploadable[@]} -eq 0 && ${#html_files[@]} -eq 0 ]]; then
-  exit 0
-fi
-
-if [[ ${#html_files[@]} -gt 0 ]]; then
-  echo ""
-  echo "Reminder — paste these HTML templates manually in the NB template editor:"
-  for f in "${html_files[@]}"; do echo "  $f"; done
-fi
-
 if [[ ${#uploadable[@]} -eq 0 ]]; then
-  echo ""
-  echo "No static assets to upload."
   exit 0
 fi
 
@@ -152,7 +122,7 @@ if [[ ! -f "$COOKIE_FILE" ]]; then
 fi
 
 echo ""
-echo "Uploading ${#uploadable[@]} static asset(s) to NationBuilder..."
+echo "Uploading ${#uploadable[@]} file(s) to NationBuilder..."
 
 # Fetch the upload page to get a fresh CSRF token
 page_html=$(curl -s --compressed \

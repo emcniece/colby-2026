@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-19i
+   COLBY 2026 CUSTOM STYLES — 2026-06-20h
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -729,6 +729,11 @@ body {
   .site-header__nav-links { display: none; }
 }
 
+.btn__donate {
+  position: relative;
+  align-self: center;
+  margin-top: -12px;
+}
 
 /* ═══════════════════════════════════════════════════════════
    MENU LINK
@@ -1038,8 +1043,44 @@ body {
 }
 
 .accordion-item__body {
+  display: grid;
+  grid-template-rows: 0fr;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.accordion-item--open .accordion-item__body {
+  grid-template-rows: 1fr;
   padding-bottom: var(--size-one-half);
-  display: none;
+}
+
+.accordion--ready .accordion-item__body {
+  transition:
+    grid-template-rows 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+    padding-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-item__body-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--color-white);
+}
+
+.accordion-item--open .accordion-item__body-inner {
+  opacity: 1;
+}
+
+.accordion--ready .accordion-item__body-inner {
+  transition: opacity 0.25s ease;
+}
+
+.accordion--ready .accordion-item--open .accordion-item__body-inner {
+  transition: opacity 0.25s ease 0.08s;
 }
 
 .accordion-item__body p,
@@ -1062,8 +1103,11 @@ body {
   gap: var(--size-base);
 }
 
-.accordion-item--open .accordion-item__body {
-  display: block;
+@media (prefers-reduced-motion: reduce) {
+  .accordion--ready .accordion-item__body,
+  .accordion--ready .accordion-item__body-inner {
+    transition: none;
+  }
 }
 
 
@@ -1449,14 +1493,17 @@ body {
 
 .hero__diagonal img {
   position: absolute;
-  inset: 0;
+  top: 0;
+  right: 0;
   width: 100%;
+  max-width: 1400px;
   height: 100%;
 }
 
 .hero__inner {
   position: relative;
   z-index: 2;
+  flex: 1;
   width: 100%;
   max-width: var(--container-std);
   margin: 0 auto;
@@ -1499,6 +1546,11 @@ body {
 .hero__headline {
   color: var(--color-white);
   margin-bottom: 32px;
+  margin-top: 40px;
+}
+
+.hero__sub-headline {
+  color: var(--color-white);
 }
 
 .hero__subheadline {
@@ -1548,13 +1600,14 @@ body {
   width: 469px;
   flex-shrink: 0;
   overflow: visible;
+  align-self: flex-end;
 }
 
 .hero__sub-photo img {
   position: absolute;
-  bottom: -105px;
-  right: 0px;
-  height: 610px;
+  bottom: -48px; /* -48px = hero__sub-inner bottom padding, puts portrait feet at bar bottom */
+  right: 0;
+  height: 620px;
   width: auto;
   object-fit: contain;
 }
@@ -1576,30 +1629,110 @@ body {
 }
 
 /* ═══════════════════════════════════════════════════════════
+   SPLIT SECTION
+   Full-bleed photo background + solid-colour panel clipped
+   at --para-angle diagonal. Content fills left or right 75%.
+
+   Modifiers:  .split-section--left   colour left, photo right
+               .split-section--right  colour right, photo left
+   Tokens:     --split-bg   panel background colour
+               --split-h    section height used for angle calc
+   ═══════════════════════════════════════════════════════════ */
+
+.split-section {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Full-bleed background photo */
+.split-section__photo {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.split-section__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Solid-colour panel with diagonal clip */
+.split-section__panel {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background-color: var(--split-bg, var(--section-3-bg));
+}
+
+/* Left variant — colour occupies left 75%, diagonal top-right → bottom-left */
+.split-section--left .split-section__panel {
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 3 / 4);
+  --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
+  clip-path: polygon(
+    0 0,
+    calc(var(--_cut) + var(--_offset) / 2) 0,
+    calc(var(--_cut) - var(--_offset) / 2) 100%,
+    0 100%
+  );
+}
+
+/* Right variant — colour occupies right 75%, same diagonal direction */
+.split-section--right .split-section__panel {
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) / 4);
+  --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
+  clip-path: polygon(
+    calc(var(--_cut) + var(--_offset) / 2) 0,
+    100% 0,
+    100% 100%,
+    calc(var(--_cut) - var(--_offset) / 2) 100%
+  );
+}
+
+/* Content container — centred, sits above photo + panel */
+.split-section__inner {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-std);
+  margin: 0 auto;
+  padding: 0 var(--page-pad-h);
+  min-height: var(--split-h, 800px);
+  display: flex;
+  align-items: center;
+}
+
+/* The 75%-wide content column */
+.split-section__content {
+  flex: 0 0 75%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: var(--section-pad-v) 0;
+}
+
+/* The 25%-wide spacer aligned with the photo side */
+.split-section__gap {
+  flex: 0 0 25%;
+}
+
+/* Right variant — visually push content to the right */
+.split-section--right .split-section__inner {
+  flex-direction: row-reverse;
+}
+
+/* ═══════════════════════════════════════════════════════════
    PROGRESS SECTION
    ═══════════════════════════════════════════════════════════ */
 
 .section-progress {
-  background-color: var(--section-3-bg);
+  --split-bg: var(--section-3-bg);
+  --split-h:  814px;
   color: var(--color-white);
 }
 
-.section-progress .section-inner {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  min-height: 814px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.section-progress__text {
-  flex: 0 0 calc(100% * 1080/1440);
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: flex-end;
-  padding: var(--section-pad-v) var(--page-pad-h);
+.section-progress .heading-h2{
+  color: var(--color-white);
 }
 
 .section-progress__cols {
@@ -1609,11 +1742,20 @@ body {
   width: 100%;
 }
 
-.section-progress__col-main {
+/* Left column — heading, body, landscape photo */
+.section-progress__col-text {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 32px;
+}
+
+/* Right column — 2×2 counter grid + slider */
+.section-progress__col-counters {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .section-progress__photo {
@@ -1640,21 +1782,6 @@ body {
   gap: 16px;
 }
 
-.section-progress__image-panel {
-  flex: 0 0 calc(100% * 320/1440);
-  position: relative;
-  overflow: hidden;
-  align-self: stretch;
-}
-
-.section-progress__image-panel img.section-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 /* Progress slider */
 .progress-slider {
   display: flex;
@@ -1663,7 +1790,7 @@ body {
   padding: 8px;
   background-color: var(--color-blue-900);
   border-radius: var(--radius-card);
-  width: 416px;
+  width: 100%;
 }
 
 .progress-slider__item {
@@ -1824,40 +1951,9 @@ body {
    ═══════════════════════════════════════════════════════════ */
 
 .section-priorities {
-  background-color: var(--section-4-bg);
+  --split-bg: var(--section-4-bg);
+  --split-h:  944px;
   color: var(--color-white);
-}
-
-.section-priorities .section-inner {
-  display: flex;
-  align-items: center;
-  min-height: 944px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.section-priorities__image {
-  flex: 0 0 40%;
-  align-self: stretch;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-priorities__image img.section-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.section-priorities__text {
-  flex: 0 0 60%;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: flex-end;
-  padding: var(--section-pad-v) var(--page-pad-h);
 }
 
 .section-priorities__heading {
@@ -1974,40 +2070,9 @@ body {
    ═══════════════════════════════════════════════════════════ */
 
 .section-platform {
-  background-color: var(--section-2-bg);
+  --split-bg: var(--section-2-bg);
+  --split-h:  836px;
   color: var(--section-2-body);
-}
-
-.section-platform .section-inner {
-  display: flex;
-  align-items: center;
-  min-height: 836px;
-  padding-top: 0;
-  padding-bottom: 0;
-}
-
-.section-platform__image {
-  flex: 0 0 25%;
-  align-self: stretch;
-  position: relative;
-  overflow: hidden;
-}
-
-.section-platform__image img.section-photo {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.section-platform__text {
-  flex: 0 0 75%;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-  align-items: flex-end;
-  padding: var(--section-pad-v) var(--page-pad-h);
 }
 
 .section-platform__intro {
@@ -2372,32 +2437,28 @@ body {
     --text-h2-lh: 48px;
   }
 
-  .section-progress .section-inner,
-  .section-powered .section-inner,
-  .section-priorities .section-inner,
-  .section-platform .section-inner {
+  /* Split sections — stack on tablet/mobile */
+  .split-section__photo { display: none; }
+  .split-section__panel { display: none; }
+  .split-section { background-color: var(--split-bg); }
+  .split-section__inner,
+  .split-section--right .split-section__inner {
+    flex-direction: column;
+    min-height: unset;
+    padding-top: var(--section-pad-v);
+    padding-bottom: var(--section-pad-v);
+  }
+  .split-section__content { flex: unset; width: 100%; }
+  .split-section__gap { display: none; }
+
+  .section-powered .section-inner {
     flex-direction: column;
     min-height: unset;
     padding-top: var(--section-pad-v);
     padding-bottom: var(--section-pad-v);
   }
 
-  .section-progress__text,
-  .section-platform__text,
-  .section-priorities__text {
-    flex: unset;
-    width: 100%;
-    padding: 0;
-    align-items: flex-start;
-  }
-
   .section-powered__content { flex: unset; width: 100%; }
-
-  .section-priorities__image,
-  .section-platform__image,
-  .section-progress__image-panel {
-    display: none;
-  }
 
   .hero__foreground-spacer { display: none; }
   .hero__sub-photo { display: none; }

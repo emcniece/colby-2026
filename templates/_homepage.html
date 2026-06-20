@@ -49,7 +49,7 @@
       </ul>
     </nav>
 
-    <a href="/pages/donate" class="btn btn-v3">Donate</a>
+    <a href="/pages/donate" class="btn btn-v3 btn__donate">Donate</a>
 
     <button class="btn-hamburger hide-desktop" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
       <i class="fa-solid fa-bars"></i>
@@ -84,29 +84,36 @@
           <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
           <div class="signup-form__row">
             <div class="form-group">
-              <label class="form-group__label" for="hero-name">Name</label>
-              <input class="form-group__field" id="hero-name" type="text" name="signup[name]" placeholder="Your name" autocomplete="name" />
+              <input class="form-group__field" id="hero-name" type="text" name="signup[name]" placeholder="Name" autocomplete="name" />
             </div>
             <div class="form-group">
-              <label class="form-group__label" for="hero-email">Email</label>
-              <input class="form-group__field" id="hero-email" type="email" name="signup[email]" placeholder="your@email.com" autocomplete="email" />
+              <input class="form-group__field" id="hero-email" type="email" name="signup[email]" placeholder="Email" autocomplete="email" />
+            </div>
+            <div class="form-group">
+              <button class="btn btn-white-ghost" type="submit">Get involved</button>
             </div>
           </div>
-          <div class="signup-form__footer">
-            <button class="btn btn-white-ghost" type="submit">Get involved</button>
-            <label class="signup-form__volunteer checkbox-group">
-              <input class="checkbox-group__control" type="checkbox" name="signup[volunteer]" value="1" />
-              <span class="checkbox-group__label">I want to volunteer</span>
-            </label>
+          <div class="signup-form__footer signup-form__row">
+            <div class="form-group">
+              <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
+            </div>
+            <div class="form-group">
+              <label class="signup-form__volunteer checkbox-group">
+                <input type="checkbox" name="signup[volunteer]" value="1" />
+                <span class="checkbox-group__control"></span>
+                <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
+              </label>
+            </div>
+            <div class="form-group">&nbsp;</div>
           </div>
-          <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
+          
         </form>
       </div>
     </div>
 
     </div>
 
-  <!-- Sub-hero yellow bar — outside hero__inner so it bleeds to full viewport width -->
+  <!-- Sub-hero yellow bar -->
   <div class="hero__sub">
     <div class="hero__sub-inner">
       <div class="hero__sub-photo" aria-hidden="true">
@@ -129,22 +136,36 @@
 <!-- ═══════════════════════════════════════════════════════════
      PROGRESS SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section class="section-progress page-section" id="progress">
-  <div class="section-inner">
+<section class="split-section split-section--left section-progress page-section" id="progress">
 
-    <div class="section-progress__text">
+  <!-- Full-bleed background photo -->
+  <div class="split-section__photo" aria-hidden="true">
+    <img src="{{ theme['progress-clinic.png'] }}" alt="" loading="lazy" />
+  </div>
+
+  <!-- Blue colour panel with diagonal cut -->
+  <div class="split-section__panel" aria-hidden="true"></div>
+
+  <!-- Centred content (left 75%) -->
+  <div class="split-section__inner">
+    <div class="split-section__content">
+      <span class="kicker kicker--on-3">Progress</span>
+
       <div class="section-progress__cols">
 
-        <div class="section-progress__col-main">
-          <span class="kicker kicker--on-3">Progress</span>
-          <h2 class="heading-h2">Turning bold ideas into action</h2>
-          <p class="section-progress__body">From prioritizing public safety to protecting our natural environment, here is how we've turned bold ideas into real, lasting progress for Langford.</p>
-
+        <!-- Left: heading + body + landscape photo -->
+        <div class="section-progress__col-text">
+          <div>
+            <h2 class="heading-h2">Turning bold ideas into action</h2>
+            <p class="section-progress__body">From prioritizing public safety to protecting our natural environment, here is how we've turned bold ideas into real, lasting progress for Langford.</p>
+          </div>
           <div class="section-progress__photo">
             <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
           </div>
+        </div>
 
-          <!-- 2×2 counter grid -->
+        <!-- Right: 2×2 counter grid + slider -->
+        <div class="section-progress__col-counters">
           <div class="section-progress__counters">
             <div class="section-progress__counter-row">
               <div class="progress-counter">
@@ -167,8 +188,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Progress slider carousel -->
           <div class="progress-slider" role="region" aria-label="Progress highlights">
             <button class="btn-mini" aria-label="Previous highlight">
               <i class="fa-solid fa-chevron-left"></i>
@@ -181,22 +200,15 @@
               <i class="fa-solid fa-chevron-right"></i>
             </button>
           </div>
-
-          <a href="/pages/progress" class="btn btn-v3">See more progress</a>
         </div>
 
       </div>
-    </div>
 
-    <!-- Right photo panel (full-height, edge-to-edge) -->
-    <div class="section-progress__image-panel" aria-hidden="true">
-      <img class="section-photo"
-           src="{{ theme['progress-clinic.png'] }}"
-           alt="Langford medical clinic"
-           loading="lazy" />
+      <a href="/pages/progress" class="btn btn-v3">See more progress</a>
     </div>
-
+    <div class="split-section__gap" aria-hidden="true"></div>
   </div>
+
 </section>
 
 
@@ -249,95 +261,105 @@
 <!-- ═══════════════════════════════════════════════════════════
      PRIORITIES / SURVEY SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section class="section-priorities page-section" id="priorities">
+<section class="split-section split-section--right section-priorities page-section" id="priorities">
 
-  <!-- Left photo -->
-  <div class="section-priorities__image" aria-hidden="true">
-    <img class="section-photo"
-         src="{{ theme['priorities-photo.png'] }}"
-         alt="Langford neighbourhood"
-         loading="lazy" />
+  <!-- Full-bleed background photo -->
+  <div class="split-section__photo" aria-hidden="true">
+    <img src="{{ theme['priorities-photo.png'] }}" alt="" loading="lazy" />
   </div>
 
-  <!-- Right content -->
-  <div class="section-priorities__text">
-    <span class="kicker kicker--on-4">Priorities</span>
-    <h2 class="heading-h2 section-priorities__heading">I want to know what's important to you</h2>
-    <p class="section-priorities__body">
-      My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
-    </p>
+  <!-- Pink colour panel with diagonal cut -->
+  <div class="split-section__panel" aria-hidden="true"></div>
 
-    <!-- Survey form -->
-    <form class="survey" action="/pages/submit-priorities" method="post">
-      <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
+  <!-- Centred content (right 2/3) -->
+  <div class="split-section__inner">
+    <div class="split-section__content">
+      <span class="kicker kicker--on-4">Priorities</span>
+      <h2 class="heading-h2 section-priorities__heading">I want to know what's important to you</h2>
+      <p class="section-priorities__body">
+        My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
+      </p>
 
-      <!-- Q1: Direction sentiment -->
-      <div class="survey__question">
-        <p class="survey__question-label" data-num="1">How would you rate the current direction of our city?</p>
-        <div class="survey__sentiment" role="group" aria-label="Direction options">
-          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="right-track" aria-pressed="false">
-            On the right track
-          </button>
-          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-adjustment" aria-pressed="false">
-            Needs adjustment
-          </button>
-          <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-change" aria-pressed="false">
-            Needs change
-          </button>
+      <!-- Survey form -->
+      <form class="survey" action="/pages/submit-priorities" method="post">
+        <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
+
+        <!-- Q1: Direction sentiment -->
+        <div class="survey__question">
+          <p class="survey__question-label" data-num="1">How would you rate the current direction of our city?</p>
+          <div class="survey__sentiment" role="group" aria-label="Direction options">
+            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="right-track" aria-pressed="false">
+              On the right track
+            </button>
+            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-adjustment" aria-pressed="false">
+              Needs adjustment
+            </button>
+            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-change" aria-pressed="false">
+              Needs change
+            </button>
+          </div>
         </div>
-      </div>
 
-      <!-- Q2: Priority areas -->
-      <div class="survey__question">
-        <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
-        <div class="survey__checkboxes" role="group" aria-label="Priority areas">
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="traffic-roads" />
-            <span class="checkbox-group__label">Traffic &amp; Roads</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="public-safety" />
-            <span class="checkbox-group__label">Public Safety</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="housing-affordability" />
-            <span class="checkbox-group__label">Housing &amp; Affordability</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="transparency" />
-            <span class="checkbox-group__label">Transparency &amp; Accountability</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="parks-greenspace" />
-            <span class="checkbox-group__label">Parks &amp; Greenspace</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="other" />
-            <span class="checkbox-group__label">Other</span>
-          </label>
-          <label class="checkbox-group">
-            <input class="checkbox-group__control" type="checkbox" name="survey[areas][]" value="community-facilities" />
-            <span class="checkbox-group__label">Community Facilities</span>
-          </label>
+        <!-- Q2: Priority areas -->
+        <div class="survey__question">
+          <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
+          <div class="survey__checkboxes" role="group" aria-label="Priority areas">
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="traffic-roads" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Traffic &amp; Roads</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="public-safety" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Public Safety</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="housing-affordability" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Housing &amp; Affordability</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="transparency" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Transparency &amp; Accountability</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="parks-greenspace" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Parks &amp; Greenspace</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="other" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Other</span>
+            </label>
+            <label class="checkbox-group">
+              <input type="checkbox" name="survey[areas][]" value="community-facilities" />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">Community Facilities</span>
+            </label>
+          </div>
         </div>
-      </div>
 
-      <!-- Q3: Open text -->
-      <div class="survey__question">
-        <label class="survey__question-label" data-num="3" for="survey-change">
-          What is the single biggest change you would like to see in Langford over the next four years?
-        </label>
-        <div class="form-group">
-          <input class="form-group__field form-group__field--bordered"
-                 id="survey-change"
-                 type="text"
-                 name="survey[change]"
-                 placeholder="Your answer…" />
+        <!-- Q3: Open text -->
+        <div class="survey__question">
+          <label class="survey__question-label" data-num="3" for="survey-change">
+            What is the single biggest change you would like to see in Langford over the next four years?
+          </label>
+          <div class="form-group">
+            <input class="form-group__field form-group__field--bordered"
+                   id="survey-change"
+                   type="text"
+                   name="survey[change]"
+                   placeholder="Your answer…" />
+          </div>
         </div>
-      </div>
 
-      <button class="btn btn-v3" type="submit">Share my priorities</button>
-    </form>
+        <button class="btn btn-v3" type="submit">Share my priorities</button>
+      </form>
+    </div>
+    <div class="split-section__gap" aria-hidden="true"></div>
   </div>
 
 </section>
@@ -377,16 +399,18 @@
                 <i class="fa-solid fa-minus-circle"></i>
               </span>
             </button>
-            <div class="accordion-item__body" id="faq-1-body">
-              <p>As a Langford taxpayer, I feel the pain of the increase too. Many of us are struggling to build a future in this city, and I don't take that lightly.</p>
-              <p>When we took office, we found that our city had been under-funding essential services like the fire department for years to keep taxes artificially low. We were essentially ignoring our city's real needs to keep the numbers looking good on paper. We had to make a choice: continue that pattern, or make the necessary investments to get our city on the right track.</p>
-              <p>We chose to catch up. Because of that investment, some of the tangible benefits are:</p>
-              <ul>
-                <li>27 new full-time firefighters</li>
-                <li>A new medical clinic with 12 new family doctors</li>
-                <li>Safe sidewalks to schools</li>
-              </ul>
-              <p>My goal is to ensure your tax dollars are actually paying for the services we need, rather than just covering up long-term problems.</p>
+            <div class="accordion-item__body" id="faq-1-body" aria-hidden="false">
+              <div class="accordion-item__body-inner">
+                <p>As a Langford taxpayer, I feel the pain of the increase too. Many of us are struggling to build a future in this city, and I don't take that lightly.</p>
+                <p>When we took office, we found that our city had been under-funding essential services like the fire department for years to keep taxes artificially low. We were essentially ignoring our city's real needs to keep the numbers looking good on paper. We had to make a choice: continue that pattern, or make the necessary investments to get our city on the right track.</p>
+                <p>We chose to catch up. Because of that investment, some of the tangible benefits are:</p>
+                <ul>
+                  <li>27 new full-time firefighters</li>
+                  <li>A new medical clinic with 12 new family doctors</li>
+                  <li>Safe sidewalks to schools</li>
+                </ul>
+                <p>My goal is to ensure your tax dollars are actually paying for the services we need, rather than just covering up long-term problems.</p>
+              </div>
             </div>
           </div>
 
@@ -397,8 +421,10 @@
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
-            <div class="accordion-item__body" id="faq-2-body" hidden>
-              We've already made significant investments — hiring 27 new full-time firefighters and supporting the new Westshore RCMP detachment. Going forward, my focus is on proactive community safety: better street lighting, expanded mental health response options, and ensuring our emergency services keep pace with our growing population.
+            <div class="accordion-item__body" id="faq-2-body" aria-hidden="true">
+              <div class="accordion-item__body-inner">
+                We've already made significant investments — hiring 27 new full-time firefighters and supporting the new Westshore RCMP detachment. Going forward, my focus is on proactive community safety: better street lighting, expanded mental health response options, and ensuring our emergency services keep pace with our growing population.
+              </div>
             </div>
           </div>
 
@@ -409,8 +435,10 @@
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
-            <div class="accordion-item__body" id="faq-3-body" hidden>
-              Some consultant spending is necessary and responsible — for example, hiring independent experts to develop our Transportation Master Plan ensures the city gets unbiased, technical advice on complex infrastructure decisions. Where I've pushed back is on consultants hired to do work that should be done by qualified city staff. I'm committed to transparency about what we spend and why.
+            <div class="accordion-item__body" id="faq-3-body" aria-hidden="true">
+              <div class="accordion-item__body-inner">
+                Some consultant spending is necessary and responsible — for example, hiring independent experts to develop our Transportation Master Plan ensures the city gets unbiased, technical advice on complex infrastructure decisions. Where I've pushed back is on consultants hired to do work that should be done by qualified city staff. I'm committed to transparency about what we spend and why.
+              </div>
             </div>
           </div>
 
@@ -421,8 +449,10 @@
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
-            <div class="accordion-item__body" id="faq-4-body" hidden>
-              Change in local government is often slower and less visible than people expect — and that's okay. It means new medical clinics, updated zoning rules that allow more housing types, a Transportation Master Plan that didn't exist before, and a fire department that's finally properly staffed. I'm proud of that work, and there's much more still to do.
+            <div class="accordion-item__body" id="faq-4-body" aria-hidden="true">
+              <div class="accordion-item__body-inner">
+                Change in local government is often slower and less visible than people expect — and that's okay. It means new medical clinics, updated zoning rules that allow more housing types, a Transportation Master Plan that didn't exist before, and a fire department that's finally properly staffed. I'm proud of that work, and there's much more still to do.
+              </div>
             </div>
           </div>
 
@@ -433,8 +463,10 @@
                 <i class="fa-solid fa-plus-circle"></i>
               </span>
             </button>
-            <div class="accordion-item__body" id="faq-5-body" hidden>
-              Local elections are decided by small margins — sometimes just a few hundred votes. The councillors elected in October will make decisions about your taxes, your roads, your parks, and the housing in your neighbourhood for the next four years. Every vote directly shapes the city you live in.
+            <div class="accordion-item__body" id="faq-5-body" aria-hidden="true">
+              <div class="accordion-item__body-inner">
+                Local elections are decided by small margins — sometimes just a few hundred votes. The councillors elected in October will make decisions about your taxes, your roads, your parks, and the housing in your neighbourhood for the next four years. Every vote directly shapes the city you live in.
+              </div>
             </div>
           </div>
 
@@ -451,79 +483,80 @@
 <!-- ═══════════════════════════════════════════════════════════
      PLATFORM SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section class="section-platform page-section" id="platform">
+<section class="split-section split-section--right section-platform page-section" id="platform">
 
-  <!-- Left photo panel -->
-  <div class="section-platform__image" aria-hidden="true">
-    <img class="section-photo"
-         src="{{ theme['platform-photo.png'] }}"
-         alt="Langford community"
-         loading="lazy" />
+  <!-- Full-bleed background photo -->
+  <div class="split-section__photo" aria-hidden="true">
+    <img src="{{ theme['platform-photo.png'] }}" alt="" loading="lazy" />
   </div>
 
-  <!-- Right content -->
-  <div class="section-platform__text">
-    <span class="kicker kicker--on-2">Platform</span>
+  <!-- Yellow colour panel with diagonal cut -->
+  <div class="split-section__panel" aria-hidden="true"></div>
 
-    <div class="section-platform__intro">
-      <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
-      <p class="section-platform__intro-body">
-        My aim is to make Langford more affordable, connected, and fun. I'm focusing on bringing the right people and ideas together to keep us moving forward, together.
-      </p>
-    </div>
+  <!-- Centred content (right 2/3) -->
+  <div class="split-section__inner">
+    <div class="split-section__content">
+      <span class="kicker kicker--on-2">Platform</span>
 
-    <!-- 3 priority cards -->
-    <div class="section-platform__priorities" role="list">
-
-      <article class="priority-card" role="listitem">
-        <div class="feature-icon feature-icon--lg feature-icon--c1" aria-hidden="true">
-          <i class="fa-solid fa-house-chimney"></i>
-        </div>
-        <h3 class="priority-card__heading">Housing for Everyone</h3>
-        <p class="priority-card__body">
-          More gentle density, streamlined permitting, and partnerships with non-profits to build homes people can actually afford to live in.
+      <div class="section-platform__intro">
+        <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
+        <p class="section-platform__intro-body">
+          My aim is to make Langford more affordable, connected, and fun. I'm focusing on bringing the right people and ideas together to keep us moving forward, together.
         </p>
-      </article>
+      </div>
 
-      <article class="priority-card" role="listitem">
-        <div class="feature-icon feature-icon--lg feature-icon--c2" aria-hidden="true">
-          <i class="fa-solid fa-stethoscope"></i>
+      <!-- 3 priority cards -->
+      <div class="section-platform__priorities" role="list">
+        <article class="priority-card" role="listitem">
+          <div class="feature-icon feature-icon--lg feature-icon--c1" aria-hidden="true">
+            <i class="fa-solid fa-house-chimney"></i>
+          </div>
+          <h3 class="priority-card__heading">Housing for Everyone</h3>
+          <p class="priority-card__body">
+            More gentle density, streamlined permitting, and partnerships with non-profits to build homes people can actually afford to live in.
+          </p>
+        </article>
+
+        <article class="priority-card" role="listitem">
+          <div class="feature-icon feature-icon--lg feature-icon--c2" aria-hidden="true">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <h3 class="priority-card__heading">Local Healthcare</h3>
+          <p class="priority-card__body">
+            Advocate for the Westshore's fair share of Island Health resources and support the expansion of the new medical clinic.
+          </p>
+        </article>
+
+        <article class="priority-card" role="listitem">
+          <div class="feature-icon feature-icon--lg feature-icon--c3" aria-hidden="true">
+            <i class="fa-solid fa-tree-city"></i>
+          </div>
+          <h3 class="priority-card__heading">Green &amp; Connected</h3>
+          <p class="priority-card__body">
+            Expand the trail network, protect green corridors, and push for better transit connections to Victoria and the region.
+          </p>
+        </article>
+      </div>
+
+      <!-- Notify me form -->
+      <div class="section-platform__notify">
+        <p class="section-platform__notify-text">My full platform is coming soon. Sign up to be notified when it's ready.</p>
+        <div class="section-platform__notify-form">
+          <div class="form-group">
+            <input class="form-group__field"
+                   type="email"
+                   name="notify[email]"
+                   placeholder="Email"
+                   autocomplete="email"
+                   aria-label="Email address for platform notifications" />
+          </div>
+          <button class="btn btn-v2" type="submit">Notify me</button>
         </div>
-        <h3 class="priority-card__heading">Local Healthcare</h3>
-        <p class="priority-card__body">
-          Advocate for the Westshore's fair share of Island Health resources and support the expansion of the new medical clinic.
-        </p>
-      </article>
-
-      <article class="priority-card" role="listitem">
-        <div class="feature-icon feature-icon--lg feature-icon--c3" aria-hidden="true">
-          <i class="fa-solid fa-tree-city"></i>
-        </div>
-        <h3 class="priority-card__heading">Green &amp; Connected</h3>
-        <p class="priority-card__body">
-          Expand the trail network, protect green corridors, and push for better transit connections to Victoria and the region.
-        </p>
-      </article>
-
-    </div>
-
-    <!-- Notify me form -->
-    <div class="section-platform__notify">
-      <p class="section-platform__notify-text">My full platform is coming soon. Sign up to be notified when it's ready.</p>
-      <div class="section-platform__notify-form">
-        <div class="form-group">
-          <input class="form-group__field"
-                 type="email"
-                 name="notify[email]"
-                 placeholder="Email"
-                 autocomplete="email"
-                 aria-label="Email address for platform notifications" />
-        </div>
-        <button class="btn btn-v2" type="submit">Notify me</button>
       </div>
     </div>
-
+    <div class="split-section__gap" aria-hidden="true"></div>
   </div>
+
 </section>
 
 

@@ -144,6 +144,10 @@
 
     <script src="vcs-components.js"></script>
 
+    {% if page.is_homepage? and page.type_slug == 'basic' %}
+      <script src="accordion.js"></script>
+    {% endif %}
+
     {% if request.template contains "signups_edit"
       or request.template contains "profiles_show_wide"
       or request.template contains "profiles_show"
