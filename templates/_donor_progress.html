@@ -1,0 +1,64 @@
+{% comment %}
+  Moneybomb progress bar for the homepage .donor-progress section.
+
+  Render with the subpage tag so `page` is the moneybomb page:
+    {% subpage "your-moneybomb-slug" with "donor_progress" %}
+
+  In NationBuilder admin, create a Moneybomb page and set either:
+  - Goal for number of pledgers, or
+  - Goal for amount pledged
+
+  @see https://nationbuilder.com/moneybomb_page_variables
+{% endcomment %}
+
+{% if page.moneybomb.has_pledger_goal? %}
+  {% assign mb_percent = page.moneybomb.percent_of_pledger_goal %}
+  {% assign mb_count = page.pledges_count %}
+  {% assign mb_goal = page.moneybomb.pledger_goal %}
+  {% assign mb_label = t_moneybomb_pledgers %}
+  {% assign mb_label_low = t_moneybomb_pledgers_low_count %}
+  {% assign mb_has_goal = true %}
+{% elsif page.moneybomb.has_amount_goal? %}
+  {% assign mb_percent = page.moneybomb.percent_of_amount_goal %}
+  {% assign mb_amount = page.pledges_amount_format %}
+  {% assign mb_goal = page.moneybomb.amount_goal_format %}
+  {% assign mb_label = t_moneybomb_pledged %}
+  {% assign mb_has_goal = true %}
+{% else %}
+  {% assign mb_has_goal = false %}
+{% endif %}
+
+{% if mb_has_goal %}
+  {% if mb_percent <= 1 %}
+    {% assign finalPercent = mb_percent | times: 100 %}
+  {% else %}
+    {% assign finalPercent = mb_percent %}
+  {% endif %}
+
+  {% if finalPercent > 100 %}
+    {% assign finalPercent = 100 %}
+  {% endif %}
+
+  <div class="donor-progress">
+    <p class="donor-progress__label">
+      {% if page.moneybomb.has_pledger_goal? %}
+        {% assign count_num = mb_count | plus: 0 %}
+        {% if count_num < 3 %}
+          {{ t_volunteer_just_started_help_us_get_to }} {{ mb_goal | number_with_commas }} {{ mb_label_low | pluralize }}
+        {% else %}
+          {{ mb_count | number_with_commas }} {{ mb_label | pluralize }} {{ t_volunteer_so_far_help_us_get_to }} {{ mb_goal | number_with_commas }}
+        {% endif %}
+      {% else %}
+        {{ mb_amount }} {{ mb_label }} {{ t_volunteer_so_far_help_us_get_to }} {{ mb_goal | number_with_commas }}
+      {% endif %}
+    </p>
+    <div class="donor-progress__bar"
+         role="progressbar"
+         aria-valuenow="{{ finalPercent | round }}"
+         aria-valuemin="0"
+         aria-valuemax="100"
+         aria-label="{{ finalPercent | round }} percent of goal reached">
+      <div class="donor-progress__fill" style="width: {{ finalPercent }}%;"></div>
+    </div>
+  </div>
+{% endif %}

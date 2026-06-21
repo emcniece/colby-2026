@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21m
+   COLBY 2026 CUSTOM STYLES — 2026-06-21n
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -2064,7 +2064,7 @@ body {
   height: 100%;
   background-color: var(--color-pink-500);
   border-radius: var(--radius-pill);
-  width: 17%; /* ~17/100 donors */
+  width: 0;
 }
 
 /* Donation selector */
@@ -2117,7 +2117,8 @@ body {
 }
 
 .donation-amount:hover,
-.donation-amount.is-selected {
+.donation-amount.is-selected,
+.donation-amount.donation-amount--active {
   background-color: var(--btn-v1-solid-bg);
   color: var(--btn-v1-solid-text);
   border-color: var(--btn-v1-solid-bg);
@@ -2527,7 +2528,7 @@ body {
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 100%;
+  width: 60%;
   height: 2px;
   background: var(--color-white);
   border-radius: 999px;

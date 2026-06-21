@@ -4,13 +4,9 @@
   <div class="container">
     <div class="row">
       <div class="col-12 col-lg-8 mb-4">
-        <div class="donation-form-container card shadow px-3 py-5 px-md-5">
-          {% if page.headline.size > 0 %}
-          <h2>{{ page.headline }}</h2>
-          {% endif %}
-
+        <div class="donation-form-container card shadow px-3 pb-5 pt-3 px-md-5">
           {% if page.donation_v2.content.size > 0 %}
-          <div id="intro" class="intro mt-2">
+          <div id="intro" class="intro mb-3">
             {{ page.donation_v2.content }}
           </div>
           {% endif %}
