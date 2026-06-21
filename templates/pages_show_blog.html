@@ -74,7 +74,13 @@
               {% for tag in post.tags %}
                 {% if status_tags contains tag.name %}
                   {% assign tag_slug = tag.name | downcase | replace: ' ', '-' %}
-                  <span class="blog-card__tag blog-card__tag--status blog-card__tag--{{ tag_slug }}">{{ tag.name }}</span>
+                  <span class="blog-card__tag blog-card__tag--status blog-card__tag--{{ tag_slug }}">
+                    {% if tag.name == 'Delivered' %}<i class="fa-solid fa-check" aria-hidden="true"></i>
+                    {% elsif tag.name == 'In Progress' %}<i class="fa-solid fa-clock" aria-hidden="true"></i>
+                    {% elsif tag.name == 'Blocked' %}<i class="fa-solid fa-ban" aria-hidden="true"></i>
+                    {% endif %}
+                    {{ tag.name }}
+                  </span>
                 {% endif %}
               {% endfor %}
             </div>
