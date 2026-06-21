@@ -30,6 +30,7 @@
             <li class="nav-item dropdown{% if child.is_or_is_ancestor_of_current_page? %} active{% endif %}">
               <a href="{{ child.url }}" class="nav-link dropdown-toggle{% if child.is_or_is_ancestor_of_current_page? %} active{% endif %}" id="{{ child.slug }}{{ child.id }}" aria-haspopup="true" aria-expanded="false">
                 {{ child.name }}
+                <i class="fa-solid fa-chevron-down nav-link__chevron" aria-hidden="true"></i>
               </a>
               <div class="dropdown-menu" aria-labelledby="{{child.slug}}{{child.id}}">
                 <a class="dropdown-item copy" href="{{ child.url }}">{{ child.name }}</a>

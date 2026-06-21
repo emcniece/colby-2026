@@ -19,6 +19,7 @@
         <li class="nav-item dropdown">
           <a href="{{ child.url }}" class="nav-link dropdown-toggle" id="{{child.slug}}{{child.id}}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{ child.name }}
+            <i class="fa-solid fa-chevron-down nav-link__chevron" aria-hidden="true"></i>
           </a>
           <div class="dropdown-menu" aria-labelledby="{{child.slug}}{{child.id}}">
             {% if site.show_parent_in_nav_dropdown? %}

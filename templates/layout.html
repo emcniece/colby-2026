@@ -94,7 +94,21 @@
 
       {% if page.slug == 'about' %}
 
-        {% include "_about" %}
+        <main id="content" class="py-3 mb-5" role="main">
+          {{ content_for_notifications }}
+          <div class="container">
+            {% include "about" %}
+          </div>
+        </main>
+
+      {% elsif page.slug == 'progress' %}
+
+        <main id="content" class="py-3 mb-5" role="main">
+          {{ content_for_notifications }}
+          <div class="container">
+            {% include "progress_page" %}
+          </div>
+        </main>
 
       {% else %}
 

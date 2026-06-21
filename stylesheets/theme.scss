@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21h
+   COLBY 2026 CUSTOM STYLES — 2026-06-21j
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -2495,8 +2495,21 @@ body {
 .hero__header .navbar-nav .nav-link.active,
 .inner-page-header .navbar-nav .nav-link.active { color: var(--menu-color-pressed); }
 
-.hero__header .navbar-nav .nav-link.active::after,
-.inner-page-header .navbar-nav .nav-link.active::after {
+.hero__header .navbar-nav .nav-link.active:not(.dropdown-toggle)::after,
+.inner-page-header .navbar-nav .nav-link.active:not(.dropdown-toggle)::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 999px;
+}
+
+.hero__header .navbar-nav .nav-link.dropdown-toggle.active::before,
+.inner-page-header .navbar-nav .nav-link.dropdown-toggle.active::before {
   content: '';
   position: absolute;
   bottom: -10px;
@@ -2521,6 +2534,24 @@ body {
 .inner-page-header .navbar-nav a.nav-link[href*="donate"]:hover {
   background-color: var(--btn-v3-solid-bg-hover);
   color: var(--btn-v3-solid-text-hover);
+}
+
+/* Dropdown parent links — down chevron, hide Bootstrap caret */
+.hero__header .navbar-nav .nav-link.dropdown-toggle::after,
+.inner-page-header .navbar-nav .nav-link.dropdown-toggle::after {
+  display: none;
+}
+
+.hero__header .navbar-nav .nav-link__chevron,
+.inner-page-header .navbar-nav .nav-link__chevron {
+  font-size: 10px;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.hero__header .navbar-nav .dropdown.show > .dropdown-toggle .nav-link__chevron,
+.inner-page-header .navbar-nav .dropdown.show > .dropdown-toggle .nav-link__chevron {
+  transform: rotate(180deg);
 }
 
 /* NB toolbar (login/donate buttons) — hide; we manage donate via NB nav tags */
@@ -2598,6 +2629,206 @@ body:not(.homepage) main .container {
   max-width: var(--container-std);
   padding: var(--section-pad-v) var(--page-pad-h);
   box-sizing: border-box;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   BLOG POST LIST (pages_show_blog.html)
+   ═══════════════════════════════════════════════════════════ */
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.blog-card {
+  background: var(--color-white);
+  border-radius: 10px;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05), 4px 4px 50px rgba(12, 44, 139, 0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card__image-link { display: block; }
+
+.blog-card__image {
+  aspect-ratio: 422 / 221;
+  overflow: hidden;
+  width: 100%;
+  background: var(--color-pink-100);
+}
+
+.blog-card__image--placeholder { background: var(--color-pink-100); }
+
+.blog-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.blog-card__body {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.blog-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.blog-card__tag {
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: var(--color-blue-900);
+}
+
+.blog-card__tag + .blog-card__tag::before {
+  content: '·';
+  margin-right: 6px;
+  color: var(--color-pink-500);
+}
+
+.blog-card__tag--status {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.blog-card__tag--status + .blog-card__tag--status::before,
+.blog-card__tag + .blog-card__tag--status::before,
+.blog-card__tag--status + .blog-card__tag::before {
+  content: none;
+}
+
+.blog-card__tag--delivered {
+  background: #d4edda;
+  color: #1a5c2e;
+}
+
+.blog-card__tag--in-progress {
+  background: #fff3cd;
+  color: #7c5000;
+}
+
+.blog-card__tag--blocked {
+  background: #fde8ef;
+  color: var(--color-pink-700);
+}
+
+.blog-card__title {
+  font-family: var(--font-quattrocento);
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  color: var(--color-blue-900);
+  margin: 0;
+}
+
+.blog-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.blog-card__title a:hover { color: var(--color-pink-500); }
+
+.blog-card__excerpt {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-blue-900);
+  margin: 0;
+}
+
+.blog-grid__empty {
+  font-family: var(--font-outfit);
+  color: var(--color-blue-900);
+  padding: var(--section-pad-v) 0;
+  text-align: center;
+}
+
+.blog-pagination { margin-top: 48px; }
+
+.blog-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.blog-filter__label {
+  font-family: var(--font-outfit);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: var(--color-blue-900);
+  white-space: nowrap;
+}
+
+.blog-filter__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.blog-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 6px 12px;
+  height: 36px;
+  border-radius: 100px;
+  border: 2px solid var(--color-pink-500);
+  background: transparent;
+  font-family: var(--font-outfit);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--color-pink-500);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.blog-chip:hover {
+  background: var(--color-pink-50);
+}
+
+.blog-chip--active {
+  background: var(--color-pink-500);
+  color: var(--color-white);
+}
+
+.blog-chip--active:hover {
+  background: var(--color-pink-600);
+  border-color: var(--color-pink-600);
+}
+
+@media (max-width: 1023px) {
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 767px) {
+  .blog-grid { grid-template-columns: 1fr; }
+  .blog-filter { gap: 12px; }
+  .blog-chip { font-size: 14px; height: 32px; }
 }
 
 /* ═══════════════════════════════════════════════════════════
