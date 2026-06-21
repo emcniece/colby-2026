@@ -94,11 +94,9 @@
 
       {% if page.slug == 'about' %}
 
-        <main id="content" class="py-3 mb-5" role="main">
+        <main id="content" role="main">
           {{ content_for_notifications }}
-          <div class="container">
-            {% include "about" %}
-          </div>
+          {% include "about" %}
         </main>
 
       {% elsif page.slug == 'progress' %}

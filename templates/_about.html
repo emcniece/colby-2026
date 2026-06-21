@@ -1,5 +1,104 @@
-{% if page.basic.content.size > 0 %}
-  <div class="about-page__body">
-    {{ page.basic.content }}
+<section class="about-section section-1">
+  <div class="about-section__inner">
+
+    <!-- Row 1: text left, photos right -->
+    <div class="about-row">
+      <div class="about-row__text">
+        <h3 class="about-row__heading">Growing up here</h3>
+        <p class="about-row__body">I was born, raised, and educated in Langford. My family came to Vancouver Island in the 1970s, opening a business on Goldstream Avenue. Growing up, I lived in a mobile home park in Goldstream Meadows. When I was eight, my mother fled domestic violence, and we moved into military housing. That same year, my sister was hit by a car while crossing Humpback Road. This accident resulted in lifelong disabilities and taught me early on the importance of family support.</p>
+        <p class="about-row__body">These experiences shaped my perspective on what makes a community thrive. I spent my teenage years renting in Glen Lake, balancing school, sports, and advocacy. After graduating from the old Belmont in 2014, I stayed in Langford, working at Bin 4 while commuting to UVic. My background in environmental outreach and transportation planning gave me a deep understanding of municipal processes. As a caregiver for my grandparents, I also learned the necessity of a city that supports residents at every stage of life. Today, I am a Master's student researching aging adults and equity in transportation.</p>
+      </div>
+      <div class="about-row__photos">
+        <div class="about-row__photo">
+          <img src="{{ theme['about-family.png'] }}" alt="Colby with family" />
+        </div>
+        <div class="about-row__photo">
+          <img src="{{ theme['about-grad.png'] }}" alt="Colby at graduation" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 2: photos left, text right -->
+    <div class="about-row">
+      <div class="about-row__photos">
+        <div class="about-row__photo">
+          <img src="{{ theme['about-firefighters.png'] }}" alt="Colby with firefighters" />
+        </div>
+        <div class="about-row__photo">
+          <img src="{{ theme['about-inauguration.png'] }}" alt="Colby at 2022 inauguration" />
+        </div>
+      </div>
+      <div class="about-row__text">
+        <h3 class="about-row__heading">Serving our community</h3>
+        <p class="about-row__body">I ran for Council in 2022 because I saw our city growing quickly, but felt the heart of our community and the needs of families like mine were being left behind. Since being elected, I have focused on intentional growth, public engagement, and transparency. By leading through collaboration, I have helped build partnerships that are delivering tangible improvements to our infrastructure and public services.</p>
+        <p class="about-row__body">There is still work to be done. As a young professional building a life in Langford, I understand the struggle of trying to keep up. My vision is to make Langford more affordable, connected, and fun. In seeking re-election, I am focused on bringing people and ideas together to reduce cost of living pressures and help more residents move forward.</p>
+        <p class="about-row__cta">Join me in creating a city we can all be a part of.</p>
+      </div>
+    </div>
+
   </div>
-{% endif %}
+</section>
+
+<section class="split-section split-section--right about-cta page-section">
+
+  <div class="split-section__photo" aria-hidden="true">
+    <img src="{{ theme['about-cta-photo.png'] }}" alt="" loading="lazy" />
+  </div>
+
+  <div class="split-section__panel" aria-hidden="true"></div>
+
+  <div class="split-section__inner">
+    <div class="split-section__content">
+
+      <div class="about-cta__intro">
+        <h2 class="heading-h2 about-cta__heading">Let's do this together</h2>
+        <p class="about-cta__body">The work of building a more affordable and connected city is just beginning, and I need your voice at the table. If you want to see if my actions match my words, or if you're ready to help me shape the future, let's start here:</p>
+      </div>
+
+      <div class="about-cta__cards">
+
+        <article class="priority-card about-cta__card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <div class="priority-card__content">
+            <h3 class="priority-card__heading">See my record</h3>
+            <p class="priority-card__body">Transparency means owning both the successes and the challenges. See what I've actually delivered, where I'm currently pushing for change, and where I'm hitting roadblocks.</p>
+          </div>
+          <div class="about-cta__card-action">
+            <a href="/progress" class="btn btn-v3">See results</a>
+          </div>
+        </article>
+
+        <article class="priority-card about-cta__card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+          </div>
+          <div class="priority-card__content">
+            <h3 class="priority-card__heading">Get involved</h3>
+            <p class="priority-card__body">Campaigns aren't won in offices, they're built in neighborhoods. Whether you have an hour to spare or want to put a sign up in your yard, there's a place for you here.</p>
+          </div>
+          <div class="about-cta__card-action">
+            <a href="/volunteer" class="btn btn-v3">Learn more</a>
+          </div>
+        </article>
+
+        <article class="priority-card about-cta__card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+          <div class="priority-card__content">
+            <h3 class="priority-card__heading">Share your voice</h3>
+            <p class="priority-card__body">I don't have all the answers, but I'm listening. If you're frustrated with a specific issue, or just want to tell me how our city's growth is affecting your family, send me a note directly.</p>
+          </div>
+          <div class="about-cta__card-action">
+            <a href="/contact" class="btn btn-v3">Reach out</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+    <div class="split-section__gap" aria-hidden="true"></div>
+  </div>
+
+</section>
