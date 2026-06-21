@@ -17,25 +17,7 @@
   <!-- Transparent header nav -->
   <header class="site-header hero__header navbar navbar-expand-lg" role="banner">
     <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
-      <span class="colby-logo colby-logo--v2 colby-logo--default">
-        <span class="colby-logo__wordmark">
-          <span class="colby-logo__tri colby-logo__tri--left" aria-hidden="true"></span>
-          <span class="colby-logo__swatch">
-            <span class="colby-logo__name">
-              <span class="colby-logo__colby">COLBY</span>
-              <span class="colby-logo__harder">HARDER</span>
-            </span>
-          </span>
-          <span class="colby-logo__tri colby-logo__tri--right" aria-hidden="true"></span>
-        </span>
-        <span class="colby-logo__re-elect" aria-hidden="true">
-          <span class="colby-logo__re-tri colby-logo__re-tri--left"></span>
-          <span class="colby-logo__re-elect-label">
-            <span class="colby-logo__re-elect-text">Re-elect</span>
-          </span>
-          <span class="colby-logo__re-tri colby-logo__re-tri--right"></span>
-        </span>
-      </span>
+      <img src="{{ theme['colby-logo-sm.png'] }}" alt="{{ site.name }}" class="colby-logo-img" />
     </a>
 
     <button class="navbar-toggler btn-hamburger" type="button"
@@ -594,36 +576,9 @@
 <section class="page-section section-cta" id="cta">
   <div class="section-cta__inner">
 
-    <div href="{{ site.url }}" class="colby-logo-xl" aria-label="{{ site.name }} — home">
-
-      <!-- Row 1: RE-ELECT band -->
-      <div class="colby-logo-xl__re-row">
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--band-l" aria-hidden="true"></span>
-        <span class="colby-logo-xl__re-swatch">
-          <span class="colby-logo-xl__re-text">Re-elect</span>
-        </span>
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--band-r" aria-hidden="true"></span>
-      </div>
-
-      <!-- Row 2: COLBY / HARDER alternating colour blocks -->
-      <div class="colby-logo-xl__names">
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--name-l" aria-hidden="true"></span>
-        <span class="colby-logo-xl__name-swatch colby-logo-xl__name-swatch--colby">COLBY</span>
-        <span class="colby-logo-xl__name-swatch colby-logo-xl__name-swatch--harder">HARDER</span>
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--name-r" aria-hidden="true"></span>
-      </div>
-
-      <!-- Row 3: FOR LANGFORD CITY COUNCIL (right-aligned) -->
-      <div class="colby-logo-xl__sub-row">
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--sub-l" aria-hidden="true"></span>
-        <span class="colby-logo-xl__sub-swatch">
-          <span class="colby-logo-xl__sub-text">For Langford City Council</span>
-        </span>
-        <span class="colby-logo-xl__tri colby-logo-xl__tri--sub-r" aria-hidden="true"></span>
-      </div>
-
+    <div class="colby-logo-xl">
+      <img src="{{ theme['colby-logo-lg.png'] }}" alt="{{ site.name }}" class="colby-logo-xl__img" />
       <p class="section-cta__date">October 17th, 2026</p>
-
     </div>
   </div>
 </section>

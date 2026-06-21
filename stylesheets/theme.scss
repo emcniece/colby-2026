@@ -1488,6 +1488,20 @@ body {
 .colby-logo-xl__tri--sub-r,
 .colby-logo-xl__sub-swatch   { background: var(--color-pink-500); }
 
+/* SVG logo image variants */
+.colby-logo-img {
+  display: block;
+  height: 56px;
+  width: auto;
+}
+
+.colby-logo-xl__img {
+  display: block;
+  width: 100%;
+  max-width: 600px;
+  height: auto;
+}
+
 
 /* ═══════════════════════════════════════════════════════════
    SOCIAL ICONS
@@ -1776,6 +1790,17 @@ body {
   position: absolute;
   inset: 0;
   z-index: 0;
+}
+
+/* Constrain photo to the visible side so object-fit has horizontal room to shift */
+.split-section--right .split-section__photo {
+  right: auto;
+  width: 40%;
+}
+
+.split-section--left .split-section__photo {
+  left: auto;
+  width: 40%;
 }
 
 .split-section__photo img {
@@ -3386,15 +3411,6 @@ body:not(.homepage) main .container {
 
 /* About CTA split section */
 .about-cta { --split-h: 620px; }
-
-.about-cta .split-section__photo {
-  right: auto;
-  width: 40%;
-}
-
-.about-cta .split-section__photo img {
-  object-position: center center;
-}
 
 .about-cta__intro {
   display: flex;
