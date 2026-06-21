@@ -99,8 +99,8 @@
           <a href="{{ post.url }}">{{ post.headline }}</a>
         </h2>
 
-        {% if post.intro.size > 0 %}
-          <p class="blog-card__excerpt">{{ post.intro }}</p>
+        {% if post.blog_post.content_before_flip.size > 0 %}
+          <p class="blog-card__excerpt">{{ post.blog_post.content_before_flip }}</p>
         {% endif %}
 
       </div>

@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21j
+   COLBY 2026 CUSTOM STYLES — 2026-06-21l
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1634,10 +1634,10 @@ body {
   gap: 96px;
 }
 
-/* Header bar — same width/centering as .hero__inner */
+/* Header bar — same width/centering as .hero__inner; above hero content for dropdowns */
 .hero__header {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -2423,7 +2423,7 @@ body {
 /* Header shell — lives inside .page-top-band__pink; constrains both brand and nav */
 .inner-page-header {
   position: relative;
-  z-index: 2;
+  z-index: 10;
   max-width: var(--container-std);
   width: 100%;
   margin: 0 auto;
@@ -2552,6 +2552,44 @@ body {
 .hero__header .navbar-nav .dropdown.show > .dropdown-toggle .nav-link__chevron,
 .inner-page-header .navbar-nav .dropdown.show > .dropdown-toggle .nav-link__chevron {
   transform: rotate(180deg);
+}
+
+/* Nav dropdown panel */
+.hero__header .dropdown-menu,
+.inner-page-header .dropdown-menu {
+  background-color: var(--color-blue-900);
+  border: none;
+  border-radius: var(--radius-card);
+  padding: 8px 0;
+  margin-top: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 16px rgba(12, 44, 139, 0.25);
+}
+
+.hero__header .dropdown-item,
+.inner-page-header .dropdown-item {
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  color: var(--color-white);
+  padding: 8px 16px;
+  background-color: transparent;
+}
+
+.hero__header .dropdown-item:hover,
+.hero__header .dropdown-item:focus,
+.inner-page-header .dropdown-item:hover,
+.inner-page-header .dropdown-item:focus {
+  background-color: var(--color-blue-700);
+  color: var(--color-white);
+}
+
+.hero__header .dropdown-item.active,
+.inner-page-header .dropdown-item.active {
+  background-color: var(--color-blue-600);
+  color: var(--color-white);
 }
 
 /* NB toolbar (login/donate buttons) — hide; we manage donate via NB nav tags */
