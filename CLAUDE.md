@@ -104,6 +104,16 @@ The homepage detection in `layout.html` is `{% if page.is_homepage? and page.typ
 
 NationBuilder admin: `https://langford2026electioncampaign.nationbuilder.com/admin/themes`
 
+### Committing changes
+
+Use `commit.sh` instead of `git commit` directly — it commits, writes the new hash to `.last-deploy-sha`, and clears `upload-to-nb/`:
+
+```bash
+bash commit.sh "your commit message"
+```
+
+`git add -u` is called automatically; manually `git add` any new untracked files first.
+
 ### Prepare a deploy
 
 Update the datestamp comment in `stylesheets/theme.scss` (the `COLBY 2026 CUSTOM STYLES — DATE` line near the bottom), then run:
