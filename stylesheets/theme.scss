@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-20x
+   COLBY 2026 CUSTOM STYLES — 2026-06-21b
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1314,7 +1314,7 @@ body {
   display: flex;
   align-items: center;
   position: absolute;
-  left: 8px;
+  left: 11px;
   top: -6px;
   height: var(--logo-re-h);
   overflow: clip;
@@ -1411,9 +1411,9 @@ body {
   overflow: clip;
 }
 
-.colby-logo-xl__re-row  { height: var(--xl-band-h); }
+.colby-logo-xl__re-row  { height: var(--xl-band-h); margin-left: 25px; }
 .colby-logo-xl__names   { height: var(--xl-name-h); }
-.colby-logo-xl__sub-row { height: var(--xl-band-h); align-self: flex-end; }
+.colby-logo-xl__sub-row { height: var(--xl-band-h); align-self: flex-end; margin-right: 25px; }
 
 .colby-logo-xl__tri { flex-shrink: 0; }
 
@@ -1423,18 +1423,14 @@ body {
 .colby-logo-xl__tri--sub-r  { width: var(--xl-band-tri); height: var(--xl-band-h); }
 
 .colby-logo-xl__tri--name-l,
-.colby-logo-xl__tri--name-colby-r,
-.colby-logo-xl__tri--name-m,
 .colby-logo-xl__tri--name-r { width: var(--xl-name-tri); height: var(--xl-name-h); }
 
 .colby-logo-xl__tri--band-l,
 .colby-logo-xl__tri--sub-l,
-.colby-logo-xl__tri--name-l,
-.colby-logo-xl__tri--name-m { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
+.colby-logo-xl__tri--name-l { clip-path: polygon(100% 0%, 100% 100%, 0% 100%); }
 
 .colby-logo-xl__tri--band-r,
 .colby-logo-xl__tri--sub-r,
-.colby-logo-xl__tri--name-colby-r,
 .colby-logo-xl__tri--name-r { clip-path: polygon(0% 0%, 100% 0%, 0% 100%); }
 
 .colby-logo-xl__re-swatch,
@@ -1473,19 +1469,19 @@ body {
 .colby-logo-xl__tri--band-r,
 .colby-logo-xl__re-swatch    { background: var(--color-pink-500); }
 
-.colby-logo-xl__tri--name-l,
-.colby-logo-xl__tri--name-colby-r { background: var(--color-blue-900); }
+.colby-logo-xl__tri--name-l  { background: var(--color-blue-900); }
 .colby-logo-xl__name-swatch--colby {
   background: var(--color-blue-900);
   color: var(--color-yellow-300);
 }
 
-/* Mid-tri is HARDER-coloured — creates the colour-change diagonal */
-.colby-logo-xl__tri--name-m,
+/* HARDER overlaps COLBY by one triangle width; its diagonal clip creates the colour transition */
 .colby-logo-xl__tri--name-r  { background: var(--color-yellow-300); }
 .colby-logo-xl__name-swatch--harder {
   background: var(--color-yellow-300);
   color: var(--color-blue-900);
+  margin-left: calc(-1 * var(--xl-name-tri));
+  clip-path: polygon(var(--xl-name-tri) 0, 100% 0, 100% 100%, 0 100%);
 }
 
 .colby-logo-xl__tri--sub-l,
@@ -1667,10 +1663,11 @@ body {
 
 .hero__text {
   flex: 1;
-  max-width: 700px;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 32px;
+  margin-left: 70px;
 }
 
 .hero__headline {
@@ -1718,16 +1715,16 @@ body {
 .hero__sub-inner {
   max-width: var(--container-std);
   margin: 0 auto;
-  padding: 48px var(--page-pad-h);
+  padding: 30px var(--page-pad-h);
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 0px;
   position: relative;
 }
 
 .hero__sub-photo {
   position: relative;
-  width: 469px;
+  width: 560px;
   flex-shrink: 0;
   overflow: visible;
   align-self: flex-end;
@@ -1735,9 +1732,9 @@ body {
 
 .hero__sub-photo img {
   position: absolute;
-  bottom: -48px; /* -48px = hero__sub-inner bottom padding, puts portrait feet at bar bottom */
-  right: 0;
-  height: 620px;
+  bottom: -66px; /* -66px = hero__sub-inner bottom padding, puts portrait feet at bar bottom */
+  right: 30px;
+  height: 710px;
   width: auto;
   object-fit: contain;
 }
@@ -1798,7 +1795,7 @@ body {
 
 /* Left variant — colour occupies left 75%, diagonal top-right → bottom-left */
 .split-section--left .split-section__panel {
-  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 9 / 10);
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 4 / 5);
   --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
   clip-path: polygon(
     0 0,
@@ -1810,7 +1807,7 @@ body {
 
 /* Right variant — colour occupies right 75%, same diagonal direction */
 .split-section--right .split-section__panel {
-  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 1 / 10);
+  --_cut:    calc((100vw - var(--container-std)) / 2 + var(--container-std) * 1 / 5);
   --_offset: calc(var(--split-h, 800px) * tan(var(--para-angle)));
   clip-path: polygon(
     calc(var(--_cut) + var(--_offset) / 2) 0,
@@ -1855,6 +1852,10 @@ body {
 /* Right variant — visually push content to the right */
 .split-section--right .split-section__inner {
   flex-direction: row-reverse;
+}
+
+.split-section--right .split-section__content {
+  padding-left: inherit;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2356,6 +2357,14 @@ body {
   gap: 16px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.section-cta__date {
+  text-align: center;
+  display: block;
+  width: 100%;
+  margin-top: 2em;
+  text-transform: uppercase;
 }
 
 
