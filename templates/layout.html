@@ -92,52 +92,60 @@
         {% include "hero" %}
       {% endunless %}
 
-      <main id="content"
-        {% if is_session and site.has_background_image? %}
-          class="d-flex flex-column justify-content-center position-relative py-5 w-100"
-        {% elsif is_session %}
-          class="d-flex flex-column justify-content-center py-5 w-100 bg-color-2"
-        {% elsif site.has_background_image? %}
-          class="position-relative pt-4 pb-5"
-        {% elsif is_donation %}
-          class="position-relative bg-color-2 pt-4 pb-5"
-        {% else %}
-          class="py-3 mb-5"
-        {% endif %}
+      {% if page.slug == 'about' %}
 
-        role="main"
-      >
-        {% if is_session %}
-          <div id="main-content"></div>
-        {% endif %}
+        {% include "_about" %}
 
-        {{ content_for_notifications }}
+      {% else %}
 
-        {% if is_session or is_donation %}
-          {% if site.has_background_image? %}
-            <div class="background-image" style="background-image: url('{{ site.background_image_url }}');"></div>
+        <main id="content"
+          {% if is_session and site.has_background_image? %}
+            class="d-flex flex-column justify-content-center position-relative py-5 w-100"
+          {% elsif is_session %}
+            class="d-flex flex-column justify-content-center py-5 w-100 bg-color-2"
+          {% elsif site.has_background_image? %}
+            class="position-relative pt-4 pb-5"
+          {% elsif is_donation %}
+            class="position-relative bg-color-2 pt-4 pb-5"
+          {% else %}
+            class="py-3 mb-5"
+          {% endif %}
 
-            {% if is_donation %}
-              <div class="background-overlay position-absolute"></div>
+          role="main"
+        >
+          {% if is_session %}
+            <div id="main-content"></div>
+          {% endif %}
+
+          {{ content_for_notifications }}
+
+          {% if is_session or is_donation %}
+            {% if site.has_background_image? %}
+              <div class="background-image" style="background-image: url('{{ site.background_image_url }}');"></div>
+
+              {% if is_donation %}
+                <div class="background-overlay position-absolute"></div>
+              {% endif %}
             {% endif %}
+          {% endif %}
+
+          <script src="adjust-offset.js"></script>
+
+          {% if is_donation %}
+            {% yield %}
+          {% else %}
+            {% include "content", sidebar: request.is_sidebar? %}
+          {% endif %}
+        </main>
+
+        {% if page.show_stream? and is_donation == false %}
+          {% if page.type_slug == "petition" %}
+            {% include "page_stream" hide_form: true %}
+          {% else %}
+            {% include "page_stream" %}
           {% endif %}
         {% endif %}
 
-        <script src="adjust-offset.js"></script>
-
-        {% if is_donation %}
-          {% yield %}
-        {% else %}
-          {% include "content", sidebar: request.is_sidebar? %}
-        {% endif %}
-      </main>
-
-      {% if page.show_stream? and is_donation == false %}
-        {% if page.type_slug == "petition" %}
-          {% include "page_stream" hide_form: true %}
-        {% else %}
-          {% include "page_stream" %}
-        {% endif %}
       {% endif %}
 
     {% endif %}

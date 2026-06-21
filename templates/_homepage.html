@@ -15,7 +15,7 @@
   <div class="hero__diagonal" aria-hidden="true"></div>
 
   <!-- Transparent header nav -->
-  <header class="site-header hero__header" role="banner">
+  <header class="site-header hero__header navbar navbar-expand-lg" role="banner">
     <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
       <span class="colby-logo colby-logo--v2 colby-logo--default">
         <span class="colby-logo__wordmark">
@@ -38,34 +38,14 @@
       </span>
     </a>
 
-    <nav class="site-header__nav" role="navigation" aria-label="Main navigation">
-      <ul class="site-header__nav-links" role="list">
-        <li><a href="/pages/about" class="menu-link">About Colby</a></li>
-        <li><a href="#progress" class="menu-link">Progress</a></li>
-        <li><a href="#priorities" class="menu-link">Get Involved</a></li>
-        <li><a href="/pages/contact" class="menu-link">Contact</a></li>
-      </ul>
-    </nav>
-
-    <a href="/pages/donate" class="btn btn-v3 btn__donate">Donate</a>
-
-    <button class="btn-hamburger hide-desktop" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav">
+    <button class="navbar-toggler btn-hamburger" type="button"
+            data-toggle="collapse" data-target="#primaryNav"
+            aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu">
       <i class="fa-solid fa-bars"></i>
     </button>
-  </header>
 
-  <!-- Mobile nav drawer (hidden by default, toggled by hamburger) -->
-  <div id="mobile-nav" class="mobile-nav hide-desktop" hidden>
-    <nav role="navigation" aria-label="Mobile navigation">
-      <ul role="list">
-        <li><a href="/pages/about" class="menu-link">About Colby</a></li>
-        <li><a href="#progress" class="menu-link">Progress</a></li>
-        <li><a href="#priorities" class="menu-link">Get Involved</a></li>
-        <li><a href="/pages/contact" class="menu-link">Contact</a></li>
-        <li><a href="/pages/donate" class="btn btn-v3">Donate</a></li>
-      </ul>
-    </nav>
-  </div>
+    {% include "nav" %}
+  </header>
 
   <!-- Hero content panel -->
   <div class="hero__inner">
@@ -652,21 +632,4 @@
 <!-- ═══════════════════════════════════════════════════════════
      FOOTER
      ═══════════════════════════════════════════════════════════ -->
-<footer class="site-footer" role="contentinfo">
-  <div class="site-footer__inner">
-    <p class="site-footer__disclaimer">
-      Authorized by the financial agent for Colby Harder, 2026 Langford City Council Campaign. Registered under the Local Elections Campaign Financing Act (BC).
-    </p>
-    <div class="site-footer__socials" aria-label="Follow Colby on social media">
-      <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-        <img src="{{ theme['icon-facebook.svg'] }}" alt="Facebook" />
-      </a>
-      <a class="site-footer__social-btn" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-        <img src="{{ theme['icon-instagram.svg'] }}" alt="Instagram" />
-      </a>
-      <a class="site-footer__social-btn" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-        <img src="{{ theme['icon-tiktok.svg'] }}" alt="TikTok" />
-      </a>
-    </div>
-  </div>
-</footer>
+{% include "footer" %}

@@ -1,70 +1,53 @@
-{% assign homepage_tags_list = "" %}
-{% for tag in site.homepage.tags %}
-  {% assign homepage_tags_list = tag.name | downcase | append: ", " | append: homepage_tags_list %}
-{% endfor %}
+<div class="page-top-band">
+  <div class="page-top-band__pink">
 
-{% assign tags_list = "" %}
-{% for tag in page.tags %}
-  {% assign tags_list = tag.name | downcase | append: ", " | append: tags_list %}
-{% endfor %}
+    <header class="inner-page-header navbar navbar-expand-lg" role="banner">
+      <div class="inner-page-header__brand">
 
-{% comment %}
-  Sticky Navigation Control:
-  - Default: Sticky nav is enabled (position-fixed class applied)
-  - Disable site-wide: Tag homepage with "site: disable sticky nav"
-  - Disable per page: Tag any page with "disable sticky nav"
-{% endcomment %}
-<header id="header" class="navbar navbar-expand-md navbar-light bg-white {% unless homepage_tags_list contains "site: disable sticky nav" or tags_list contains "disable sticky nav" %}position-fixed{% endunless %} shadow-sm py-3">
-  <div class="container-fluid d-flex {% if is_donation %}py-1{% endif %}">
-    {% unless is_donation %}
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#primaryNav"
-        aria-controls="primaryNav"
-        aria-expanded="false"
-        aria-label="{{ t_nav_toggle_navigation }}">
-        <i class="fas fa-bars text-color-1"></i>
-      </button>
-    {% endunless %}
-
-    <div class="navbar-brand-container flex-grow-1 py-2 {% if is_donation %}px-3{% else %}px-1 px-md-3{% endif %} p-md-0">
-      <h1 class="h3 mb-0">
-        <a class="navbar-brand text-color-2" href="/">
-          {% if site.has_meta_image? %}
-            {% assign logo_size_class = "navbar-brand-image" %}
-            {% if homepage_tags_list contains "site: navbar logo large" %}
-              {% assign logo_size_class = "navbar-brand-image-large" %}
-            {% elsif homepage_tags_list contains "site: navbar logo medium" %}
-              {% assign logo_size_class = "navbar-brand-image-medium" %}
-            {% endif %}
-            <img src="{{ site.meta_image_url }}" class="{{ logo_size_class }}" alt="{{ site.long_name }}"/>
-          {% else %}
-            {{ site.long_name }}
-          {% endif %}
+        <a href="{{ site.url }}" class="site-header__logo" aria-label="{{ site.name }} — home">
+          <span class="colby-logo colby-logo--v2 colby-logo--default">
+            <span class="colby-logo__wordmark">
+              <span class="colby-logo__tri colby-logo__tri--left" aria-hidden="true"></span>
+              <span class="colby-logo__swatch">
+                <span class="colby-logo__name">
+                  <span class="colby-logo__colby">COLBY</span>
+                  <span class="colby-logo__harder">HARDER</span>
+                </span>
+              </span>
+              <span class="colby-logo__tri colby-logo__tri--right" aria-hidden="true"></span>
+            </span>
+            <span class="colby-logo__re-elect" aria-hidden="true">
+              <span class="colby-logo__re-tri colby-logo__re-tri--left"></span>
+              <span class="colby-logo__re-elect-label">
+                <span class="colby-logo__re-elect-text">Re-elect</span>
+              </span>
+              <span class="colby-logo__re-tri colby-logo__re-tri--right"></span>
+            </span>
+          </span>
         </a>
-      </h1>
-    </div>
 
-    {% unless is_donation %}
-      {% assign aria_label = t_nav_sign_in_or_sign_up %}
-      {% if request.logged_in? or request.sorta_logged_in? %}
-        {% assign aria_label = t_nav_open_profile_menu_for | append: " " | append: request.current_signup.name_or_email %}
-      {% endif %}
-      <button type="button" class="btn-rounded navbar-supporter-nav-link d-md-none text-color-2" data-toggle="modal" data-target="#supporter-nav" aria-label="{{ aria_label }}">
-        {% if request.logged_in? or request.sorta_logged_in? %}
-          {% include "avatar" signup: request.current_signup, size: 46 %}
-        {% else %}
-          <i class="fas fa-sign-in-alt" aria-hidden="true"></i>
+        <button class="navbar-toggler btn-hamburger" type="button"
+                data-toggle="collapse" data-target="#primaryNav"
+                aria-controls="primaryNav" aria-expanded="false" aria-label="Open menu">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+      </div>
+
+      {% include "nav" %}
+
+    </header>
+
+    {% if page.headline.size > 0 %}
+    <section class="page-intro" aria-labelledby="page-headline">
+      <div class="page-intro__inner">
+        <h1 class="page-intro__headline" id="page-headline">{{ page.headline }}</h1>
+        {% if page.excerpt.size > 0 %}
+          <p class="page-intro__body">{{ page.excerpt }}</p>
         {% endif %}
-      </button>
-    {% endunless %}
+      </div>
+    </section>
+    {% endif %}
+
   </div>
-
-  {% unless is_donation %}
-    {% include "nav" %}
-
-    <script src="adjust-header.js"></script>
-  {% endunless %}
-</header>
+</div>

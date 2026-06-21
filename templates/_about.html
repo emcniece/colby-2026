@@ -1,0 +1,9 @@
+<main id="content" class="about-page" role="main">
+  {{ content_for_notifications }}
+
+  {% if page.basic.content.size > 0 %}
+    <div class="about-page__body">
+      {{ page.basic.content }}
+    </div>
+  {% endif %}
+</main>

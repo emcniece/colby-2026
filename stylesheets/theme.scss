@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21b
+   COLBY 2026 CUSTOM STYLES — 2026-06-21h
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -2367,6 +2367,238 @@ body {
   text-transform: uppercase;
 }
 
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE TOP BAND (inner pages: yellow outer, pink parallelogram inner)
+
+   Structure:
+     .page-top-band          — full-width yellow background
+     .page-top-band__pink    — pink fill; ::before/::after overlay yellow
+                               triangles at left/right to create the
+                               parallelogram edges at --para-angle
+   ═══════════════════════════════════════════════════════════ */
+
+.page-top-band {
+  background-color: var(--color-yellow-300);
+}
+
+.page-top-band__pink {
+  position: relative;
+  background-color: var(--color-pink-500);
+  /* pink extends 200px beyond --container-std (100px each side) */
+  --_band-w:  calc(var(--container-std) + 200px);
+  /* triangle width = estimated section height × tan(12°) */
+  --_h:      384px;
+  --_tri:    calc(var(--_h) * tan(var(--para-angle)));
+  --_gutter: #{unquote("max(0px, calc((100vw - var(--_band-w)) / 2))")};
+}
+
+/* Left yellow cap: full-width at top, tapers to gutter-only at bottom */
+.page-top-band__pink::before,
+.page-top-band__pink::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  background: var(--color-yellow-300);
+  width: calc(var(--_gutter) + var(--_tri));
+}
+
+.page-top-band__pink::before {
+  left: 0;
+  /* In pseudo coords: 100% = gutter + tri; (100% - tri) = gutter */
+  clip-path: polygon(0 0, 100% 0, calc(100% - var(--_tri)) 100%, 0 100%);
+}
+
+.page-top-band__pink::after {
+  right: 0;
+  clip-path: polygon(var(--_tri) 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INNER PAGE HEADER
+   ═══════════════════════════════════════════════════════════ */
+
+/* Header shell — lives inside .page-top-band__pink; constrains both brand and nav */
+.inner-page-header {
+  position: relative;
+  z-index: 2;
+  max-width: var(--container-std);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0;
+  flex-wrap: nowrap;
+  align-items: stretch;
+}
+
+/* Brand row: logo + hamburger — fills parent, no independent constraint needed */
+.inner-page-header__brand {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 46px;
+  padding: 8px var(--page-pad-h);
+}
+
+/* NB nav container — Bootstrap collapse wrapper */
+.hero__header #primaryNav,
+.inner-page-header #primaryNav {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 46px;
+  padding: 8px var(--page-pad-h);
+  max-width: var(--container-std);
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* NB nav link list — reset Bootstrap, match design system menu-link */
+.hero__header .navbar-nav,
+.inner-page-header .navbar-nav {
+  flex-direction: row;
+  align-items: center;
+  gap: 48px;
+  margin: 0;
+  padding: 0;
+}
+
+.hero__header .navbar-nav .nav-item,
+.inner-page-header .navbar-nav .nav-item { list-style: none; }
+
+.hero__header .navbar-nav .nav-link,
+.inner-page-header .navbar-nav .nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--menu-color);
+  background: transparent;
+  white-space: nowrap;
+  padding: 0;
+  position: relative;
+}
+
+.hero__header .navbar-nav .nav-link:hover,
+.inner-page-header .navbar-nav .nav-link:hover {
+  color: var(--menu-color-hover);
+  background: transparent;
+}
+
+/* NB automatically applies .active on the current page's nav-link */
+.hero__header .navbar-nav .nav-link.active,
+.inner-page-header .navbar-nav .nav-link.active { color: var(--menu-color-pressed); }
+
+.hero__header .navbar-nav .nav-link.active::after,
+.inner-page-header .navbar-nav .nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 999px;
+}
+
+/* Donate nav link — styled as yellow pill button */
+.hero__header .navbar-nav a.nav-link[href*="donate"],
+.inner-page-header .navbar-nav a.nav-link[href*="donate"] {
+  background-color: var(--btn-v3-solid-bg);
+  color: var(--btn-v3-solid-text);
+  border-radius: var(--radius-pill);
+  padding: 6px 16px;
+  font-weight: 700;
+}
+.hero__header .navbar-nav a.nav-link[href*="donate"]:hover,
+.inner-page-header .navbar-nav a.nav-link[href*="donate"]:hover {
+  background-color: var(--btn-v3-solid-bg-hover);
+  color: var(--btn-v3-solid-text-hover);
+}
+
+/* NB toolbar (login/donate buttons) — hide; we manage donate via NB nav tags */
+.hero__header #navbar-toolbar,
+.inner-page-header #navbar-toolbar { display: none !important; }
+
+/* Active nav link on homepage (manual class) */
+.menu-link { position: relative; }
+
+.menu-link--active { color: var(--menu-color-pressed); }
+
+.menu-link--active::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 2px;
+  background: var(--color-white);
+  border-radius: 999px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PAGE INTRO (inner page headline section)
+   ═══════════════════════════════════════════════════════════ */
+
+.page-intro {
+  position: relative;
+  z-index: 2;
+  padding: 0 var(--page-pad-h) var(--section-pad-v);
+}
+
+.page-intro__inner {
+  max-width: var(--container-std);
+  margin: 0 auto;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.page-intro__headline {
+  flex: 0 0 55%;
+  font-family: var(--font-quattrocento);
+  font-weight: 400;
+  font-size: 60px;
+  line-height: 72px;
+  color: var(--color-white);
+  margin: 0;
+}
+
+.page-intro__body {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-pink-50);
+  padding-top: 12px;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   INNER PAGE CONTENT AREA
+   ═══════════════════════════════════════════════════════════ */
+
+body:not(.homepage) main {
+  background-color: var(--section-1-bg);
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+body:not(.homepage) main .container {
+  max-width: var(--container-std);
+  padding: var(--section-pad-v) var(--page-pad-h);
+  box-sizing: border-box;
+}
 
 /* ═══════════════════════════════════════════════════════════
    FOOTER
