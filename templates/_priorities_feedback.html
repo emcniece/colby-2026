@@ -1,0 +1,307 @@
+{% comment %}
+  Priorities — decoupled survey UI + hidden NationBuilder Feedback form.
+
+  Render via subpage:
+    {% subpage "feedback" with "priorities_feedback" %}
+
+  NationBuilder admin (Feedback page, slug: feedback):
+  1. Feedback settings → Basics: enable content; disable address/phone
+  2. Disable autoresponse under Feedback settings
+  3. Page must be a child of the homepage for the embed subpage tag
+{% endcomment %}
+
+{% if page.feedback.is_content? %}
+
+<div class="priorities-feedback" data-feedback-page-id="{{ page.id }}">
+
+  <div class="priorities-feedback__status">
+    <div class="form-errors" role="alert" hidden></div>
+
+    <div class="survey__success" hidden>
+      <h3 class="survey__success-heading">Thank you for sharing!</h3>
+      <p class="survey__success-body">Your feedback is going directly into my planning for the next term.</p>
+    </div>
+  </div>
+
+  {% comment %} Visible survey — plain HTML, not part of the NB form {% endcomment %}
+  <div class="priorities-survey survey" id="priorities-survey-{{ page.id }}">
+
+    <div class="survey__question">
+      <p class="survey__question-label" data-num="1" id="priorities-q1-{{ page.id }}">How would you rate the current direction of our city?</p>
+      <div class="survey__sentiment" role="group" aria-labelledby="priorities-q1-{{ page.id }}">
+        <button class="btn btn-v4-outline survey__sentiment-btn" type="button" data-value="On the right track" aria-pressed="false">
+          On the right track
+        </button>
+        <button class="btn btn-v4-outline survey__sentiment-btn" type="button" data-value="Needs adjustment" aria-pressed="false">
+          Needs adjustment
+        </button>
+        <button class="btn btn-v4-outline survey__sentiment-btn" type="button" data-value="Needs change" aria-pressed="false">
+          Needs change
+        </button>
+      </div>
+      <p class="survey__field-error" hidden>Please choose one option.</p>
+    </div>
+
+    <div class="survey__question">
+      <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
+      <div class="survey__checkboxes" role="group" aria-label="Priority areas">
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Traffic &amp; Roads" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Traffic &amp; Roads</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Public Safety" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Public Safety</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Housing &amp; Affordability" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Housing &amp; Affordability</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Transparency &amp; Accountability" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Transparency &amp; Accountability</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Parks &amp; Greenspace" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Parks &amp; Greenspace</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Other" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Other</span>
+        </label>
+        <label class="checkbox-group">
+          <input type="checkbox" class="survey__area-input" data-label="Community Facilities" />
+          <span class="checkbox-group__control"></span>
+          <span class="checkbox-group__label">Community Facilities</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="survey__question">
+      <label class="survey__question-label" data-num="3" for="priorities-q3-{{ page.id }}">
+        What is the single biggest change you would like to see in Langford over the next four years?
+      </label>
+      <div class="form-group">
+        <input class="form-group__field form-group__field--bordered priorities-survey__q3"
+               id="priorities-q3-{{ page.id }}"
+               type="text"
+               placeholder="Your answer…"
+               autocomplete="off" />
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-v3 priorities-feedback__submit">Share my priorities</button>
+  </div>
+
+  {% comment %} Hidden NB feedback form — only identity + content payload {% endcomment %}
+  {% form_for feedback, html: { class: "priorities-feedback__form", autocomplete: "off" } %}
+    {% hidden_field_tag "page_id", page.id %}
+    {% text_field "content", class: "priorities-feedback__content" %}
+
+    {% if request.current_signup.first_name.size > 0 %}
+      {% hidden_field_tag "feedback[first_name]", request.current_signup.first_name %}
+    {% else %}
+      <input type="hidden" name="feedback[first_name]" value="Community" />
+    {% endif %}
+
+    {% if request.current_signup.last_name.size > 0 %}
+      {% hidden_field_tag "feedback[last_name]", request.current_signup.last_name %}
+    {% else %}
+      <input type="hidden" name="feedback[last_name]" value="Member" />
+    {% endif %}
+
+    {% if request.sorta_logged_in? and request.current_signup.email.size > 0 %}
+      {% hidden_field_tag "feedback[email]", request.current_signup.email %}
+    {% else %}
+      {% email_field "email", class: "priorities-feedback__email" %}
+    {% endif %}
+  {% endform_for %}
+
+</div>
+
+{% else %}
+  <p class="survey__setup-notice">Priorities form: enable the content field on the Feedback page in NationBuilder admin.</p>
+{% endif %}
+
+<script>
+  ;(function () {
+    var root = document.getElementById('priorities-survey-{{ page.id }}');
+    if (!root) return;
+
+    root = root.closest('.priorities-feedback');
+    if (!root) return;
+
+    var survey = root.querySelector('.priorities-survey');
+    var form = root.querySelector('form.priorities-feedback__form') || root.querySelector('form');
+    if (!survey || !form) return;
+
+    var errorsBox = root.querySelector('.form-errors');
+    var successBox = root.querySelector('.survey__success');
+    var contentField = form.querySelector('[name="feedback[content]"]');
+    var q3Input = survey.querySelector('.priorities-survey__q3');
+    var submitBtn = survey.querySelector('.priorities-feedback__submit');
+    var fieldError = survey.querySelector('.survey__field-error');
+
+    form.querySelectorAll('.form-submit').forEach(function (el) {
+      el.remove();
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+    }, true);
+
+    function buildFeedbackPayload() {
+      var activeBtn = survey.querySelector('.survey__sentiment-btn--active');
+      var areas = [];
+      survey.querySelectorAll('.survey__area-input:checked').forEach(function (input) {
+        areas.push(input.getAttribute('data-label') || input.value);
+      });
+
+      var q3 = q3Input ? q3Input.value.trim() : '';
+      var lines = [
+        'Direction: ' + (activeBtn ? (activeBtn.getAttribute('data-value') || activeBtn.textContent.trim()) : ''),
+        'Priority areas: ' + (areas.length ? areas.join(', ') : 'None selected')
+      ];
+
+      if (q3) {
+        lines.push('');
+        lines.push(q3);
+      }
+
+      return lines.join('\n');
+    }
+
+    function logFeedbackPayload() {
+      var message = buildFeedbackPayload();
+      console.log('[priorities-feedback] Payload preview:\n' + message);
+    }
+
+    function handleSubmit() {
+      var activeBtn = survey.querySelector('.survey__sentiment-btn--active');
+
+      if (!activeBtn) {
+        if (fieldError) fieldError.hidden = false;
+        console.error('[priorities-feedback] Validation failed: direction is required');
+        var firstBtn = survey.querySelector('.survey__sentiment-btn');
+        if (firstBtn) firstBtn.focus();
+        return;
+      }
+
+      if (fieldError) fieldError.hidden = true;
+      if (errorsBox) {
+        errorsBox.textContent = '';
+        errorsBox.hidden = true;
+      }
+
+      if (!contentField) {
+        console.error('[priorities-feedback] Missing feedback[content] field');
+        return;
+      }
+
+      contentField.value = buildFeedbackPayload();
+
+      if (submitBtn) submitBtn.disabled = true;
+
+      var formData = new FormData(form);
+      var action = form.getAttribute('action');
+
+      if (!action) {
+        console.error('[priorities-feedback] Form missing action URL');
+        if (submitBtn) submitBtn.disabled = false;
+        return;
+      }
+
+      fetch(action, {
+        method: 'POST',
+        body: formData,
+        credentials: 'same-origin',
+        redirect: 'manual',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
+        }
+      }).then(function (response) {
+        if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
+          return { success: true };
+        }
+
+        return response.text().then(function (html) {
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          var remoteErrors = doc.querySelector('.form-errors');
+          var errorText = remoteErrors ? remoteErrors.textContent.replace(/\s+/g, ' ').trim() : '';
+          var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
+
+          if (hasErrors) {
+            return { success: false, status: response.status, errors: errorText };
+          }
+
+          return { success: true, status: response.status };
+        });
+      }).then(function (result) {
+        if (submitBtn) submitBtn.disabled = false;
+        if (!result) return;
+
+        if (result.success) {
+          survey.hidden = true;
+          if (successBox) successBox.hidden = false;
+          console.log('[priorities-feedback] Submitted successfully');
+          return;
+        }
+
+        console.error('[priorities-feedback] Submit failed', {
+          status: result.status,
+          errors: result.errors || 'Unknown error',
+          content: contentField.value
+        });
+
+        if (errorsBox && result.errors) {
+          errorsBox.textContent = result.errors;
+          errorsBox.hidden = false;
+        }
+      }).catch(function (err) {
+        if (submitBtn) submitBtn.disabled = false;
+        console.error('[priorities-feedback] Network error', err);
+      });
+    }
+
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        handleSubmit();
+      });
+    }
+
+    survey.querySelectorAll('.survey__sentiment-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        survey.querySelectorAll('.survey__sentiment-btn').forEach(function (b) {
+          var isActive = b === btn;
+          b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+          b.classList.toggle('survey__sentiment-btn--active', isActive);
+        });
+        if (fieldError) fieldError.hidden = true;
+        logFeedbackPayload();
+      });
+    });
+
+    survey.querySelectorAll('.survey__area-input').forEach(function (input) {
+      input.addEventListener('change', logFeedbackPayload);
+    });
+
+    if (q3Input) {
+      q3Input.addEventListener('input', logFeedbackPayload);
+      q3Input.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleSubmit();
+        }
+      });
+    }
+  })();
+</script>

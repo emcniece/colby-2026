@@ -1,0 +1,123 @@
+{% comment %}
+  Priorities survey form — NationBuilder Signup page with labeled tags.
+
+  Render via subpage so `page` is the signup page:
+    {% subpage "priorities" with "priorities_signup" %}
+
+  NationBuilder admin setup (Signup page, slug: priorities):
+  1. Signup settings → Basics: allow multiple tags (checkboxes)
+  2. Signup settings → Checkboxes — add 10 tags IN ORDER:
+       Q1 direction (3): On the right track | Needs adjustment | Needs change
+       Q2 areas (7): Traffic & Roads | Public Safety | Housing & Affordability |
+         Transparency & Accountability | Parks & Greenspace | Other | Community Facilities
+  3. Signup settings → Address: enable, not required (repurposed for Q3 open text)
+  4. Signup settings: auto-tag with e.g. priorities-submitted
+  5. Disable phone / volunteer prompts unless needed
+  6. Do not require name or phone in Signup settings → Basics (email-only is fine)
+{% endcomment %}
+
+{% if page.signup.has_labeled_tags? %}
+
+<div class="priorities-signup">
+
+  {% form_for signup, html: { class: "survey" } %}
+
+    <div class="form-errors" role="alert">{% error_messages_for signup %}</div>
+
+    {% comment %} Q1: direction — first 3 labeled tags, pick one {% endcomment %}
+    <div class="survey__question">
+      <p class="survey__question-label" data-num="1" id="priorities-q1-{{ page.id }}">How would you rate the current direction of our city?</p>
+      <div class="survey__sentiment" role="group" aria-labelledby="priorities-q1-{{ page.id }}">
+        {% for labeled_tag in page.signup.labeled_tags %}
+          {% if forloop.index <= 3 %}
+            <input type="checkbox"
+                   class="survey__direction-input visually-hidden"
+                   name="signup[labeled_tags][]"
+                   id="priorities-direction-{{ labeled_tag.id }}"
+                   value="{{ labeled_tag.id }}"
+                   {{ labeled_tag.checked }} />
+            <button class="btn btn-v4-outline survey__sentiment-btn"
+                    type="button"
+                    aria-pressed="false"
+                    aria-controls="priorities-direction-{{ labeled_tag.id }}">
+              {{ labeled_tag.name }}
+            </button>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <p class="survey__field-error" id="priorities-direction-error-{{ page.id }}" hidden>Please choose one option.</p>
+    </div>
+
+    {% comment %} Q2: priority areas — remaining labeled tags {% endcomment %}
+    <div class="survey__question">
+      <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
+      <div class="survey__checkboxes" role="group" aria-label="Priority areas">
+        {% for labeled_tag in page.signup.labeled_tags %}
+          {% if forloop.index > 3 %}
+            <label class="checkbox-group">
+              <input type="checkbox"
+                     name="signup[labeled_tags][]"
+                     id="priorities-area-{{ labeled_tag.id }}"
+                     value="{{ labeled_tag.id }}"
+                     {{ labeled_tag.checked }} />
+              <span class="checkbox-group__control"></span>
+              <span class="checkbox-group__label">{{ labeled_tag.name }}</span>
+            </label>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    {% comment %} Q3: open text — optional address field repurposed in the template {% endcomment %}
+    {% if page.signup.is_address? %}
+      <div class="survey__question">
+        <label class="survey__question-label" data-num="3" for="signup_submitted_address">
+          What is the single biggest change you would like to see in Langford over the next four years?
+        </label>
+        <div class="form-group">
+          {% if page.signup.require_address? %}
+            {% text_field "submitted_address", class:"form-group__field form-group__field--bordered", placeholder:"Your answer…", required:"required" %}
+          {% else %}
+            {% text_field "submitted_address", class:"form-group__field form-group__field--bordered", placeholder:"Your answer…" %}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% submit_tag "Share my priorities", class:"btn btn-v3 submit-button" %}
+    <div class="form-submit"></div>
+
+  {% endform_for %}
+
+</div>
+
+{% else %}
+  {% comment %} Signup page exists but labeled tags are not configured yet {% endcomment %}
+  <p class="survey__setup-notice">Priorities form: add 10 labeled tags to the Signup page in NationBuilder admin.</p>
+{% endif %}
+
+<script>
+  ;(function () {
+    var script = document.currentScript;
+    var root = script && script.previousElementSibling;
+    if (!root || !root.classList.contains('priorities-signup')) return;
+
+    var suffix = '_{{ page.id }}';
+    var fields = root.querySelectorAll('input[id]:not([type="button"]), textarea[id], select[id]');
+
+    fields.forEach(function (field) {
+      field.id += suffix;
+    });
+
+    root.querySelectorAll('label[for]').forEach(function (label) {
+      label.htmlFor += suffix;
+    });
+
+    root.querySelectorAll('.survey__sentiment-btn[aria-controls]').forEach(function (btn) {
+      var controls = btn.getAttribute('aria-controls');
+      if (controls) {
+        btn.setAttribute('aria-controls', controls + suffix);
+      }
+    });
+  })();
+</script>

@@ -312,84 +312,16 @@
         My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
       </p>
 
-      <!-- Survey form -->
-      <form class="survey" action="/pages/submit-priorities" method="post">
-        <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
-
-        <!-- Q1: Direction sentiment -->
-        <div class="survey__question">
-          <p class="survey__question-label" data-num="1">How would you rate the current direction of our city?</p>
-          <div class="survey__sentiment" role="group" aria-label="Direction options">
-            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="right-track" aria-pressed="false">
-              On the right track
-            </button>
-            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-adjustment" aria-pressed="false">
-              Needs adjustment
-            </button>
-            <button class="btn btn-v4-outline" type="button" name="survey[direction]" value="needs-change" aria-pressed="false">
-              Needs change
-            </button>
-          </div>
-        </div>
-
-        <!-- Q2: Priority areas -->
-        <div class="survey__question">
-          <p class="survey__question-label" data-num="2">Which of these areas do you feel need the most attention right now?</p>
-          <div class="survey__checkboxes" role="group" aria-label="Priority areas">
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="traffic-roads" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Traffic &amp; Roads</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="public-safety" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Public Safety</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="housing-affordability" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Housing &amp; Affordability</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="transparency" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Transparency &amp; Accountability</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="parks-greenspace" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Parks &amp; Greenspace</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="other" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Other</span>
-            </label>
-            <label class="checkbox-group">
-              <input type="checkbox" name="survey[areas][]" value="community-facilities" />
-              <span class="checkbox-group__control"></span>
-              <span class="checkbox-group__label">Community Facilities</span>
-            </label>
-          </div>
-        </div>
-
-        <!-- Q3: Open text -->
-        <div class="survey__question">
-          <label class="survey__question-label" data-num="3" for="survey-change">
-            What is the single biggest change you would like to see in Langford over the next four years?
-          </label>
-          <div class="form-group">
-            <input class="form-group__field form-group__field--bordered"
-                   id="survey-change"
-                   type="text"
-                   name="survey[change]"
-                   placeholder="Your answer…" />
-          </div>
-        </div>
-
-        <button class="btn btn-v3" type="submit">Share my priorities</button>
-      </form>
+      {% assign priorities_slug = nil %}
+      {% for p in page.descendants %}
+        {% if p.type_slug == 'feedback' and p.slug == 'feedback' %}
+          {% assign priorities_slug = p.slug %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+      {% if priorities_slug %}
+        {% subpage priorities_slug with 'priorities_feedback' %}
+      {% endif %}
     </div>
     <div class="split-section__gap" aria-hidden="true"></div>
   </div>

@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21n
+   COLBY 2026 CUSTOM STYLES — 2026-06-21v
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -939,7 +939,7 @@ body {
   font-size: 16px;
   line-height: 22px;
   color: var(--input-text);
-  width: 156px;
+  width: auto; /* was 156px */
 }
 
 .checkbox-group__label--reverse {
@@ -2160,6 +2160,43 @@ body {
   color: var(--section-4-body);
 }
 
+.section-priorities .checkbox-group__label {
+  color: var(--color-white);
+}
+
+.priorities-feedback__form {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.priorities-feedback__content,
+.priorities-feedback__email {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.priorities-feedback__status .form-errors:not([hidden]) {
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-pink-700);
+  margin-bottom: 16px;
+}
+
 /* Survey form */
 .survey { width: 100%; }
 
@@ -2192,6 +2229,94 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
+}
+
+.survey__sentiment-btn--active.btn-v4-outline {
+  background-color: var(--btn-v4-solid-bg);
+  border-color: var(--btn-v4-solid-bg);
+  color: var(--btn-v4-solid-text);
+}
+
+.survey__field-error {
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-pink-700);
+  margin: 0;
+}
+
+.survey__contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.survey__contact-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.survey__contact-label {
+  display: block;
+  font-family: var(--font-outfit);
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--section-4-body);
+  margin-bottom: 8px;
+}
+
+.survey__contact-optin {
+  margin-top: 4px;
+}
+
+.survey__contact-optin-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.survey__setup-notice {
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--section-4-body);
+  opacity: 0.85;
+}
+
+.survey__success-heading {
+  font-family: var(--font-outfit);
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  color: var(--section-4-heading);
+  margin: 0 0 12px;
+}
+
+.survey__success-body {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--section-4-body);
+  margin: 0;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -3551,6 +3676,7 @@ body:not(.homepage) main .container {
 
   .survey__sentiment { flex-direction: column; }
   .survey__checkboxes { grid-template-columns: 1fr; }
+  .survey__contact-row { grid-template-columns: 1fr; }
 
   .section-platform__priorities { flex-direction: column; height: auto; }
   .section-platform__priorities .priority-card { width: 100%; height: auto; min-height: 318px; }

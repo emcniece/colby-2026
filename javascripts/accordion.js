@@ -124,6 +124,51 @@
       });
     }
 
+    /* Priorities survey — sentiment buttons */
+    document.querySelectorAll('.survey__sentiment').forEach(function (group) {
+      var buttons = group.querySelectorAll('.survey__sentiment-btn');
+      var inputs = group.querySelectorAll('.survey__direction-input');
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var inputId = btn.getAttribute('aria-controls');
+          var input = inputId && document.getElementById(inputId);
+
+          if (inputs.length) {
+            inputs.forEach(function (inp) {
+              inp.checked = false;
+            });
+
+            if (input) {
+              input.checked = true;
+            }
+          }
+
+          buttons.forEach(function (b) {
+            var isActive = b === btn;
+            b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            b.classList.toggle('survey__sentiment-btn--active', isActive);
+          });
+
+          var form = group.closest('.survey');
+          var error = form && form.querySelector('.survey__field-error');
+          if (error) {
+            error.hidden = true;
+          }
+        });
+      });
+
+      inputs.forEach(function (input) {
+        if (!input.checked) return;
+
+        var btn = group.querySelector('[aria-controls="' + input.id + '"]');
+        if (btn) {
+          btn.setAttribute('aria-pressed', 'true');
+          btn.classList.add('survey__sentiment-btn--active');
+        }
+      });
+    });
+
     /* Mobile nav hamburger */
     var hamburger  = document.querySelector('.btn-hamburger');
     var mobileNav  = document.getElementById('mobile-nav');
