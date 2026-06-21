@@ -2678,9 +2678,24 @@ body:not(.homepage) main .container {
 
 .blog-card__tags {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.blog-card__tags-left {
+  display: flex;
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+}
+
+.blog-card__tags-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .blog-card__tag {
@@ -2707,12 +2722,6 @@ body:not(.homepage) main .container {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-}
-
-.blog-card__tag--status + .blog-card__tag--status::before,
-.blog-card__tag + .blog-card__tag--status::before,
-.blog-card__tag--status + .blog-card__tag::before {
-  content: none;
 }
 
 .blog-card__tag--delivered {

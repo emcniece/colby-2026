@@ -63,14 +63,21 @@
 
         {% if post.tags.size > 0 %}
           <div class="blog-card__tags">
-            {% for tag in post.tags %}
-              {% if status_tags contains tag.name %}
-                {% assign tag_slug = tag.name | downcase | replace: ' ', '-' %}
-                <span class="blog-card__tag blog-card__tag--status blog-card__tag--{{ tag_slug }}">{{ tag.name }}</span>
-              {% else %}
-                <span class="blog-card__tag">{{ tag.name }}</span>
-              {% endif %}
-            {% endfor %}
+            <div class="blog-card__tags-left">
+              {% for tag in post.tags %}
+                {% unless status_tags contains tag.name %}
+                  <span class="blog-card__tag">{{ tag.name }}</span>
+                {% endunless %}
+              {% endfor %}
+            </div>
+            <div class="blog-card__tags-right">
+              {% for tag in post.tags %}
+                {% if status_tags contains tag.name %}
+                  {% assign tag_slug = tag.name | downcase | replace: ' ', '-' %}
+                  <span class="blog-card__tag blog-card__tag--status blog-card__tag--{{ tag_slug }}">{{ tag.name }}</span>
+                {% endif %}
+              {% endfor %}
+            </div>
           </div>
         {% endif %}
 
@@ -78,8 +85,8 @@
           <a href="{{ post.url }}">{{ post.headline }}</a>
         </h2>
 
-        {% if post.blog_post.intro.size > 0 %}
-          <p class="blog-card__excerpt">{{ post.blog_post.intro }}</p>
+        {% if post.intro.size > 0 %}
+          <p class="blog-card__excerpt">{{ post.intro }}</p>
         {% endif %}
 
       </div>
