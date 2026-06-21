@@ -3387,6 +3387,15 @@ body:not(.homepage) main .container {
 /* About CTA split section */
 .about-cta { --split-h: 620px; }
 
+.about-cta .split-section__photo {
+  right: auto;
+  width: 40%;
+}
+
+.about-cta .split-section__photo img {
+  object-position: center center;
+}
+
 .about-cta__intro {
   display: flex;
   gap: 24px;
