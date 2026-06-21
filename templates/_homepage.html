@@ -313,14 +313,37 @@
       </p>
 
       {% assign priorities_slug = nil %}
+      {% assign signup_priorities_slug = nil %}
       {% for p in page.descendants %}
         {% if p.type_slug == 'feedback' and p.slug == 'feedback' %}
           {% assign priorities_slug = p.slug %}
-          {% break %}
+        {% elsif p.type_slug == 'signup' and p.slug == 'signup-priorities' %}
+          {% assign signup_priorities_slug = p.slug %}
         {% endif %}
       {% endfor %}
       {% if priorities_slug %}
-        {% subpage priorities_slug with 'priorities_feedback' %}
+        <div class="priorities-forms">
+          {% subpage priorities_slug with 'priorities_feedback' %}
+          {% if signup_priorities_slug %}
+            <div class="priorities-forms__signup" hidden>
+              {% subpage signup_priorities_slug with 'signup_priorities_embed' %}
+            </div>
+          {% endif %}
+          <div class="priorities-forms__complete" hidden>
+            <p class="priorities-forms__complete-body">I'll be in touch soon to let you know how I'm working to address the issues you're most interested in. In the meantime, feel free to follow my campaign on social media to keep the conversation going.</p>
+            <div class="priorities-forms__complete-socials site-footer__socials" aria-label="Follow the campaign on social media">
+              <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <img src="{{ theme['icon-facebook.svg'] }}" alt="" />
+              </a>
+              <a class="site-footer__social-btn" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <img src="{{ theme['icon-instagram.svg'] }}" alt="" />
+              </a>
+              <a class="site-footer__social-btn" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                <img src="{{ theme['icon-tiktok.svg'] }}" alt="" />
+              </a>
+            </div>
+          </div>
+        </div>
       {% endif %}
     </div>
     <div class="split-section__gap" aria-hidden="true"></div>

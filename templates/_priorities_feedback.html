@@ -19,7 +19,6 @@
 
     <div class="survey__success" hidden>
       <h3 class="survey__success-heading">Thank you for sharing!</h3>
-      <p class="survey__success-body">Your feedback is going directly into my planning for the next term.</p>
     </div>
   </div>
 
@@ -251,6 +250,11 @@
         if (result.success) {
           survey.hidden = true;
           if (successBox) successBox.hidden = false;
+          var formsWrap = root.closest('.priorities-forms');
+          if (formsWrap) {
+            var signupEmbed = formsWrap.querySelector('.priorities-forms__signup');
+            if (signupEmbed) signupEmbed.hidden = false;
+          }
           console.log('[priorities-feedback] Submitted successfully');
           return;
         }
