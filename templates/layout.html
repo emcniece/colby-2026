@@ -152,7 +152,7 @@
           {% endif %}
         </main>
 
-        {% if page.show_stream? and is_donation == false %}
+        {% if page.show_stream? and is_donation == false and page.type_slug != 'blog_post' %}
           {% if page.type_slug == "petition" %}
             {% include "page_stream" hide_form: true %}
           {% else %}

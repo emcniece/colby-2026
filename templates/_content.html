@@ -1,6 +1,6 @@
 <div class="container content-{{ request.template  | replace: '_', '-' }}">
 
-  {% if page.features_count > 0 and page.features.size > 0 %}
+  {% if page.features_count > 0 and page.features.size > 0 and page.type_slug != 'blog_post' %}
     <div class="row">
       <div class="col">
         {% include "features" %}

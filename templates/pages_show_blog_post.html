@@ -1,17 +1,68 @@
 {% include "translation" %}
 
-<div id="intro" class="intro">
-  {{ page.blog_post.content_full }}
-</div>
+{% assign status_tags = "Delivered,In Progress,Blocked" | split: "," %}
 
-{% if page.tags_count > 0 %}
-  <div class="page-tags mt-4">
-    {% include "page_tags" with page %}
+{% assign mime_image_types = "image/jpeg,image/png,image/gif,image/webp" | split:"," %}
+{% assign post_img = nil %}
+{% for attachment in page.attachments %}
+  {% assign file_name = attachment.file_name | downcase | split:"." | first %}
+  {% if mime_image_types contains attachment.content_type and file_name == "thumbnail" %}
+    {% assign post_img = attachment.url %}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{% if post_img == nil and page.meta_image_url %}
+  {% assign post_img = page.meta_image_url %}
+{% endif %}
+
+<div class="row">
+  <div class="col-12 col-md-8">
+    <article class="blog-post">
+
+      {% if post_img %}
+        <div class="blog-post__image">
+          <img src="{{ post_img }}" alt="{{ page.headline | strip_html }}" />
+        </div>
+      {% endif %}
+
+      {% if page.tags.size > 0 %}
+        <div class="blog-post__tags">
+          <div class="blog-post__tags-left">
+            {% for tag in page.tags %}
+              {% unless status_tags contains tag.name %}
+                <span class="blog-card__tag">{{ tag.name }}</span>
+              {% endunless %}
+            {% endfor %}
+          </div>
+          <div class="blog-post__tags-right">
+            {% for tag in page.tags %}
+              {% if status_tags contains tag.name %}
+                {% assign tag_slug = tag.name | downcase | replace: ' ', '-' %}
+                <span class="blog-card__tag blog-card__tag--status blog-card__tag--{{ tag_slug }}">
+                  {% if tag.name == 'Delivered' %}<i class="fa-solid fa-check" aria-hidden="true"></i>
+                  {% elsif tag.name == 'In Progress' %}<i class="fa-solid fa-clock" aria-hidden="true"></i>
+                  {% elsif tag.name == 'Blocked' %}<i class="fa-solid fa-ban" aria-hidden="true"></i>
+                  {% endif %}
+                  {{ tag.name }}
+                </span>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="blog-post__body">
+        {{ page.blog_post.content_full }}
+      </div>
+
+      {% if page.author.has_bio? %}
+        {% include "author_card" %}
+      {% endif %}
+
+      {% include "like_page" %}
+
+    </article>
   </div>
-{% endif %}
 
-{% if page.author.has_bio? %}
-  {% include "author_card" %}
-{% endif %}
-
-{% include "like_page" %}
+  {% include "sidebar" %}
+</div>
