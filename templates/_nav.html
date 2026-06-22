@@ -97,6 +97,19 @@
       var nav = new Nav('#primaryNav', {
         gridBreakpoint: gridBreakpoint
       });
+
+      var primaryNav = document.getElementById('primaryNav');
+      if (primaryNav && window.jQuery) {
+        var headerShell = primaryNav.closest('.hero__header, .inner-page-header');
+
+        jQuery(primaryNav)
+          .on('show.bs.collapse', function () {
+            if (headerShell) headerShell.classList.add('is-nav-open');
+          })
+          .on('hide.bs.collapse hidden.bs.collapse', function () {
+            if (headerShell) headerShell.classList.remove('is-nav-open');
+          });
+      }
     })();
   </script>
 </nav>

@@ -539,7 +539,6 @@
           var height = this.constructor.normalize(timingFn(progress), 0, 1, tMin, tMax);
 
           el.style.height = height + 'px';
-          el.scrollIntoView();
 
           return { height };
         }.bind(this), duration)
