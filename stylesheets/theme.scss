@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-22p
+   COLBY 2026 CUSTOM STYLES — 2026-06-22q
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1980,7 +1980,7 @@ body {
 .section-progress__cols {
   display: flex;
   gap: 64px;
-  align-items: flex-end;
+  align-items: flex-start;
   width: 100%;
 }
 
@@ -1993,15 +1993,16 @@ body {
   gap: 32px;
 }
 
+.section-progress__body {
+  margin-top: 24px;
+}
+
 /* Right column — 2×2 counter grid + slider (natural width from counter content) */
 .section-progress__col-counters {
-  flex: 1 1 auto;
-  min-width: 0;
-  max-width: 100%;
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  overflow: hidden;
+  gap: 24px;
 }
 
 .section-progress__photo {
@@ -2037,8 +2038,8 @@ body {
   padding: 8px;
   background-color: var(--color-blue-900);
   border-radius: var(--radius-card);
-  width: 100%;
-  max-width: 416px;
+  width: 416px;
+  max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
   align-self: flex-start;
@@ -2856,7 +2857,15 @@ body {
 }
 
 /* NB nav container — Bootstrap collapse wrapper */
-.hero__header #primaryNav,
+.hero__header #primaryNav {
+  flex-direction: row;
+  align-items: center;
+  gap: 46px;
+  padding: 0;
+  flex-grow: 0;   /* override Bootstrap .navbar-collapse { flex-grow: 1 } */
+  flex-shrink: 0;
+}
+
 .inner-page-header #primaryNav {
   flex-direction: row;
   align-items: center;
@@ -4114,8 +4123,33 @@ body:not(.homepage) main .container {
     padding-bottom: var(--section-pad-v);
   }
 
-  .split-section__content { flex: unset; width: 100%; }
+  .split-section__content {
+    flex: unset;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
   .split-section__gap { display: none; }
+
+  .section-progress__cols {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 48px;
+  }
+
+  .section-progress__col-counters {
+    width: 100%;
+    max-width: none;
+  }
+
+  .section-progress__counter-row {
+    justify-content: flex-start;
+  }
+
+  .progress-slider {
+    width: 100%;
+    max-width: 416px;
+  }
 
   .section-powered .section-inner {
     flex-direction: column;
@@ -4156,10 +4190,8 @@ body:not(.homepage) main .container {
     --text-h2-lh: 36px;
   }
 
-  .section-progress__cols { flex-direction: column; }
-  .section-progress__col-counters { width: 100%; }
   .section-progress__counter-row { flex-direction: column; }
-  .progress-counter { width: 100%; }
+  .progress-counter { width: 100%; max-width: 416px; }
   .progress-slider { width: 100%; max-width: none; }
 
   .donation-selector__row { flex-direction: column; align-items: stretch; }
