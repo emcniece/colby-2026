@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21x
+   COLBY 2026 CUSTOM STYLES — 2026-06-21v
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1702,6 +1702,10 @@ body {
   color: var(--color-pink-50);
 }
 
+.hero-signup__success-message {
+  color: var(--color-white);
+}
+
 /* Sub-hero yellow bar — full viewport width */
 .hero__sub {
   /* On tablet/mobile the photo is hidden — full solid yellow */
@@ -2305,82 +2309,6 @@ body {
   line-height: 22px;
   color: var(--section-4-body);
   margin: 0;
-}
-
-.priorities-forms__signup {
-  margin-top: 24px;
-}
-
-.priorities-signup-embed__intro {
-  font-family: var(--font-outfit);
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 22px;
-  color: var(--section-4-body);
-  margin: 0 0 24px;
-}
-
-.priorities-signup-embed__intro p:last-child {
-  margin-bottom: 0;
-}
-
-.priorities-signup-embed__form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  width: 100%;
-}
-
-.priorities-signup-embed__row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.priorities-signup-embed__label {
-  display: block;
-  font-family: var(--font-outfit);
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 20px;
-  color: var(--section-4-body);
-  margin-bottom: 8px;
-}
-
-.priorities-signup-embed__optins {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.priorities-signup-embed__optin-input {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.priorities-signup-embed__volunteer {
-  margin-top: 4px;
-}
-
-@media (max-width: 767px) {
-  .priorities-signup-embed__row {
-    grid-template-columns: 1fr;
-  }
-}
-
-.priorities-forms__complete-body {
-  font-family: var(--font-outfit);
-  font-weight: 300;
-  font-size: 16px;
-  line-height: 22px;
-  color: var(--section-4-body);
-  margin: 0 0 24px;
-}
-
-.priorities-forms__complete-socials {
-  margin-top: 4px;
 }
 
 .visually-hidden {

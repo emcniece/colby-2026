@@ -1,13 +1,8 @@
 {% comment %}
-  Post-feedback signup embed — intro + NationBuilder signup form.
+  Post-feedback signup embed — intro + signup form (AJAX to /forms/signups).
 
-  Render via subpage from homepage (sibling of feedback page):
+  Render via subpage from homepage:
     {% subpage "signup-priorities" with "signup_priorities_embed" %}
-
-  NationBuilder admin (Signup page, slug: signup-priorities):
-  1. Add intro copy under Signup → Content (shown after feedback is submitted)
-  2. Configure fields/tags in Signup settings as needed
-  3. Page must be a child of the homepage
 {% endcomment %}
 
 <div class="priorities-signup-embed" id="priorities-signup-embed-{{ page.id }}">
@@ -16,19 +11,31 @@
     <div class="priorities-signup-embed__intro">{{ page.signup.content }}</div>
   {% endif %}
 
-  {% form_for signup, html: { class: "priorities-signup-embed__form" } %}
+  <form class="priorities-signup-embed__form" action="/forms/signups" method="post" autocomplete="off" enctype="multipart/form-data" novalidate>
 
-    <div class="form-errors" role="alert">{% error_messages_for signup %}</div>
+    <input type="hidden" name="authenticity_token" class="priorities-signup-embed__csrf" value="" />
+    <input type="hidden" name="page_id" value="{{ page.id }}" />
+    <input type="hidden" name="return_to" value="{{ page.full_url }}" />
+
+    <div class="form-errors" role="alert" hidden></div>
 
     {% if request.sorta_logged_in? == false or request.current_signup.has_name? == false %}
       <div class="priorities-signup-embed__row">
         <div class="form-group">
-          <label class="priorities-signup-embed__label" for="signup_first_name">{{ t_first_name }}*</label>
-          {% text_field "first_name", class:"form-group__field form-group__field--bordered", required:"required" %}
+          <label class="priorities-signup-embed__label" for="priorities-signup-first-{{ page.id }}">{{ t_first_name }}*</label>
+          <input class="form-group__field form-group__field--bordered priorities-signup-embed__first-name"
+                 id="priorities-signup-first-{{ page.id }}"
+                 name="signup[first_name]"
+                 type="text"
+                 required />
         </div>
         <div class="form-group">
-          <label class="priorities-signup-embed__label" for="signup_last_name">{{ t_last_name }}*</label>
-          {% text_field "last_name", class:"form-group__field form-group__field--bordered", required:"required" %}
+          <label class="priorities-signup-embed__label" for="priorities-signup-last-{{ page.id }}">{{ t_last_name }}*</label>
+          <input class="form-group__field form-group__field--bordered priorities-signup-embed__last-name"
+                 id="priorities-signup-last-{{ page.id }}"
+                 name="signup[last_name]"
+                 type="text"
+                 required />
         </div>
       </div>
     {% endif %}
@@ -36,13 +43,20 @@
     {% if request.sorta_logged_in? == false or request.current_signup.has_mobile? == false %}
       <div class="priorities-signup-embed__row">
         <div class="form-group">
-          <label class="priorities-signup-embed__label" for="signup_email">{{ t_email }}*</label>
-          {% email_field "email", class:"form-group__field form-group__field--bordered", required:"required" %}
+          <label class="priorities-signup-embed__label" for="priorities-signup-email-{{ page.id }}">{{ t_email }}*</label>
+          <input class="form-group__field form-group__field--bordered priorities-signup-embed__email"
+                 id="priorities-signup-email-{{ page.id }}"
+                 name="signup[email]"
+                 type="email"
+                 required />
         </div>
         {% if site.ask_for_mobiles? %}
           <div class="form-group">
-            <label class="priorities-signup-embed__label" for="signup_mobile_number">{{ t_forms_mobile_phone }}</label>
-            {% phone_field "mobile_number", class:"form-group__field form-group__field--bordered" %}
+            <label class="priorities-signup-embed__label" for="priorities-signup-mobile-{{ page.id }}">{{ t_forms_mobile_phone }}</label>
+            <input class="form-group__field form-group__field--bordered"
+                   id="priorities-signup-mobile-{{ page.id }}"
+                   name="signup[mobile_number]"
+                   type="tel" />
           </div>
         {% endif %}
       </div>
@@ -50,13 +64,13 @@
       {% unless page.show_consent_form? %}
         <div class="priorities-signup-embed__optins">
           <label class="checkbox-group">
-            {% check_box "email_opt_in", class:"priorities-signup-embed__optin-input" %}
+            <input type="checkbox" name="signup[email_opt_in]" value="1" class="priorities-signup-embed__optin-input" checked />
             <span class="checkbox-group__control"></span>
             <span class="checkbox-group__label">{{ t_forms_send_me_email_updates }}</span>
           </label>
           {% if site.ask_for_mobiles? %}
             <label class="checkbox-group">
-              {% check_box "mobile_opt_in", class:"priorities-signup-embed__optin-input" %}
+              <input type="checkbox" name="signup[mobile_opt_in]" value="1" class="priorities-signup-embed__optin-input" />
               <span class="checkbox-group__control"></span>
               <span class="checkbox-group__label">{{ t_forms_send_me_text_messages }}</span>
             </label>
@@ -67,40 +81,30 @@
 
     {% if page.signup.is_phone? %}
       <div class="form-group">
-        <label class="priorities-signup-embed__label" for="signup_phone_number">
+        <label class="priorities-signup-embed__label" for="priorities-signup-phone-{{ page.id }}">
           {% if page.signup.require_phone? %}{{ t_phone_number }}*{% else %}{{ t_phone_number }}{% endif %}
         </label>
-        {% if page.signup.require_phone? %}
-          {% phone_field "phone_number", class:"form-group__field form-group__field--bordered", required:"required" %}
-        {% else %}
-          {% phone_field "phone_number", class:"form-group__field form-group__field--bordered" %}
-        {% endif %}
+        <input class="form-group__field form-group__field--bordered"
+               id="priorities-signup-phone-{{ page.id }}"
+               name="signup[phone_number]"
+               type="tel"
+               {% if page.signup.require_phone? %}required{% endif %} />
       </div>
-    {% endif %}
-
-    {% include "custom_fields_signup" %}
-
-    {% if page.signup.has_labeled_tags? %}
-      {% include "labeled_tags" %}
     {% endif %}
 
     {% if page.signup.is_volunteers? and site.ask_for_volunteers? %}
       {% if request.sorta_logged_in? == false or request.current_signup.is_volunteer == false %}
         <label class="checkbox-group priorities-signup-embed__volunteer">
-          {% check_box "is_volunteer", class:"priorities-signup-embed__optin-input" %}
+          <input type="checkbox" name="signup[is_volunteer]" value="1" class="priorities-signup-embed__optin-input" />
           <span class="checkbox-group__control"></span>
           <span class="checkbox-group__label">{{ t_i_want_to_volunteer }}</span>
         </label>
       {% endif %}
     {% endif %}
 
-    {% if page.show_consent_form? %}
-      {% include "consent_form" %}
-    {% endif %}
+    <button type="submit" class="btn btn-v3 priorities-signup-embed__submit">Sign up</button>
 
-    <button type="button" class="btn btn-v3 priorities-signup-embed__submit">Sign up</button>
-
-  {% endform_for %}
+  </form>
 
 </div>
 
@@ -109,41 +113,61 @@
     var root = document.getElementById('priorities-signup-embed-{{ page.id }}');
     if (!root) return;
 
-    var suffix = '_{{ page.id }}';
-    root.querySelectorAll('input[id]:not([type="button"]), textarea[id], select[id]').forEach(function (field) {
-      field.id += suffix;
-    });
-    root.querySelectorAll('label[for]').forEach(function (label) {
-      label.htmlFor += suffix;
-    });
-
-    var form = root.querySelector('form.priorities-signup-embed__form') || root.querySelector('form');
+    var form = root.querySelector('form.priorities-signup-embed__form');
     if (!form) return;
 
     var errorsBox = form.querySelector('.form-errors');
     var submitBtn = root.querySelector('.priorities-signup-embed__submit');
     var formsWrap = root.closest('.priorities-forms');
 
-    form.querySelectorAll('.form-submit, input[type="submit"], button[type="submit"]').forEach(function (el) {
-      el.remove();
-    });
+    function getCsrfToken() {
+      var field = form.querySelector('[name="authenticity_token"]');
+      if (field && field.value) return field.value;
 
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-    }, true);
+      var meta = document.querySelector('meta[name="csrf-token"]');
+      return meta ? meta.getAttribute('content') : '';
+    }
+
+    function prepareNbForm() {
+      var token = getCsrfToken();
+      var tokenField = form.querySelector('[name="authenticity_token"]');
+
+      if (tokenField && token && !tokenField.value) {
+        tokenField.value = token;
+      }
+
+      if (!getCsrfToken()) {
+        console.error('[priorities-signup] CSRF token missing');
+        return false;
+      }
+
+      return true;
+    }
+
+    function logFormDataPayload(formData) {
+      var payload = {};
+      formData.forEach(function (value, key) {
+        payload[key] = value;
+      });
+      console.log('[priorities-signup] Submit payload:', payload);
+    }
 
     function showCompletePane() {
       if (!formsWrap) return;
 
       var signupPane = root.closest('.priorities-forms__signup');
-      if (signupPane) signupPane.hidden = true;
-
       var successBox = formsWrap.querySelector('.survey__success');
-      if (successBox) successBox.hidden = true;
-
       var completePane = formsWrap.querySelector('.priorities-forms__complete');
-      if (completePane) completePane.hidden = false;
+      var showPanes = [completePane].filter(Boolean);
+      var hidePanes = [signupPane, successBox].filter(Boolean);
+
+      if (window.colbyPrioritiesPane) {
+        window.colbyPrioritiesPane.swap(showPanes, hidePanes);
+      } else {
+        if (signupPane) signupPane.hidden = true;
+        if (successBox) successBox.hidden = true;
+        if (completePane) completePane.hidden = false;
+      }
     }
 
     function handleSubmit() {
@@ -151,6 +175,8 @@
         form.reportValidity();
         return;
       }
+
+      if (!prepareNbForm()) return;
 
       if (errorsBox) {
         errorsBox.textContent = '';
@@ -160,26 +186,23 @@
       if (submitBtn) submitBtn.disabled = true;
 
       var formData = new FormData(form);
-      var action = form.getAttribute('action');
+      logFormDataPayload(formData);
 
-      if (!action) {
-        console.error('[priorities-signup] Form missing action URL');
-        if (submitBtn) submitBtn.disabled = false;
-        return;
-      }
+      var csrfToken = getCsrfToken();
 
-      fetch(action, {
+      fetch('/forms/signups', {
         method: 'POST',
         body: formData,
         credentials: 'same-origin',
         redirect: 'manual',
         headers: {
           'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-Token': csrfToken,
           'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
         }
       }).then(function (response) {
         if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
-          return { success: true };
+          return { success: true, status: response.status };
         }
 
         return response.text().then(function (html) {
@@ -189,7 +212,11 @@
           var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
 
           if (hasErrors) {
-            return { success: false, status: response.status, errors: errorText };
+            return {
+              success: false,
+              status: response.status,
+              errors: errorText || ('HTTP ' + response.status)
+            };
           }
 
           return { success: true, status: response.status };
@@ -219,18 +246,17 @@
       });
     }
 
-    if (submitBtn) {
-      submitBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        handleSubmit();
+    document.addEventListener('DOMContentLoaded', function () {
+      prepareNbForm();
+      console.log('[priorities-signup] Ready', {
+        action: form.getAttribute('action'),
+        hasCsrf: !!getCsrfToken()
       });
-    }
+    });
 
-    form.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && e.target.tagName !== 'TEXTAREA') {
-        e.preventDefault();
-        handleSubmit();
-      }
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      handleSubmit();
     });
   })();
 </script>

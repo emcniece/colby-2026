@@ -1,0 +1,18 @@
+{% comment %}
+  Optional partial — hero signup form is inlined in _homepage.html via form_for.
+
+  Kept for reference only; not used on the live homepage.
+{% endcomment %}
+
+{% if hero_signup_form %}
+  {% assign page = hero_signup_form %}
+{% endif %}
+
+{% form_for signup, html: { class: "hero-signup__nb-form", autocomplete: "off" } %}
+  {% hidden_field_tag "page_id", page.id %}
+  <input type="hidden" name="signup[first_name]" class="hero-signup__field-first" value="" />
+  <input type="hidden" name="signup[last_name]" class="hero-signup__field-last" value="" />
+  <input type="hidden" name="signup[email]" class="hero-signup__field-email" value="" />
+  <input type="hidden" name="signup[email_opt_in]" value="1" />
+  <input type="checkbox" name="signup[is_volunteer]" value="1" class="hero-signup__field-volunteer visually-hidden" />
+{% endform_for %}

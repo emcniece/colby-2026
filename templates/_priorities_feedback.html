@@ -17,13 +17,13 @@
   <div class="priorities-feedback__status">
     <div class="form-errors" role="alert" hidden></div>
 
-    <div class="survey__success" hidden>
+    <div class="survey__success priorities-pane" hidden aria-hidden="true">
       <h3 class="survey__success-heading">Thank you for sharing!</h3>
     </div>
   </div>
 
   {% comment %} Visible survey — plain HTML, not part of the NB form {% endcomment %}
-  <div class="priorities-survey survey" id="priorities-survey-{{ page.id }}">
+  <div class="priorities-survey survey priorities-pane is-active" id="priorities-survey-{{ page.id }}" aria-hidden="false">
 
     <div class="survey__question">
       <p class="survey__question-label" data-num="1" id="priorities-q1-{{ page.id }}">How would you rate the current direction of our city?</p>
@@ -248,13 +248,19 @@
         if (!result) return;
 
         if (result.success) {
-          survey.hidden = true;
-          if (successBox) successBox.hidden = false;
           var formsWrap = root.closest('.priorities-forms');
-          if (formsWrap) {
-            var signupEmbed = formsWrap.querySelector('.priorities-forms__signup');
-            if (signupEmbed) signupEmbed.hidden = false;
+          var signupPane = formsWrap && formsWrap.querySelector('.priorities-forms__signup');
+          var showPanes = [successBox, signupPane].filter(Boolean);
+          var hidePanes = [survey].filter(Boolean);
+
+          if (window.colbyPrioritiesPane) {
+            window.colbyPrioritiesPane.swap(showPanes, hidePanes);
+          } else {
+            survey.hidden = true;
+            if (successBox) successBox.hidden = false;
+            if (signupPane) signupPane.hidden = false;
           }
+
           console.log('[priorities-feedback] Submitted successfully');
           return;
         }

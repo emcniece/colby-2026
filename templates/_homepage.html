@@ -1,3 +1,46 @@
+<script>
+  window.colbyPrioritiesPane = window.colbyPrioritiesPane || {
+    duration: 400,
+    swap: function (showEls, hideEls) {
+      showEls = [].concat(showEls || []).filter(Boolean);
+      hideEls = [].concat(hideEls || []).filter(Boolean);
+      var duration = this.duration;
+      var hasOutgoing = hideEls.length > 0;
+
+      hideEls.forEach(function (el) {
+        el.classList.remove('is-active');
+        el.setAttribute('aria-hidden', 'true');
+      });
+
+      setTimeout(function () {
+        hideEls.forEach(function (el) {
+          el.hidden = true;
+        });
+
+        showEls.forEach(function (el) {
+          el.hidden = false;
+          el.offsetHeight;
+          el.classList.add('is-active');
+          el.removeAttribute('aria-hidden');
+        });
+      }, hasOutgoing ? duration : 0);
+    }
+  };
+</script>
+
+{% assign priorities_slug = nil %}
+{% assign signup_priorities_slug = nil %}
+{% assign signup_priorities_page_id = nil %}
+{% assign signup_priorities_return_to = nil %}
+{% for p in page.descendants %}
+  {% if p.type_slug == 'feedback' and p.slug == 'feedback' %}
+    {% assign priorities_slug = p.slug %}
+  {% elsif p.type_slug == 'signup' and p.slug == 'signup-priorities' %}
+    {% assign signup_priorities_slug = p.slug %}
+    {% assign signup_priorities_page_id = p.id %}
+    {% assign signup_priorities_return_to = p.full_url %}
+  {% endif %}
+{% endfor %}
 
 <!-- ═══════════════════════════════════════════════════════════
      HERO SECTION
@@ -39,34 +82,315 @@
         <h1 class="heading-h1 hero__headline">Moving Langford forward, together</h1>
         <p class="hero__sub-headline">From a new medical clinic to safe routes to school, we've spent the last four years doing the heavy lifting to fix our city's foundation. Let's keep the momentum!</p>
 
-        <!-- Sign-up form -->
-        <form class="signup-form" action="/pages/join" method="post">
-          <input type="hidden" name="authenticity_token" value="{{ form_authenticity_token }}" />
-          <div class="signup-form__row">
-            <div class="form-group">
-              <input class="form-group__field" id="hero-name" type="text" name="signup[name]" placeholder="Name" autocomplete="name" />
+        <!-- Sign-up form (UI submits via hidden NB signup form below) -->
+        <div class="hero-signup">
+          <form class="signup-form hero-signup__ui priorities-pane is-active" aria-hidden="false" novalidate>
+            <div class="form-errors hero-signup__errors" role="alert" hidden></div>
+            <div class="signup-form__row">
+              <div class="form-group">
+                <input class="form-group__field hero-signup__name" id="hero-name" type="text" placeholder="Name" autocomplete="name" required />
+              </div>
+              <div class="form-group">
+                <input class="form-group__field hero-signup__email" id="hero-email" type="email" placeholder="Email" autocomplete="email" required />
+              </div>
+              <div class="form-group">
+                <button class="btn btn-white-ghost hero-signup__submit" type="submit">Get involved</button>
+              </div>
             </div>
-            <div class="form-group">
-              <input class="form-group__field" id="hero-email" type="email" name="signup[email]" placeholder="Email" autocomplete="email" />
+            <div class="signup-form__footer signup-form__row">
+              <div class="form-group">
+                <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
+              </div>
+              <div class="form-group">
+                <label class="signup-form__volunteer checkbox-group">
+                  <input type="checkbox" class="hero-signup__volunteer" value="1" />
+                  <span class="checkbox-group__control"></span>
+                  <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
+                </label>
+              </div>
             </div>
-            <div class="form-group">
-              <button class="btn btn-white-ghost" type="submit">Get involved</button>
-            </div>
+          </form>
+
+          <div class="hero-signup__success priorities-pane" hidden aria-hidden="true">
+            <p class="hero-signup__success-message">Thanks for signing up! We'll be in touch soon.</p>
           </div>
-          <div class="signup-form__footer signup-form__row">
-            <div class="form-group">
-              <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
-            </div>
-            <div class="form-group">
-              <label class="signup-form__volunteer checkbox-group">
-                <input type="checkbox" name="signup[volunteer]" value="1" />
-                <span class="checkbox-group__control"></span>
-                <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
-              </label>
-            </div>
-          </div>
-          
-        </form>
+
+          {% if signup_priorities_page_id %}
+            <form class="hero-signup__nb-form" action="/forms/signups" method="post" autocomplete="off" enctype="multipart/form-data">
+              <input type="hidden" name="authenticity_token" class="hero-signup__csrf" value="" />
+              <input type="hidden" name="page_id" value="{{ signup_priorities_page_id }}" />
+              {% if signup_priorities_return_to %}
+                <input type="hidden" name="return_to" value="{{ signup_priorities_return_to }}" />
+              {% endif %}
+              <input type="hidden" name="signup[first_name]" class="hero-signup__field-first" value="" />
+              <input type="hidden" name="signup[last_name]" class="hero-signup__field-last" value="" />
+              <input type="hidden" name="signup[email]" class="hero-signup__field-email" value="" />
+              <input type="hidden" name="signup[email_opt_in]" value="1" />
+              <input type="checkbox" name="signup[is_volunteer]" value="1" class="hero-signup__field-volunteer visually-hidden" />
+            </form>
+          {% endif %}
+        </div>
+
+        <script>
+          ;(function () {
+            var wrap = document.querySelector('.hero-signup');
+            if (!wrap) return;
+
+            var ui = wrap.querySelector('form.hero-signup__ui');
+            var success = wrap.querySelector('.hero-signup__success');
+            var nameInput = wrap.querySelector('.hero-signup__name');
+            var emailInput = wrap.querySelector('.hero-signup__email');
+            var volunteerInput = wrap.querySelector('.hero-signup__volunteer');
+            var submitBtn = wrap.querySelector('.hero-signup__submit');
+            var errorsBox = wrap.querySelector('.hero-signup__errors');
+
+            if (!ui) return;
+
+            function getNbForm() {
+              var heroForm = wrap.querySelector('form.hero-signup__nb-form');
+              if (heroForm) return heroForm;
+
+              var prioritiesForm = document.querySelector('form.priorities-signup-embed__form');
+              if (prioritiesForm) return prioritiesForm;
+
+              var pageIdField = document.querySelector('form[action="/forms/signups"] input[name="page_id"][value="{{ signup_priorities_page_id }}"]');
+              return pageIdField ? pageIdField.closest('form') : null;
+            }
+
+            function getCsrfToken(nbForm) {
+              nbForm = nbForm || getNbForm();
+              if (nbForm) {
+                var field = nbForm.querySelector('[name="authenticity_token"]');
+                if (field && field.value) return field.value;
+              }
+
+              var meta = document.querySelector('meta[name="csrf-token"]');
+              return meta ? meta.getAttribute('content') : '';
+            }
+
+            function prepareNbForm(nbForm) {
+              nbForm = nbForm || getNbForm();
+              if (!nbForm) return false;
+
+              var token = getCsrfToken(nbForm);
+              var tokenField = nbForm.querySelector('[name="authenticity_token"]');
+
+              if (tokenField && token && !tokenField.value) {
+                tokenField.value = token;
+              }
+
+              if (!nbForm.getAttribute('action')) {
+                console.error('[hero-signup] Form missing action URL');
+                return false;
+              }
+
+              if (!getCsrfToken(nbForm)) {
+                console.error('[hero-signup] CSRF token missing');
+                return false;
+              }
+
+              return true;
+            }
+
+            function parseName(value) {
+              var parts = value.trim().split(/\s+/).filter(Boolean);
+              if (parts.length === 0) return { first: '', last: '' };
+              if (parts.length === 1) return { first: parts[0], last: 'n/a' };
+              return { first: parts[0], last: parts.slice(1).join(' ') };
+            }
+
+            function getFormValues() {
+              var names = parseName(nameInput ? nameInput.value : '');
+              return {
+                name: nameInput ? nameInput.value : '',
+                first_name: names.first,
+                last_name: names.last,
+                email: emailInput ? emailInput.value.trim() : '',
+                is_volunteer: volunteerInput ? volunteerInput.checked : false
+              };
+            }
+
+            function logHeroFormValues() {
+              console.log('[hero-signup] Form values:', getFormValues());
+            }
+
+            function setNbField(nbForm, name, value) {
+              var field = nbForm.querySelector('[name="' + name + '"]');
+              if (field) field.value = value;
+            }
+
+            function syncToNbForm(nbForm) {
+              var values = getFormValues();
+
+              setNbField(nbForm, 'signup[first_name]', values.first_name);
+              setNbField(nbForm, 'signup[last_name]', values.last_name);
+              setNbField(nbForm, 'signup[email]', values.email);
+
+              var volunteerField = nbForm.querySelector('[name="signup[is_volunteer]"]');
+              if (volunteerField) volunteerField.checked = values.is_volunteer;
+
+              var emailOptIn = nbForm.querySelector('[name="signup[email_opt_in]"]');
+              if (emailOptIn) {
+                if (emailOptIn.type === 'checkbox') {
+                  emailOptIn.checked = true;
+                } else {
+                  emailOptIn.value = '1';
+                }
+              }
+            }
+
+            function logFormDataPayload(formData) {
+              var payload = {};
+              formData.forEach(function (value, key) {
+                payload[key] = value;
+              });
+              console.log('[hero-signup] Submit payload:', payload);
+            }
+
+            function showSuccess() {
+              if (window.colbyPrioritiesPane) {
+                window.colbyPrioritiesPane.swap(success, ui);
+              } else {
+                ui.hidden = true;
+                if (success) success.hidden = false;
+              }
+            }
+
+            function handleSubmit(e) {
+              if (e) e.preventDefault();
+
+              logHeroFormValues();
+
+              if (nameInput && !nameInput.value.trim()) {
+                nameInput.focus();
+                console.error('[hero-signup] Validation failed: name is required');
+                return;
+              }
+
+              if (emailInput && !emailInput.checkValidity()) {
+                emailInput.reportValidity();
+                console.error('[hero-signup] Validation failed: invalid email');
+                return;
+              }
+
+              var nbForm = getNbForm();
+              if (!nbForm) {
+                console.error('[hero-signup] Cannot submit — NationBuilder form missing', {
+                  signup_priorities_slug: '{{ signup_priorities_slug }}',
+                  signup_priorities_page_id: '{{ signup_priorities_page_id }}',
+                  heroForm: !!wrap.querySelector('form.hero-signup__nb-form'),
+                  prioritiesForm: !!document.querySelector('form.priorities-signup-embed__form')
+                });
+                return;
+              }
+
+              if (errorsBox) {
+                errorsBox.textContent = '';
+                errorsBox.hidden = true;
+              }
+
+              syncToNbForm(nbForm);
+
+              if (!prepareNbForm(nbForm)) {
+                return;
+              }
+
+              if (submitBtn) submitBtn.disabled = true;
+
+              var formData = new FormData(nbForm);
+              logFormDataPayload(formData);
+
+              var action = nbForm.getAttribute('action');
+              var csrfToken = getCsrfToken(nbForm);
+
+              fetch(action, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                redirect: 'manual',
+                headers: {
+                  'X-Requested-With': 'XMLHttpRequest',
+                  'X-CSRF-Token': csrfToken,
+                  'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
+                }
+              }).then(function (response) {
+                if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
+                  return { success: true, status: response.status };
+                }
+
+                return response.text().then(function (html) {
+                  var doc = new DOMParser().parseFromString(html, 'text/html');
+                  var remoteErrors = doc.querySelector('.form-errors');
+                  var errorText = remoteErrors ? remoteErrors.textContent.replace(/\s+/g, ' ').trim() : '';
+                  var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
+
+                  if (hasErrors) {
+                    return {
+                      success: false,
+                      status: response.status,
+                      errors: errorText || ('HTTP ' + response.status)
+                    };
+                  }
+
+                  return { success: true, status: response.status };
+                });
+              }).then(function (result) {
+                if (submitBtn) submitBtn.disabled = false;
+                if (!result) return;
+
+                if (result.success) {
+                  showSuccess();
+                  console.log('[hero-signup] Submitted successfully');
+                  return;
+                }
+
+                console.error('[hero-signup] Submit failed', {
+                  status: result.status,
+                  action: nbForm.getAttribute('action'),
+                  errors: result.errors || 'Unknown error'
+                });
+
+                if (errorsBox && result.errors) {
+                  errorsBox.textContent = result.errors;
+                  errorsBox.hidden = false;
+                }
+              }).catch(function (err) {
+                if (submitBtn) submitBtn.disabled = false;
+                console.error('[hero-signup] Network error', err);
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+              var nbForm = getNbForm();
+              if (!nbForm) {
+                console.error('[hero-signup] NationBuilder form not found on load — paste _hero_signup_form.html or check signup-priorities is a homepage child');
+                return;
+              }
+
+              nbForm.querySelectorAll('.form-submit, input[type="submit"], button[type="submit"]').forEach(function (el) {
+                el.remove();
+              });
+
+              nbForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                e.stopImmediatePropagation();
+              }, true);
+
+              prepareNbForm(nbForm);
+              console.log('[hero-signup] Ready', {
+                source: nbForm.classList.contains('hero-signup__nb-form') ? 'hero' : 'priorities-embed',
+                action: nbForm.getAttribute('action'),
+                hasCsrf: !!getCsrfToken(nbForm)
+              });
+            });
+
+            ui.addEventListener('submit', handleSubmit);
+
+            if (nameInput) nameInput.addEventListener('input', logHeroFormValues);
+            if (emailInput) emailInput.addEventListener('input', logHeroFormValues);
+            if (volunteerInput) volunteerInput.addEventListener('change', logHeroFormValues);
+          })();
+        </script>
       </div>
     </div>
 
@@ -312,24 +636,15 @@
         My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
       </p>
 
-      {% assign priorities_slug = nil %}
-      {% assign signup_priorities_slug = nil %}
-      {% for p in page.descendants %}
-        {% if p.type_slug == 'feedback' and p.slug == 'feedback' %}
-          {% assign priorities_slug = p.slug %}
-        {% elsif p.type_slug == 'signup' and p.slug == 'signup-priorities' %}
-          {% assign signup_priorities_slug = p.slug %}
-        {% endif %}
-      {% endfor %}
       {% if priorities_slug %}
         <div class="priorities-forms">
           {% subpage priorities_slug with 'priorities_feedback' %}
           {% if signup_priorities_slug %}
-            <div class="priorities-forms__signup" hidden>
+            <div class="priorities-forms__signup priorities-pane" hidden aria-hidden="true">
               {% subpage signup_priorities_slug with 'signup_priorities_embed' %}
             </div>
           {% endif %}
-          <div class="priorities-forms__complete" hidden>
+          <div class="priorities-forms__complete priorities-pane" hidden aria-hidden="true">
             <p class="priorities-forms__complete-body">I'll be in touch soon to let you know how I'm working to address the issues you're most interested in. In the meantime, feel free to follow my campaign on social media to keep the conversation going.</p>
             <div class="priorities-forms__complete-socials site-footer__socials" aria-label="Follow the campaign on social media">
               <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
