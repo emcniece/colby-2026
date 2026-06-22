@@ -1,45 +1,4 @@
-{% assign tags_list = "" %}
-{% for tag in page.tags %}
-  {% assign tags_list = tag.name | downcase | append: ", " | append: tags_list %}
-{% endfor %}
-
-{% assign homepage_tags_list = "" %}
-{% for tag in site.homepage.tags %}
-  {% assign homepage_tags_list = tag.name | downcase | append: ", " | append: homepage_tags_list %}
-{% endfor %}
-
-{% unless tags_list contains "hide like page" or homepage_tags_list contains "site: hide like page" %}
-  <div class="mt-4 like-page">
-    <div class="row">
-      <div class="col">
-        <p class="mb-1"><strong>{{ heading | default: t_general_do_you_like_this_page }}</strong></p>
-        <div class="sharetable d-flex flex-wrap align-items-center">
-          <div class="facebook-cell">
-            {% if request.sorta_logged_in? %}
-              <div class="d-none d-sm-block">
-                <fb:like href="{{ page.full_url_with_recruiter }}" show_faces="false" width="300" send="true" action="like" colorscheme="{{ site.facebook_colorscheme }}" ref="r{{ current_signup.id }}"></fb:like>
-              </div>
-              <div class="d-block d-sm-none">
-                <fb:like href="{{ page.full_url_with_recruiter }}" show_faces="false" width="245" send="false" action="like" colorscheme="{{ site.facebook_colorscheme }}" ref="r{{ current_signup.id }}"></fb:like>
-              </div>
-            {% else %}
-              <div class="d-none d-sm-block">
-                <fb:like href="{{ page.full_url }}" show_faces="false" width="300" colorscheme="{{ site.facebook_colorscheme }}" send="true" action="like"></fb:like>
-              </div>
-              <div class="d-block d-sm-none">
-                <fb:like href="{{ page.full_url }}" show_faces="false" width="245" colorscheme="{{ site.facebook_colorscheme }}" send="false" action="like"></fb:like>
-              </div>
-            {% endif %}
-          </div>
-          <div class="twitter-cell" style="transform:translateY(5px);">
-            {% if request.sorta_logged_in? %}
-              <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-text="{{ page.default_face_tweet_text }}" data-via="{{ site.broadcaster.twitter_login }}" data-url="{{ page.full_url_with_recruiter }}">{{ t_tweet }}</a>
-            {% else %}
-              <a href="http://twitter.com/share" class="twitter-share-button" data-count="none" data-text="{{ page.default_face_tweet_text }}" data-via="{{ site.broadcaster.twitter_login }}">{{ t_tweet }}</a>
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-{% endunless %}
+{% comment %}
+  Social share table disabled site-wide.
+  Previously rendered Facebook like + Twitter share via {% include "like_page" %}.
+{% endcomment %}
