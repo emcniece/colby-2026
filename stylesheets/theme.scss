@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21z
+   COLBY 2026 CUSTOM STYLES — 2026-06-22a
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1706,6 +1706,16 @@ body {
   color: var(--color-white);
 }
 
+.hero-signup {
+  display: grid;
+  align-items: start;
+}
+
+.hero-signup > .priorities-pane {
+  grid-area: 1 / 1;
+  width: 100%;
+}
+
 .hero-signup__field {
   position: relative;
   display: flex;
@@ -2203,6 +2213,89 @@ body {
 
 .section-priorities .checkbox-group__label {
   color: var(--color-white);
+}
+
+/* AJAX form pane crossfades (hero signup, priorities survey → signup → complete) */
+.priorities-pane {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.priorities-pane.is-active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.priorities-pane:not(.is-active) {
+  pointer-events: none;
+}
+
+.priorities-pane[hidden] {
+  display: none !important;
+}
+
+.priorities-panes--ready .priorities-pane {
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.priorities-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.priorities-forms__complete-body {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 22px;
+  color: var(--section-4-body);
+  margin: 0 0 24px;
+}
+
+.priorities-forms__complete-socials {
+  margin-top: 0;
+}
+
+@keyframes colby-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.priorities-panes--ready .hero-signup__field-error:not([hidden]),
+.priorities-panes--ready .survey__field-error:not([hidden]),
+.priorities-panes--ready .priorities-feedback__status .form-errors:not([hidden]),
+.priorities-panes--ready .hero-signup__errors:not([hidden]),
+.priorities-panes--ready .priorities-signup-embed .form-errors:not([hidden]) {
+  animation: colby-fade-in 0.3s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .priorities-pane {
+    transform: none;
+  }
+
+  .priorities-panes--ready .priorities-pane {
+    transition: opacity 0.15s ease;
+  }
+
+  .priorities-panes--ready .hero-signup__field-error:not([hidden]),
+  .priorities-panes--ready .survey__field-error:not([hidden]),
+  .priorities-panes--ready .priorities-feedback__status .form-errors:not([hidden]),
+  .priorities-panes--ready .hero-signup__errors:not([hidden]),
+  .priorities-panes--ready .priorities-signup-embed .form-errors:not([hidden]) {
+    animation: none;
+  }
 }
 
 .priorities-feedback__form {

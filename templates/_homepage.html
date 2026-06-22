@@ -1,6 +1,13 @@
 <script>
   window.colbyPrioritiesPane = window.colbyPrioritiesPane || {
     duration: 400,
+    init: function () {
+      if (this._inited) return;
+      this._inited = true;
+      document.querySelectorAll('.hero-signup, .priorities-forms, .priorities-feedback, .priorities-signup-embed').forEach(function (el) {
+        el.classList.add('priorities-panes--ready');
+      });
+    },
     swap: function (showEls, hideEls) {
       showEls = [].concat(showEls || []).filter(Boolean);
       hideEls = [].concat(hideEls || []).filter(Boolean);
@@ -12,20 +19,33 @@
         el.setAttribute('aria-hidden', 'true');
       });
 
+      showEls.forEach(function (el) {
+        el.hidden = false;
+        el.classList.remove('is-active');
+        el.removeAttribute('aria-hidden');
+      });
+
+      if (showEls.length) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            showEls.forEach(function (el) {
+              el.classList.add('is-active');
+            });
+          });
+        });
+      }
+
       setTimeout(function () {
         hideEls.forEach(function (el) {
           el.hidden = true;
         });
-
-        showEls.forEach(function (el) {
-          el.hidden = false;
-          el.offsetHeight;
-          el.classList.add('is-active');
-          el.removeAttribute('aria-hidden');
-        });
       }, hasOutgoing ? duration : 0);
     }
   };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    window.colbyPrioritiesPane.init();
+  });
 </script>
 
 {% assign priorities_slug = nil %}
