@@ -1,3 +1,17 @@
-<div style="position:fixed;inset:0;z-index:99999;background:red;color:white;font:900 32px/1 sans-serif;display:flex;align-items:center;justify-content:center">
-  TEMPLATE WORKING
+{% include "translation" %}
+
+<div id="basic-page-content">
+  {% if page.basic.content.size > 0 %}
+    <div id="intro" class="intro">
+      {{ page.basic.content }}
+    </div>
+  {% endif %}
+
+  {% if page.tags_count > 0 %}
+    <div id="page-tags" class="page-tags">
+      {% include "page_tags" with page %}
+    </div>
+  {% endif %}
+
+  {% include "like_page" %}
 </div>

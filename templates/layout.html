@@ -115,10 +115,10 @@
             class="d-flex flex-column justify-content-center position-relative py-5 w-100"
           {% elsif is_session %}
             class="d-flex flex-column justify-content-center py-5 w-100 bg-color-2"
-          {% elsif site.has_background_image? %}
-            class="position-relative pt-4 pb-5"
           {% elsif is_donation %}
             class="position-relative bg-color-2 pt-4 pb-5"
+          {% elsif site.has_background_image? %}
+            class="position-relative pt-4 pb-5"
           {% else %}
             class="py-3 mb-5"
           {% endif %}

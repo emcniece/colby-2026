@@ -4,7 +4,7 @@
     init: function () {
       if (this._inited) return;
       this._inited = true;
-      document.querySelectorAll('.hero-signup, .priorities-forms, .priorities-feedback, .priorities-signup-embed').forEach(function (el) {
+      document.querySelectorAll('.hero-signup, .priorities-forms, .priorities-feedback, .priorities-signup-embed, .platform-notify').forEach(function (el) {
         el.classList.add('priorities-panes--ready');
       });
     },
@@ -898,7 +898,7 @@
           <div class="feature-icon feature-icon--lg feature-icon--c1" aria-hidden="true">
             <i class="fa-solid fa-house-chimney"></i>
           </div>
-          <h3 class="priority-card__heading">Housing for Everyone</h3>
+          <h3 class="priority-card__heading">Housing for All</h3>
           <p class="priority-card__body">
             More gentle density, streamlined permitting, and partnerships with non-profits to build homes people can actually afford to live in.
           </p>
@@ -926,20 +926,264 @@
       </div>
 
       <!-- Notify me form -->
-      <div class="section-platform__notify">
+      <div class="section-platform__notify platform-notify">
         <p class="section-platform__notify-text">My full platform is coming soon. Sign up to be notified when it's ready.</p>
-        <div class="section-platform__notify-form">
-          <div class="form-group">
-            <input class="form-group__field"
-                   type="email"
-                   name="notify[email]"
-                   placeholder="Email"
-                   autocomplete="email"
-                   aria-label="Email address for platform notifications" />
+        <div class="section-platform__notify-form-wrap">
+          <form class="section-platform__notify-form platform-notify__ui priorities-pane is-active" aria-hidden="false" novalidate>
+            <div class="form-errors platform-notify__errors" role="alert" hidden></div>
+            <div class="form-group platform-notify__field" data-field="email">
+              <input class="form-group__field platform-notify__email"
+                     id="platform-notify-email"
+                     type="email"
+                     placeholder="Email"
+                     autocomplete="email"
+                     inputmode="email"
+                     aria-describedby="platform-notify-email-error"
+                     required />
+              <p class="platform-notify__field-error" id="platform-notify-email-error" role="alert" hidden>Please enter a valid email address.</p>
+            </div>
+            <button class="btn btn-v2 platform-notify__submit" type="submit">Notify me</button>
+          </form>
+          <div class="platform-notify__success priorities-pane section-platform__notify-success" hidden aria-hidden="true">
+            <p class="platform-notify__success-message">Thanks for signing up! We'll let you know when the platform is ready.</p>
           </div>
-          <button class="btn btn-v2" type="submit">Notify me</button>
         </div>
       </div>
+
+      <script>
+        ;(function () {
+          var wrap = document.querySelector('.platform-notify');
+          if (!wrap) return;
+
+          var ui = wrap.querySelector('form.platform-notify__ui');
+          var success = wrap.querySelector('.platform-notify__success');
+          var emailInput = wrap.querySelector('.platform-notify__email');
+          var submitBtn = wrap.querySelector('.platform-notify__submit');
+          var errorsBox = wrap.querySelector('.platform-notify__errors');
+
+          if (!ui) return;
+
+          var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+          function getNbForm() {
+            var heroForm = document.querySelector('form.hero-signup__nb-form');
+            if (heroForm) return heroForm;
+
+            var prioritiesForm = document.querySelector('form.priorities-signup-embed__form');
+            if (prioritiesForm) return prioritiesForm;
+
+            var pageIdField = document.querySelector('form[action="/forms/signups"] input[name="page_id"][value="{{ signup_priorities_page_id }}"]');
+            return pageIdField ? pageIdField.closest('form') : null;
+          }
+
+          function getCsrfToken(nbForm) {
+            nbForm = nbForm || getNbForm();
+            if (nbForm) {
+              var field = nbForm.querySelector('[name="authenticity_token"]');
+              if (field && field.value) return field.value;
+            }
+
+            var meta = document.querySelector('meta[name="csrf-token"]');
+            return meta ? meta.getAttribute('content') : '';
+          }
+
+          function prepareNbForm(nbForm) {
+            nbForm = nbForm || getNbForm();
+            if (!nbForm) return false;
+
+            var token = getCsrfToken(nbForm);
+            var tokenField = nbForm.querySelector('[name="authenticity_token"]');
+
+            if (tokenField && token && !tokenField.value) {
+              tokenField.value = token;
+            }
+
+            if (!nbForm.getAttribute('action')) {
+              console.error('[platform-notify] Form missing action URL');
+              return false;
+            }
+
+            if (!getCsrfToken(nbForm)) {
+              console.error('[platform-notify] CSRF token missing');
+              return false;
+            }
+
+            return true;
+          }
+
+          function clearFieldError() {
+            var group = wrap.querySelector('.platform-notify__field[data-field="email"]');
+            if (!group) return;
+
+            group.classList.remove('form-group--error');
+            if (emailInput) emailInput.setAttribute('aria-invalid', 'false');
+
+            var err = group.querySelector('.platform-notify__field-error');
+            if (err) err.hidden = true;
+          }
+
+          function showFieldError() {
+            var group = wrap.querySelector('.platform-notify__field[data-field="email"]');
+            if (!group) return;
+
+            group.classList.add('form-group--error');
+            if (emailInput) emailInput.setAttribute('aria-invalid', 'true');
+
+            var err = group.querySelector('.platform-notify__field-error');
+            if (err) err.hidden = false;
+          }
+
+          function validateForm() {
+            clearFieldError();
+            if (errorsBox) {
+              errorsBox.textContent = '';
+              errorsBox.hidden = true;
+            }
+
+            var email = emailInput ? emailInput.value.trim() : '';
+            if (!email || !emailPattern.test(email)) {
+              showFieldError();
+              if (emailInput) emailInput.focus();
+              console.error('[platform-notify] Validation failed');
+              return false;
+            }
+
+            return true;
+          }
+
+          function setNbField(nbForm, name, value) {
+            var field = nbForm.querySelector('[name="' + name + '"]');
+            if (field) field.value = value;
+          }
+
+          function syncToNbForm(nbForm) {
+            var email = emailInput ? emailInput.value.trim() : '';
+
+            setNbField(nbForm, 'signup[first_name]', 'n/a');
+            setNbField(nbForm, 'signup[last_name]', 'n/a');
+            setNbField(nbForm, 'signup[email]', email);
+
+            var volunteerField = nbForm.querySelector('[name="signup[is_volunteer]"]');
+            if (volunteerField) volunteerField.checked = false;
+
+            var emailOptIn = nbForm.querySelector('[name="signup[email_opt_in]"]');
+            if (emailOptIn) {
+              if (emailOptIn.type === 'checkbox') {
+                emailOptIn.checked = true;
+              } else {
+                emailOptIn.value = '1';
+              }
+            }
+          }
+
+          function showSuccess() {
+            if (window.colbyPrioritiesPane) {
+              window.colbyPrioritiesPane.swap(success, ui);
+            } else {
+              ui.hidden = true;
+              if (success) success.hidden = false;
+            }
+          }
+
+          function handleSubmit(e) {
+            if (e) e.preventDefault();
+
+            if (!validateForm()) return;
+
+            var nbForm = getNbForm();
+            if (!nbForm) {
+              console.error('[platform-notify] Cannot submit — NationBuilder form missing', {
+                signup_priorities_page_id: '{{ signup_priorities_page_id }}'
+              });
+              return;
+            }
+
+            syncToNbForm(nbForm);
+
+            if (!prepareNbForm(nbForm)) return;
+
+            if (submitBtn) submitBtn.disabled = true;
+
+            var formData = new FormData(nbForm);
+            var action = nbForm.getAttribute('action');
+            var csrfToken = getCsrfToken(nbForm);
+
+            fetch(action, {
+              method: 'POST',
+              body: formData,
+              credentials: 'same-origin',
+              redirect: 'manual',
+              headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRF-Token': csrfToken,
+                'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
+              }
+            }).then(function (response) {
+              if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
+                return { success: true, status: response.status };
+              }
+
+              return response.text().then(function (html) {
+                var doc = new DOMParser().parseFromString(html, 'text/html');
+                var remoteErrors = doc.querySelector('.form-errors');
+                var errorText = remoteErrors ? remoteErrors.textContent.replace(/\s+/g, ' ').trim() : '';
+                var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
+
+                if (hasErrors) {
+                  return {
+                    success: false,
+                    status: response.status,
+                    errors: errorText || ('HTTP ' + response.status)
+                  };
+                }
+
+                return { success: true, status: response.status };
+              });
+            }).then(function (result) {
+              if (submitBtn) submitBtn.disabled = false;
+              if (!result) return;
+
+              if (result.success) {
+                showSuccess();
+                console.log('[platform-notify] Submitted successfully');
+                return;
+              }
+
+              console.error('[platform-notify] Submit failed', {
+                status: result.status,
+                errors: result.errors || 'Unknown error'
+              });
+
+              if (errorsBox && result.errors) {
+                errorsBox.textContent = result.errors;
+                errorsBox.hidden = false;
+              }
+            }).catch(function (err) {
+              if (submitBtn) submitBtn.disabled = false;
+              console.error('[platform-notify] Network error', err);
+            });
+          }
+
+          ui.addEventListener('submit', handleSubmit);
+
+          if (emailInput) {
+            emailInput.addEventListener('input', clearFieldError);
+          }
+
+          document.addEventListener('DOMContentLoaded', function () {
+            var nbForm = getNbForm();
+            if (!nbForm) {
+              console.error('[platform-notify] NationBuilder signup form not found — check signup-priorities is a homepage child');
+              return;
+            }
+
+            console.log('[platform-notify] Ready', {
+              action: nbForm.getAttribute('action'),
+              hasCsrf: !!getCsrfToken(nbForm)
+            });
+          });
+        })();
+      </script>
     </div>
     <div class="split-section__gap" aria-hidden="true"></div>
   </div>

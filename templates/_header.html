@@ -20,12 +20,39 @@
 
     </header>
 
-    {% if page.headline.size > 0 %}
-    <section class="page-intro" aria-labelledby="page-headline">
-      <div class="page-intro__inner">
-        <h1 class="page-intro__headline" id="page-headline">{{ page.headline }}</h1>
-        {% if page.excerpt.size > 0 %}
-          <p class="page-intro__body">{{ page.excerpt }}</p>
+    {% assign page_intro_headline = page.headline %}
+    {% assign page_intro_body = page.excerpt %}
+
+    {% if page.type_slug == 'donation' %}
+      {% if page.donation.content.size > 0 %}
+        {% assign page_intro_body = page.donation.content %}
+      {% endif %}
+    {% elsif page.type_slug == 'donation_v2' %}
+      {% if page.donation_v2.content.size > 0 %}
+        {% assign page_intro_body = page.donation_v2.content %}
+      {% endif %}
+    {% endif %}
+
+    {% if page_intro_headline.size == 0 %}
+      {% if page.type_slug == 'donation' or page.type_slug == 'donation_v2' %}
+        {% if page.name.size > 0 %}
+          {% assign page_intro_headline = page.name %}
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if page_intro_headline.size > 0 or page_intro_body.size > 0 %}
+    <section class="page-intro" {% if page_intro_headline.size > 0 %}aria-labelledby="page-headline"{% else %}aria-label="Page introduction"{% endif %}>
+      <div class="page-intro__inner{% unless page_intro_headline.size > 0 %} page-intro__inner--body-only{% endunless %}">
+        {% if page_intro_headline.size > 0 %}
+          <h1 class="page-intro__headline" id="page-headline">{{ page_intro_headline }}</h1>
+        {% endif %}
+        {% if page_intro_body.size > 0 %}
+          {% if page.type_slug == 'donation' or page.type_slug == 'donation_v2' %}
+            <div class="page-intro__body">{{ page_intro_body }}</div>
+          {% else %}
+            <p class="page-intro__body">{{ page_intro_body }}</p>
+          {% endif %}
         {% endif %}
       </div>
     </section>

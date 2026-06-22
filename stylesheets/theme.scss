@@ -75,7 +75,7 @@ $color-5: #fff9fc; /* light-pink */
   z-index: 9994;
 }
 #recaptcha-input {
-	margin-top: 3rem;
+	margin-top: 0rem; /* Was 3rem, not sure how this impacts display */
 }
 .g-recaptcha {
 	> * {
@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-22a
+   COLBY 2026 CUSTOM STYLES — 2026-06-22e
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1189,8 +1189,7 @@ body {
 .priority-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  justify-content: space-between;
+  align-items: stretch;
   width: 239px;
   height: 318px;
   padding: var(--size-one-half);
@@ -1199,10 +1198,17 @@ body {
   color: var(--color-white);
 }
 
+.priority-card > .feature-icon {
+  align-self: flex-end;
+  flex-shrink: 0;
+}
+
 .priority-card__content {
   display: flex;
   flex-direction: column;
   gap: var(--size-base);
+  flex: 1;
+  min-height: 0;
   width: 100%;
 }
 
@@ -1212,6 +1218,10 @@ body {
   font-size: 24px;
   line-height: 32px;
   color: var(--color-white);
+  text-align: left;
+  margin: 0;
+  width: 100%;
+  margin: 1em 0;
 }
 
 .priority-card__body {
@@ -1220,6 +1230,10 @@ body {
   font-size: 16px;
   line-height: 22px;
   color: var(--color-white);
+  text-align: left;
+  margin: 0;
+  flex: 1;
+  width: 100%;
 }
 
 
@@ -2273,6 +2287,7 @@ body {
 }
 
 .priorities-panes--ready .hero-signup__field-error:not([hidden]),
+.priorities-panes--ready .platform-notify__field-error:not([hidden]),
 .priorities-panes--ready .survey__field-error:not([hidden]),
 .priorities-panes--ready .priorities-feedback__status .form-errors:not([hidden]),
 .priorities-panes--ready .hero-signup__errors:not([hidden]),
@@ -2290,6 +2305,7 @@ body {
   }
 
   .priorities-panes--ready .hero-signup__field-error:not([hidden]),
+  .priorities-panes--ready .platform-notify__field-error:not([hidden]),
   .priorities-panes--ready .survey__field-error:not([hidden]),
   .priorities-panes--ready .priorities-feedback__status .form-errors:not([hidden]),
   .priorities-panes--ready .hero-signup__errors:not([hidden]),
@@ -2549,20 +2565,22 @@ body {
 
 .section-platform__priorities {
   display: flex;
+  align-items: stretch;
   gap: 32px;
   width: 100%;
-  height: 338px;
 }
 
 .section-platform__priorities .priority-card {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   width: auto;
-  height: 100%;
+  height: auto;
+  min-height: 318px;
 }
 
 .section-platform__notify {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 16px;
   width: 100%;
 }
@@ -2574,13 +2592,93 @@ body {
   line-height: 22px;
   color: #143390;
   flex: 0 0 252px;
+  margin: 0;
+}
+
+.section-platform__notify-form-wrap {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  align-items: start;
+}
+
+.section-platform__notify-form-wrap > .priorities-pane {
+  grid-area: 1 / 1;
+  width: 100%;
 }
 
 .section-platform__notify-form {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
   gap: 16px;
+  min-width: 0;
+}
+
+.section-platform__notify-form > .form-group {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+  margin: 0;
+}
+
+.section-platform__notify-form > .btn {
+  flex: 0 0 auto;
+}
+
+.platform-notify__field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.platform-notify__field-error:not([hidden]) {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-top: 6px;
+}
+
+.platform-notify__ui:has(.platform-notify__field-error:not([hidden])) {
+  padding-bottom: 44px;
+}
+
+.platform-notify__field-error {
+  font-family: var(--font-outfit);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-pink-700);
+  margin: 0;
+}
+
+.platform-notify__errors:not([hidden]) {
+  flex: 1 1 100%;
+  width: 100%;
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-pink-700);
+  margin: 0;
+}
+
+.platform-notify__success-message,
+.section-platform__notify-success {
+  font-family: var(--font-outfit);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22px;
+  color: #143390;
+  margin: 0;
+}
+
+.section-platform__notify-success {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2946,6 +3044,20 @@ body {
   line-height: 28px;
   color: var(--color-pink-50);
   padding-top: 12px;
+}
+
+.page-intro__inner--body-only .page-intro__body {
+  flex: 1 1 100%;
+  max-width: 100%;
+  padding-top: 0;
+}
+
+.page-intro__body > :first-child {
+  margin-top: 0;
+}
+
+.page-intro__body > :last-child {
+  margin-bottom: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -3696,11 +3808,13 @@ body:not(.homepage) main .container {
 
 .about-cta__cards {
   display: flex;
+  align-items: stretch;
   gap: 32px;
 }
 
 .about-cta__card {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
   width: auto;
   height: auto;
   min-height: 318px;
@@ -3783,8 +3897,9 @@ body:not(.homepage) main .container {
   .section-faqs__cols { flex-direction: column; }
   .section-platform__intro { flex-direction: column; }
   .section-platform__priorities { height: auto; flex-wrap: wrap; }
-  .section-platform__notify { flex-direction: column; }
-  .section-platform__notify-form { width: 100%; }
+  .section-platform__notify { flex-direction: column; align-items: stretch; }
+  .section-platform__notify-text { flex: none; }
+  .section-platform__notify-form-wrap { width: 100%; }
 }
 
 @media (max-width: 767px) {
@@ -3814,6 +3929,15 @@ body:not(.homepage) main .container {
 
   .section-platform__priorities { flex-direction: column; height: auto; }
   .section-platform__priorities .priority-card { width: 100%; height: auto; min-height: 318px; }
+
+  .section-platform__notify-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .section-platform__notify-form > .btn {
+    width: 100%;
+  }
 
   .para-banner__text { font-size: 28px; }
   .para-banner__sub  { font-size: 16px; }
