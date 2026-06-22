@@ -87,11 +87,13 @@
           <form class="signup-form hero-signup__ui priorities-pane is-active" aria-hidden="false" novalidate>
             <div class="form-errors hero-signup__errors" role="alert" hidden></div>
             <div class="signup-form__row">
-              <div class="form-group">
-                <input class="form-group__field hero-signup__name" id="hero-name" type="text" placeholder="Name" autocomplete="name" required />
+              <div class="form-group hero-signup__field" data-field="name">
+                <input class="form-group__field hero-signup__name" id="hero-name" type="text" placeholder="Name" autocomplete="name" aria-describedby="hero-name-error" required />
+                <p class="hero-signup__field-error" id="hero-name-error" role="alert" hidden>Please enter your name.</p>
               </div>
-              <div class="form-group">
-                <input class="form-group__field hero-signup__email" id="hero-email" type="email" placeholder="Email" autocomplete="email" required />
+              <div class="form-group hero-signup__field" data-field="email">
+                <input class="form-group__field hero-signup__email" id="hero-email" type="email" placeholder="Email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
+                <p class="hero-signup__field-error" id="hero-email-error" role="alert" hidden>Please enter a valid email address.</p>
               </div>
               <div class="form-group">
                 <button class="btn btn-white-ghost hero-signup__submit" type="submit">Get involved</button>
@@ -214,6 +216,66 @@
               console.log('[hero-signup] Form values:', getFormValues());
             }
 
+            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            function clearFieldError(fieldName) {
+              var group = wrap.querySelector('.hero-signup__field[data-field="' + fieldName + '"]');
+              if (!group) return;
+
+              group.classList.remove('form-group--error');
+              var input = group.querySelector('input');
+              if (input) input.setAttribute('aria-invalid', 'false');
+
+              var err = group.querySelector('.hero-signup__field-error');
+              if (err) err.hidden = true;
+            }
+
+            function showFieldError(fieldName) {
+              var group = wrap.querySelector('.hero-signup__field[data-field="' + fieldName + '"]');
+              if (!group) return;
+
+              group.classList.add('form-group--error');
+              var input = group.querySelector('input');
+              if (input) input.setAttribute('aria-invalid', 'true');
+
+              var err = group.querySelector('.hero-signup__field-error');
+              if (err) err.hidden = false;
+            }
+
+            function validateHeroForm() {
+              var valid = true;
+
+              clearFieldError('name');
+              clearFieldError('email');
+              if (errorsBox) {
+                errorsBox.textContent = '';
+                errorsBox.hidden = true;
+              }
+
+              var name = nameInput ? nameInput.value.trim() : '';
+              if (!name) {
+                showFieldError('name');
+                valid = false;
+              }
+
+              var email = emailInput ? emailInput.value.trim() : '';
+              if (!email || !emailPattern.test(email)) {
+                showFieldError('email');
+                valid = false;
+              }
+
+              if (!valid) {
+                if (!name && nameInput) {
+                  nameInput.focus();
+                } else if (emailInput) {
+                  emailInput.focus();
+                }
+                console.error('[hero-signup] Validation failed');
+              }
+
+              return valid;
+            }
+
             function setNbField(nbForm, name, value) {
               var field = nbForm.querySelector('[name="' + name + '"]');
               if (field) field.value = value;
@@ -261,15 +323,7 @@
 
               logHeroFormValues();
 
-              if (nameInput && !nameInput.value.trim()) {
-                nameInput.focus();
-                console.error('[hero-signup] Validation failed: name is required');
-                return;
-              }
-
-              if (emailInput && !emailInput.checkValidity()) {
-                emailInput.reportValidity();
-                console.error('[hero-signup] Validation failed: invalid email');
+              if (!validateHeroForm()) {
                 return;
               }
 
@@ -386,8 +440,19 @@
 
             ui.addEventListener('submit', handleSubmit);
 
-            if (nameInput) nameInput.addEventListener('input', logHeroFormValues);
-            if (emailInput) emailInput.addEventListener('input', logHeroFormValues);
+            if (nameInput) {
+              nameInput.addEventListener('input', function () {
+                clearFieldError('name');
+                logHeroFormValues();
+              });
+            }
+
+            if (emailInput) {
+              emailInput.addEventListener('input', function () {
+                clearFieldError('email');
+                logHeroFormValues();
+              });
+            }
             if (volunteerInput) volunteerInput.addEventListener('change', logHeroFormValues);
           })();
         </script>

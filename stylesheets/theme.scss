@@ -301,7 +301,7 @@ h1, h2 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-21v
+   COLBY 2026 CUSTOM STYLES — 2026-06-21z
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -1706,6 +1706,43 @@ body {
   color: var(--color-white);
 }
 
+.hero-signup__field {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hero-signup__field-error:not([hidden]) {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding-top: 6px;
+}
+
+.hero-signup__ui:has(.hero-signup__field-error:not([hidden])) > .signup-form__row:not(.signup-form__footer) {
+  padding-bottom: 44px;
+}
+
+.hero-signup__field-error {
+  font-family: var(--font-outfit);
+  font-size: 13px;
+  line-height: 18px;
+  color: var(--color-pink-100);
+  margin: 0;
+}
+
+.hero-signup__errors:not([hidden]) {
+  width: 100%;
+  font-family: var(--font-outfit);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--color-pink-100);
+  margin-bottom: 12px;
+}
+
 /* Sub-hero yellow bar — full viewport width */
 .hero__sub {
   /* On tablet/mobile the photo is hidden — full solid yellow */
@@ -2245,7 +2282,7 @@ body {
   font-family: var(--font-outfit);
   font-size: 14px;
   line-height: 20px;
-  color: var(--color-pink-700);
+  color: var(--color-white);
   margin: 0;
 }
 
