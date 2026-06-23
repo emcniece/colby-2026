@@ -3237,6 +3237,12 @@ margin: 0 auto 2rem;
   padding: 64px 64px 0;
 }
 
+@media (max-width: 767px) {
+	.page-intro__inner {
+		padding-top: 32px;
+	}
+}
+
 .page-intro__headline {
   flex: 0 0 55%;
   font-family: var(--font-quattrocento);
