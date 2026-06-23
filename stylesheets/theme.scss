@@ -3965,6 +3965,12 @@ body:not(.homepage) main .container {
   width: 100%;
 }
 
+.about-section.section-2 p {
+	text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
 .about-section__inner {
   max-width: var(--container-std);
   margin: 0 auto;
