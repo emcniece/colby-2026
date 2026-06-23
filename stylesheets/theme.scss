@@ -3293,6 +3293,11 @@ body:not(.homepage) main {
   margin-bottom: 0 !important;
 }
 
+body.page-type-event main {
+  top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
 body:not(.homepage) main .container {
   max-width: var(--container-std);
   padding: 40px var(--page-pad-h) var(--section-pad-v);
