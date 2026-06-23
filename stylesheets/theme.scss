@@ -3295,7 +3295,7 @@ body:not(.homepage) main {
 
 body:not(.homepage) main .container {
   max-width: var(--container-std);
-  padding: var(--section-pad-v) var(--page-pad-h);
+  padding: 40px var(--page-pad-h) var(--section-pad-v);
   box-sizing: border-box;
 }
 
