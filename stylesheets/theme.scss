@@ -1149,7 +1149,7 @@ body {
   font-family: var(--font-questrial);
   font-weight: 400;
   font-size: 60px;
-  line-height: 72px;
+  line-height: 60px;
   color: var(--section-3-accent);
   text-align: right;
   white-space: nowrap;
@@ -1168,9 +1168,10 @@ body {
   font-family: var(--font-outfit);
   font-weight: 300;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 1.3rem;
   color: var(--color-white);
   white-space: normal;
+	text-align: right;
 }
 
 
@@ -1928,7 +1929,7 @@ body {
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: var(--container-std);
+  max-width: var(--container-wide);
   margin: 0 auto;
   padding: 0 var(--page-pad-h);
   min-height: var(--split-h, 800px);
@@ -1944,6 +1945,7 @@ body {
   flex-direction: column;
   gap: 32px;
   padding: var(--section-pad-v) 0;
+  padding-right: 48px;
 }
 
 /* The 15%-wide spacer aligned with the photo side */
@@ -2110,7 +2112,6 @@ body {
   flex: 0 0 921px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
 }
 
 .section-powered__heading {
