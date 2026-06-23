@@ -1,8 +1,8 @@
 <footer class="site-footer" role="contentinfo">
   <div class="site-footer__inner">
-    <p class="site-footer__disclaimer">
-      Authorized by the financial agent for Colby Harder, 2026 Langford City Council Campaign. Registered under the Local Elections Campaign Financing Act (BC).
-    </p>
+    {% if site.footer_content.size > 0 %}
+      <div class="site-footer__disclaimer">{{ site.footer_content }}</div>
+    {% endif %}
     {% include "social_icons" %}
   </div>
 
