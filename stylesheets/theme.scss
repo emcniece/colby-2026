@@ -289,7 +289,7 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   color: $color-4;
   font-weight: 500;
 }
-h1, h2 {
+h1 {
   margin-bottom: 2rem;
 }
 @media (min-width: 576px) {
@@ -1520,7 +1520,7 @@ body {
 /* SVG logo image variants */
 .colby-logo-img {
   display: block;
-  height: 56px;
+  height: 70px;
   width: auto;
 }
 
@@ -1827,9 +1827,10 @@ body {
   position: absolute;
   bottom: -66px; /* -66px = hero__sub-inner bottom padding, puts portrait feet at bar bottom */
   right: 30px;
-  height: 710px;
+  height: 850px;
   width: auto;
   object-fit: contain;
+  max-width: 150%;
 }
 
 .hero__sub-content {
@@ -1844,8 +1845,9 @@ body {
   font-family: var(--font-outfit);
   font-weight: 400;
   font-size: 16px;
-  line-height: 22px;
+  line-height: 1.4rem;
   color: #143390;
+  margin-bottom: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════
