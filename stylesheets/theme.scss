@@ -1596,6 +1596,7 @@ body {
   line-height: 24px;
   text-transform: uppercase;
   letter-spacing: 0;
+  margin-bottom: 2rem;
 }
 
 .kicker--on-3 { color: var(--section-3-body); }
@@ -1943,7 +1944,6 @@ body {
   flex: 0 0 75%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
   padding: var(--section-pad-v) 0;
   padding-right: 48px;
 }
@@ -1985,6 +1985,7 @@ body {
   gap: 64px;
   align-items: flex-start;
   width: 100%;
+	margin-bottom: 2rem;
 }
 
 /* Left column — heading, body, landscape photo */
@@ -2247,8 +2248,8 @@ margin: 0 auto 2rem;
   font-family: var(--font-outfit);
   font-weight: 300;
   font-size: 16px;
-  line-height: 22px;
   color: var(--section-4-body);
+	margin-bottom: 2rem;
 }
 
 .section-priorities .checkbox-group__label {
@@ -2379,7 +2380,6 @@ margin: 0 auto 2rem;
 .survey__question {
   display: flex;
   flex-direction: column;
-  gap: 16px;
   margin-bottom: 32px;
 }
 
