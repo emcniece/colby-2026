@@ -1005,7 +1005,6 @@ body {
 .accordion {
   display: flex;
   flex-direction: column;
-  gap: var(--size-one-half);
   width: 100%;
   min-width: 0;
   max-width: 100%;
@@ -1014,7 +1013,7 @@ body {
 .accordion-item {
   display: flex;
   flex-direction: column;
-  gap: var(--size-one-half);
+  gap: 12px;
   width: 100%;
   min-width: 0;
   max-width: 100%;
@@ -1042,7 +1041,6 @@ body {
   min-width: 0;
   font-family: var(--font-outfit);
   font-weight: 400;
-  font-size: 18px;
   line-height: 28px;
   color: var(--color-white);
   white-space: normal;
@@ -1065,7 +1063,7 @@ body {
 
 .accordion-item--open .accordion-item__body {
   grid-template-rows: 1fr;
-  padding-bottom: var(--size-one-half);
+  padding: 12px 0;
 }
 
 .accordion--ready .accordion-item__body {
@@ -1103,7 +1101,6 @@ body {
   font-family: var(--font-outfit);
   font-weight: 300;
   font-size: 16px;
-  line-height: 22px;
   color: var(--color-white);
 }
 
@@ -2512,7 +2509,6 @@ margin: 0 auto 2rem;
   flex-direction: column;
   gap: 32px;
   min-width: 0;
-  max-width: 100%;
 }
 
 .section-faqs__cols {
@@ -2541,7 +2537,6 @@ margin: 0 auto 2rem;
   font-family: var(--font-outfit);
   font-weight: 300;
   font-size: 16px;
-  line-height: 22px;
   color: var(--section-3-body);
 }
 
