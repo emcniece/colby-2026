@@ -4250,3 +4250,13 @@ body:not(.homepage) main .container {
   .para-banner__text { font-size: 28px; }
   .para-banner__sub  { font-size: 16px; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   HIDE is_private "Don't publish" CHECKBOXES
+   Always force-checked via layout.html script.
+   ═══════════════════════════════════════════════════════════ */
+
+.custom-control:has(input[id$="_is_private"]) {
+  display: none;
+}
+}

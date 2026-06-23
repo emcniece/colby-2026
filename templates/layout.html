@@ -163,6 +163,13 @@
     {% endif %}
 
     <script src="vcs-components.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('input[id$="_is_private"]').forEach(function (cb) {
+          cb.checked = true;
+        });
+      });
+    </script>
 
     {% if page.is_homepage? and page.type_slug == 'basic' %}
       <script src="accordion.js"></script>
