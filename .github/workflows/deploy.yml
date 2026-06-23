@@ -1,0 +1,31 @@
+name: Deploy to NationBuilder
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Write NationBuilder session cookie
+        run: echo "${{ secrets.NB_COOKIES }}" > .nb-cookies
+
+      - name: Stage and upload changed files
+        run: bash deploy.sh --upload
+
+      - name: Commit updated deploy SHA
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .last-deploy-sha
+          git diff --cached --quiet || git commit -m "chore: update .last-deploy-sha [skip ci]"
+          git push
