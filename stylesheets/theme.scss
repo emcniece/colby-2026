@@ -962,7 +962,6 @@ body {
 .signup-form__row {
   display: flex;
   align-items: center;
-  gap: var(--size-base);
   width: 100%;
 }
 
@@ -1838,6 +1837,12 @@ body {
   gap: 16px;
 }
 
+@media (max-width: 767px) {
+	.hero__sub-content {
+		flex-direction: column;
+	}
+}
+
 .hero__sub-quote {
   flex: 1;
   font-family: var(--font-outfit);
@@ -1847,6 +1852,8 @@ body {
   color: #143390;
   margin-bottom: 0;
 }
+
+
 
 /* ═══════════════════════════════════════════════════════════
    SPLIT SECTION
@@ -4197,7 +4204,7 @@ body:not(.homepage) main .container {
 
 @media (max-width: 767px) {
   :root {
-    --page-pad-h: 16px;
+    --page-pad-h: 24px;
     --section-pad-v: 48px;
     --text-h1-size: 36px;
     --text-h1-lh: 44px;
