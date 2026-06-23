@@ -1952,6 +1952,13 @@ body {
   padding-right: 48px;
 }
 
+@media (max-width: 767px) {
+	.split-section__content {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
+
 /* The 15%-wide spacer aligned with the photo side */
 .split-section__gap {
   flex: 0 0 25%;
