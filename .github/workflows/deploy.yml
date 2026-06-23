@@ -8,24 +8,24 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Set deploy base SHA
+        run: |
+          before="${{ github.event.before }}"
+          # workflow_dispatch has no before SHA; fall back to committed record
+          if [[ "$before" == "0000000000000000000000000000000000000000" ]] || [[ -z "$before" ]]; then
+            echo "Manual trigger — using .last-deploy-sha from repo"
+          else
+            echo "$before" > .last-deploy-sha
+          fi
+
       - name: Write NationBuilder session cookie
         run: echo "${{ secrets.NB_COOKIES }}" > .nb-cookies
 
       - name: Stage and upload changed files
         run: bash deploy.sh --upload
-
-      - name: Commit updated deploy SHA
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add .last-deploy-sha
-          git diff --cached --quiet || git commit -m "chore: update .last-deploy-sha [skip ci]"
-          git push
