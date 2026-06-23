@@ -731,16 +731,8 @@
           {% endif %}
           <div class="priorities-forms__complete priorities-pane" hidden aria-hidden="true">
             <p class="priorities-forms__complete-body">I'll be in touch soon to let you know how I'm working to address the issues you're most interested in. In the meantime, feel free to follow my campaign on social media to keep the conversation going.</p>
-            <div class="priorities-forms__complete-socials site-footer__socials" aria-label="Follow the campaign on social media">
-              <a class="site-footer__social-btn" href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
-                <img src="{{ theme['icon-facebook.svg'] }}" alt="" />
-              </a>
-              <a class="site-footer__social-btn" href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                <img src="{{ theme['icon-instagram.svg'] }}" alt="" />
-              </a>
-              <a class="site-footer__social-btn" href="https://tiktok.com" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                <img src="{{ theme['icon-tiktok.svg'] }}" alt="" />
-              </a>
+            <div class="priorities-forms__complete-socials">
+              {% include "_social_icons" %}
             </div>
           </div>
         </div>

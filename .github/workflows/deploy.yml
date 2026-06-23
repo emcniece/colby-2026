@@ -25,6 +25,7 @@ jobs:
           fi
 
       - name: Write NationBuilder session cookie
+        # Refresh NB_COOKIES secret when uploads start failing with session/CSRF errors
         run: echo "${{ secrets.NB_COOKIES }}" > .nb-cookies
 
       - name: Stage and upload changed files

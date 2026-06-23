@@ -9,7 +9,7 @@
 # UPLOADING
 #   Requires .nb-cookies — copy the full Cookie header value from DevTools
 #   while logged into NationBuilder admin and paste it into that file.
-#   Refresh the file when your session expires (~24 h for Cloudflare cookies).
+#   Refresh the file when uploads start failing with session/CSRF errors.
 #
 # FLAGS
 #   --upload   Also upload all staged files to NationBuilder via curl.
