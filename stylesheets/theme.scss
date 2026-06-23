@@ -1137,7 +1137,7 @@ body {
   gap: var(--size-half);
   flex: none;
   width: 200px;
-  height: 188px;
+  height: 212px;
   padding: var(--size-base);
   background-color: var(--color-blue-900);
   border-radius: var(--radius-card);
@@ -1148,7 +1148,7 @@ body {
   display: block;
   font-family: var(--font-questrial);
   font-weight: 400;
-  font-size: 60px;
+  font-size: 48px;
   line-height: 60px;
   color: var(--section-3-accent);
   text-align: right;
@@ -2127,13 +2127,15 @@ body {
   line-height: 22px;
   color: var(--section-1-body);
   text-align: center;
+max-width: 750px;
+margin: 0 auto 2rem;
 }
 
 /* Donor progress bar */
 .donor-progress {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+	margin-bottom: 2rem;
 }
 
 .donor-progress__label {
@@ -2162,7 +2164,6 @@ body {
 .donation-selector {
   display: flex;
   flex-direction: column;
-  gap: 16px;
 }
 
 .donation-selector__label {
