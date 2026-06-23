@@ -166,7 +166,9 @@
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('input[id$="_is_private"]').forEach(function (cb) {
+          var before = cb.checked;
           cb.checked = true;
+          console.log('[is_private] #' + cb.id + ': ' + before + ' → true');
         });
       });
     </script>
