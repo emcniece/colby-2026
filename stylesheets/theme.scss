@@ -1963,7 +1963,9 @@ body {
 }
 
 .split-section--right .split-section__content {
-  padding-left: inherit;
+  /*padding-left: inherit;*/
+	padding-left: 96px;
+	padding-right: 0;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -2389,6 +2391,7 @@ margin: 0 auto 2rem;
   font-size: 16px;
   line-height: 22px;
   color: var(--section-4-body);
+	margin-bottom: 1rem;
 }
 
 .survey__question-label::before {
