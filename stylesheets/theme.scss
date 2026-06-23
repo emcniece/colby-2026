@@ -280,7 +280,7 @@ body {
   font-size: 1.3rem;
 }
 p {
-  line-height: 1.9rem;
+  line-height: 1.6rem;
 }
 .btn-primary, .subnav li>a:hover, .analytics-consent .analytics-banner .submit button, .btn-color-1 {
   color: $color-3;
@@ -979,7 +979,7 @@ body {
   font-family: var(--font-outfit);
   font-weight: 300;
   font-size: 14px;
-  line-height: 18px;
+  line-height: 20px;
   color: var(--color-white);
 }
 
@@ -1696,7 +1696,7 @@ body {
 .hero__content {
   display: flex;
   align-items: flex-start;
-  padding: 0 var(--page-pad-h);
+  padding: 32px var(--page-pad-h);
 }
 
 .hero__foreground-spacer {
@@ -1709,7 +1709,6 @@ body {
   max-width: 500px;
   display: flex;
   flex-direction: column;
-  gap: 32px;
   margin-left: 70px;
 }
 
