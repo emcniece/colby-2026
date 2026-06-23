@@ -1021,7 +1021,7 @@ body {
 
 .accordion-item__title {
   display: flex;
-  align-items: flex-start;
+  align-items: anchor-center;
   justify-content: space-between;
   gap: var(--size-base);
   padding: 8px 16px;
@@ -1063,7 +1063,7 @@ body {
 
 .accordion-item--open .accordion-item__body {
   grid-template-rows: 1fr;
-  padding: 12px 0;
+  padding: 6px 0;
 }
 
 .accordion--ready .accordion-item__body {
@@ -2507,7 +2507,6 @@ margin: 0 auto 2rem;
 .section-faqs .section-inner {
   display: flex;
   flex-direction: column;
-  gap: 32px;
   min-width: 0;
 }
 
@@ -2525,7 +2524,7 @@ margin: 0 auto 2rem;
   max-width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 16px;
 }
 
 .section-faqs__heading {
@@ -2578,6 +2577,7 @@ margin: 0 auto 2rem;
   align-items: flex-start;
   gap: 24px;
   width: 100%;
+	margin-bottom: 2rem;
 }
 
 .section-platform__heading {
@@ -2600,6 +2600,7 @@ margin: 0 auto 2rem;
   align-items: stretch;
   gap: 32px;
   width: 100%;
+	margin-bottom: 2rem;
 }
 
 .section-platform__priorities .priority-card {
@@ -3702,6 +3703,10 @@ body:not(.homepage) main .container {
   line-height: 28px;
   color: var(--footer-text);
   flex: 1;
+}
+
+.site-footer__disclaimer p {
+	margin-bottom: 0;
 }
 
 .site-footer__socials {
