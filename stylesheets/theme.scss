@@ -3731,6 +3731,12 @@ body:not(.homepage) main .container {
   width: 20px;
   height: 20px;
   object-fit: contain;
+  opacity: 0.65;
+  transition: opacity 0.15s ease;
+}
+
+.site-footer__social-btn:hover img {
+  opacity: 1;
 }
 
 /* ═══════════════════════════════════════════════════════════
