@@ -562,7 +562,7 @@ body {
   border: 2px solid transparent;
   font-family: var(--font-outfit);
   font-weight: 700;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 24px;
   text-transform: uppercase;
   text-decoration: none;
@@ -963,6 +963,7 @@ body {
   display: flex;
   align-items: center;
   width: 100%;
+	gap: 8px;
 }
 
 .signup-form__footer {
