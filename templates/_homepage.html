@@ -108,11 +108,17 @@
             <div class="form-errors hero-signup__errors" role="alert" hidden></div>
             <div class="signup-form__row">
               <div class="form-group hero-signup__field" data-field="name">
-                <input class="form-group__field hero-signup__name" id="hero-name" type="text" placeholder="Name" autocomplete="name" aria-describedby="hero-name-error" required />
+                <div class="form-control-material">
+                  <label for="hero-name" class="floating-label">Name</label>
+                  <input class="form-group__field hero-signup__name" id="hero-name" type="text" autocomplete="name" aria-describedby="hero-name-error" required />
+                </div>
                 <p class="hero-signup__field-error" id="hero-name-error" role="alert" hidden>Please enter your name.</p>
               </div>
               <div class="form-group hero-signup__field" data-field="email">
-                <input class="form-group__field hero-signup__email" id="hero-email" type="email" placeholder="Email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
+                <div class="form-control-material">
+                  <label for="hero-email" class="floating-label">Email</label>
+                  <input class="form-group__field hero-signup__email" id="hero-email" type="email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
+                </div>
                 <p class="hero-signup__field-error" id="hero-email-error" role="alert" hidden>Please enter a valid email address.</p>
               </div>
               <div class="form-group">
@@ -924,14 +930,16 @@
           <form class="section-platform__notify-form platform-notify__ui priorities-pane is-active" aria-hidden="false" novalidate>
             <div class="form-errors platform-notify__errors" role="alert" hidden></div>
             <div class="form-group platform-notify__field" data-field="email">
-              <input class="form-group__field platform-notify__email"
-                     id="platform-notify-email"
-                     type="email"
-                     placeholder="Email"
-                     autocomplete="email"
-                     inputmode="email"
-                     aria-describedby="platform-notify-email-error"
-                     required />
+              <div class="form-control-material">
+                <label for="platform-notify-email" class="floating-label">Email</label>
+                <input class="form-group__field platform-notify__email"
+                       id="platform-notify-email"
+                       type="email"
+                       autocomplete="email"
+                       inputmode="email"
+                       aria-describedby="platform-notify-email-error"
+                       required />
+              </div>
               <p class="platform-notify__field-error" id="platform-notify-email-error" role="alert" hidden>Please enter a valid email address.</p>
             </div>
             <button class="btn btn-v2 platform-notify__submit" type="submit">Notify me</button>
