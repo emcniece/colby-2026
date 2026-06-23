@@ -14,6 +14,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Disable CRLF conversion
+        run: git config core.autocrlf false && git checkout -- .
+
       - name: Set deploy base SHA
         run: |
           before="${{ github.event.before }}"
