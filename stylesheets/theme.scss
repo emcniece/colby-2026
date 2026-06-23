@@ -1953,7 +1953,7 @@ body {
 }
 
 @media (max-width: 767px) {
-	.split-section__content {
+	.split-section__content, .split-section--right .split-section__content {
 		padding-right: 0;
 		padding-left: 0;
 	}
