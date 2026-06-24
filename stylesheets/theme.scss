@@ -3639,6 +3639,7 @@ body:not(.homepage) main .container {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+  display: none;
 }
 
 .blog-post__tags-right {
