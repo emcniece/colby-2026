@@ -4132,8 +4132,13 @@ body:not(.homepage) main .container {
    CONTACT PAGE
    ═══════════════════════════════════════════════════════════ */
 
+.contact .form-control-material::after {
+  display: none;
+}
+
 .contact .form-control {
-  border: 2px solid var(--input-border);
+  border: 2px solid var(--input-border) !important;
+  border-radius: var(--radius-input) !important;
 }
 
 /* ═══════════════════════════════════════════════════════════
