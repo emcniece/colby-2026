@@ -3675,7 +3675,7 @@ body:not(.homepage) main .container {
 
 .blog-post__body h1 { font-size: 48px; line-height: 140%;}
 .blog-post__body h2 { font-size: 32px; line-height: 140%;}
-.blog-post__body h3 { font-size: 26px; line-height: 140%;}
+.blog-post__body h3 { font-size: 26px; line-height: 140%; margin-top: 2em;}
 
 .blog-post__body p { margin-bottom: 1.25em; }
 
@@ -3707,6 +3707,7 @@ body:not(.homepage) main .container {
 @media (max-width: 767px) {
 	.blog-post__body {
 		flex-direction: column-reverse;
+		gap: 0;
 	}
 }
 
