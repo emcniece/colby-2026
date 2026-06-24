@@ -4109,6 +4109,11 @@ body:not(.homepage) main .container {
     flex-direction: column;
   }
 
+  /* Row 2 has photos before text in DOM; pull text above photos on mobile */
+  .about-section__inner > .about-row:nth-child(2) .about-row__text {
+    order: -1;
+  }
+
   .about-row__photos {
     min-height: 300px;
   }
