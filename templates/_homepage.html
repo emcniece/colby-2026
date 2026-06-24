@@ -106,36 +106,32 @@
         <div class="hero-signup">
           <form class="signup-form hero-signup__ui priorities-pane is-active" aria-hidden="false" novalidate>
             <div class="form-errors hero-signup__errors" role="alert" hidden></div>
-            <div class="signup-form__row">
-              <div class="form-group hero-signup__field" data-field="name">
-                <div class="form-control-material">
-                  <label for="hero-name" class="floating-label">Name</label>
-                  <input class="form-group__field hero-signup__name" id="hero-name" type="text" autocomplete="name" aria-describedby="hero-name-error" required />
-                </div>
-                <p class="hero-signup__field-error" id="hero-name-error" role="alert" hidden>Please enter your name.</p>
-              </div>
-              <div class="form-group hero-signup__field" data-field="email">
-                <div class="form-control-material">
-                  <label for="hero-email" class="floating-label">Email</label>
-                  <input class="form-group__field hero-signup__email" id="hero-email" type="email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
-                </div>
-                <p class="hero-signup__field-error" id="hero-email-error" role="alert" hidden>Please enter a valid email address.</p>
-              </div>
-              <div class="form-group">
-                <button class="btn btn-white-ghost hero-signup__submit" type="submit">Get involved</button>
-              </div>
+            <div class="form-group signup-form__disclaimer-group">
+              <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
             </div>
-            <div class="signup-form__footer signup-form__row">
-              <div class="form-group">
-                <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
+            <div class="form-group hero-signup__field" data-field="name">
+              <div class="form-control-material">
+                <label for="hero-name" class="floating-label">Name</label>
+                <input class="form-group__field hero-signup__name" id="hero-name" type="text" autocomplete="name" aria-describedby="hero-name-error" required />
               </div>
-              <div class="form-group">
-                <label class="signup-form__volunteer checkbox-group">
-                  <input type="checkbox" class="hero-signup__volunteer" value="1" />
-                  <span class="checkbox-group__control"></span>
-                  <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
-                </label>
+              <p class="hero-signup__field-error" id="hero-name-error" role="alert" hidden>Please enter your name.</p>
+            </div>
+            <div class="form-group hero-signup__field" data-field="email">
+              <div class="form-control-material">
+                <label for="hero-email" class="floating-label">Email</label>
+                <input class="form-group__field hero-signup__email" id="hero-email" type="email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
               </div>
+              <p class="hero-signup__field-error" id="hero-email-error" role="alert" hidden>Please enter a valid email address.</p>
+            </div>
+            <div class="form-group signup-form__volunteer-group">
+              <label class="signup-form__volunteer checkbox-group">
+                <input type="checkbox" class="hero-signup__volunteer" value="1" />
+                <span class="checkbox-group__control"></span>
+                <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
+              </label>
+            </div>
+            <div class="form-group signup-form__btn-group">
+              <button class="btn btn-white-ghost hero-signup__submit" type="submit">Get involved</button>
             </div>
           </form>
 
