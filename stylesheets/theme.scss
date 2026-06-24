@@ -3384,6 +3384,7 @@ body:not(.homepage) main .container {
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+	display: none;
 }
 
 .blog-card__tags-right {
