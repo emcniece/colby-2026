@@ -67,7 +67,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
   </head>
-  <body class="bootstrap-theme v3-theme {%if page.is_homepage? %}homepage{% elsif is_session %}session-page{% endif %} {{ page.page_class_name }} page-{{ request.template | replace: '_', '-' }} js {% if homepage_tags_list contains "site: disable sticky nav" or tags_list contains "disable sticky nav" %}disable-sticky-nav{% endif %}">
+  <body class="bootstrap-theme v3-theme {%if page.is_homepage? %}homepage{% elsif is_session %}session-page{% endif %} {{ page.page_class_name }} page-{{ request.template | replace: '_', '-' }} page-slug-{{ page.slug }} js {% if homepage_tags_list contains "site: disable sticky nav" or tags_list contains "disable sticky nav" %}disable-sticky-nav{% endif %}">
 
     <a id="skip-to-main-content" href="#main-content" class="sr-only sr-only-focusable p-3">{{ t_accessibility_skip_to_main_content }}</a>
 

@@ -4129,14 +4129,14 @@ body:not(.homepage) main .container {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   CONTACT PAGE
+   CONTACT PAGE  (.page-slug-contact — set via page-slug-{{ page.slug }} in layout.html)
    ═══════════════════════════════════════════════════════════ */
 
-.contact .form-control-material::after {
+.page-slug-contact .form-control-material::after {
   display: none;
 }
 
-.contact .form-control {
+.page-slug-contact .form-control {
   border: 2px solid var(--input-border) !important;
   border-radius: var(--radius-input) !important;
 }
