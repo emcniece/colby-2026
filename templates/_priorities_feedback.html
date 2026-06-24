@@ -147,6 +147,27 @@
     var submitBtn = survey.querySelector('.priorities-feedback__submit');
     var fieldError = survey.querySelector('.survey__field-error');
 
+    if (q3Input) {
+      var q3Wrapper = document.createElement('div');
+      q3Wrapper.className = 'form-control-material';
+      var q3Label = document.createElement('label');
+      q3Label.className = 'floating-label';
+      q3Label.htmlFor = q3Input.id;
+      q3Label.textContent = 'Your answer…';
+      q3Input.parentNode.insertBefore(q3Wrapper, q3Input);
+      q3Wrapper.appendChild(q3Label);
+      q3Wrapper.appendChild(q3Input);
+      q3Input.placeholder = ' ';
+      q3Input.addEventListener('focus', function () {
+        q3Label.classList.add('floating-label--float-above');
+      });
+      q3Input.addEventListener('blur', function () {
+        if (!q3Input.value.match(/\S/)) {
+          q3Label.classList.remove('floating-label--float-above');
+        }
+      });
+    }
+
     form.querySelectorAll('.form-submit').forEach(function (el) {
       el.remove();
     });

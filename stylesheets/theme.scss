@@ -4296,7 +4296,8 @@ body:not(.homepage) main .container {
    ═══════════════════════════════════════════════════════════ */
 
 .hero-signup .form-control-material,
-.platform-notify .form-control-material {
+.platform-notify .form-control-material,
+.priorities-survey .form-control-material {
   overflow: visible;
   background: transparent;
   border-radius: 0;
@@ -4304,13 +4305,15 @@ body:not(.homepage) main .container {
 
 /* Hide the NB bottom-border underline animation */
 .hero-signup .form-control-material::after,
-.platform-notify .form-control-material::after {
+.platform-notify .form-control-material::after,
+.priorities-survey .form-control-material::after {
   display: none;
 }
 
 /* Label: align with input's horizontal padding, inherit input colour */
 .hero-signup .form-control-material .floating-label,
-.platform-notify .form-control-material .floating-label {
+.platform-notify .form-control-material .floating-label,
+.priorities-survey .form-control-material .floating-label {
   left: 24px;
   right: 24px;
   font-family: var(--font-outfit);
@@ -4322,13 +4325,15 @@ body:not(.homepage) main .container {
 
 /* Floated: shrink to 75% and sit at top of input */
 .hero-signup .form-control-material .floating-label--float-above,
-.platform-notify .form-control-material .floating-label--float-above {
+.platform-notify .form-control-material .floating-label--float-above,
+.priorities-survey .form-control-material .floating-label--float-above {
   transform: translate(0, -115%) scale(0.75);
 }
 
 /* Extra top padding to prevent text overlapping the floated label */
 .hero-signup .form-control-material .form-group__field,
-.platform-notify .form-control-material .form-group__field {
+.platform-notify .form-control-material .form-group__field,
+.priorities-survey .form-control-material .form-group__field {
   padding-top: 22px;
   padding-bottom: 4px;
 }
