@@ -803,6 +803,10 @@ body {
   font-weight: 700;
 }
 
+.form-group__field:hover::placeholder {
+  color: var(--input-text);
+}
+
 .form-group__field:hover {
   background-color: var(--input-bg-hover);
   color: var(--input-text);
