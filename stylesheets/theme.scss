@@ -3687,21 +3687,22 @@ body:not(.homepage) main .container {
   border-radius: 8px;
   margin: 1.5em 0;
 }
-.blog-post__body img.top {
+
+.blog-post__sidebar img.top {
   margin-top: 0;
 }
-.blog-post__body img.right {
-  margin-left: 64px;
-}
-.blog-post__body img.left {
-  margin-right: 64px;
+
+.blog-post__sidebar {
+	float: right;
+	margin-left: 64px;
+	height: 100%;
+	width: 40%;
 }
 
 @media (max-width: 767px) {
-	.blog-post__body img.left, .blog-post__body img.right {
-		width: 100% !important;
+	.blog-post__sidebar {
+		width: 100%;
 		margin-left: 0;
-		margin-right: 0;
 	}
 }
 
