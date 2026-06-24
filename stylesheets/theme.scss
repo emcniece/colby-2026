@@ -3687,6 +3687,15 @@ body:not(.homepage) main .container {
   border-radius: 8px;
   margin: 1.5em 0;
 }
+.blog-post__body img.top {
+  margin-top: 0;
+}
+.blog-post__body img.right {
+  margin-left: 2rem;
+}
+.blog-post__body img.left {
+  margin-right: 2rem;
+}
 
 .blog-post__body ul,
 .blog-post__body ol {
