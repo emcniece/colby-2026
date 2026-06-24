@@ -125,9 +125,16 @@ echo ""
 echo "Uploading ${#uploadable[@]} file(s) to NationBuilder..."
 
 # Fetch the upload page to get a fresh CSRF token
-page_html=$(curl -s --compressed \
+echo "Fetching upload page for CSRF token..."
+page_html=$(curl -s --compressed -w "\n__HTTP_STATUS__:%{http_code}" \
   -b "$(cat "$COOKIE_FILE")" \
   "$NB_UPLOAD_URL")
+
+http_status=$(echo "$page_html" | grep -o '__HTTP_STATUS__:[0-9]*' | cut -d: -f2)
+page_html=$(echo "$page_html" | sed '/__HTTP_STATUS__:/d')
+
+echo "  HTTP status: ${http_status:-unknown}"
+echo "  Page snippet: $(echo "$page_html" | tr -d '\n' | cut -c1-200)"
 
 # Extract meta csrf-token — used for both the X-CSRF-Token header and the
 # authenticity_token form field (NB injects it from the meta tag via JS)
@@ -135,9 +142,17 @@ csrf=$(echo "$page_html" \
   | grep -o 'name="csrf-token" content="[^"]*"' \
   | sed 's/.*content="//;s/"//')
 
+echo "  CSRF token:  ${csrf:0:20}${csrf:+…}"
+
 if [[ -z "$csrf" ]]; then
+  echo ""
   echo "ERROR: Could not extract CSRF token — session may have expired."
-  echo "Refresh $COOKIE_FILE with fresh cookies from your browser."
+  echo "  Expected: <meta name=\"csrf-token\" content=\"...\">"
+  echo "  Got page title: $(echo "$page_html" | grep -o '<title>[^<]*</title>' | head -1)"
+  echo ""
+  echo "Refresh $COOKIE_FILE: open NationBuilder admin in your browser, open"
+  echo "DevTools → Network → any request → Headers → Cookie, copy the value"
+  echo "of the '_session_id' cookie and save it to $COOKIE_FILE."
   exit 1
 fi
 
