@@ -3697,13 +3697,6 @@ body:not(.homepage) main .container {
   margin-top: 0;
 }
 
-.blog-post__sidebar {
-	float: right;
-	margin-left: 64px;
-	height: 100%;
-	width: 40%;
-}
-
 @media (max-width: 767px) {
 	.blog-post__sidebar {
 		width: 100%;
