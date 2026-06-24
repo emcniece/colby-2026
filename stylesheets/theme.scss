@@ -3693,14 +3693,20 @@ body:not(.homepage) main .container {
   margin: 1.5em 0;
 }
 
+.blog-post__content {
+	flex: 60;
+}
+.blog-post__sidebar {
+	flex: 40;
+}
+
 .blog-post__sidebar img.top {
   margin-top: 0;
 }
 
 @media (max-width: 767px) {
-	.blog-post__sidebar {
-		width: 100%;
-		margin-left: 0;
+	.blog-post__body {
+		flex-direction: column-reverse;
 	}
 }
 
