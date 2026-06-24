@@ -3250,6 +3250,16 @@ margin: 0 auto 2rem;
   margin: 0;
 }
 
+.page-intro__headline-full {
+  flex: 0 0 100%;
+  font-family: var(--font-quattrocento);
+  font-weight: 400;
+  font-size: 56px;
+  line-height: 72px;
+  color: var(--color-white);
+  margin: 0;
+}
+
 .page-intro__body {
   flex: 1;
   min-width: 0;
