@@ -4133,7 +4133,7 @@ body:not(.homepage) main .container {
    ═══════════════════════════════════════════════════════════ */
 
 .contact .form-control {
-  border-color: var(--input-border);
+  border: 2px solid var(--input-border);
 }
 
 /* ═══════════════════════════════════════════════════════════
