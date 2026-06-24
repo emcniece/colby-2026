@@ -44,7 +44,10 @@
     {% if page_intro_headline.size > 0 or page_intro_body.size > 0 %}
     <section class="page-intro" {% if page_intro_headline.size > 0 %}aria-labelledby="page-headline"{% else %}aria-label="Page introduction"{% endif %}>
       <div class="page-intro__inner{% unless page_intro_headline.size > 0 %} page-intro__inner--body-only{% endunless %}">
-        {% if page_intro_headline.size > 0 %}
+        <!-- {% if page_intro_headline.size > 0 %}
+          <h1 class="page-intro__headline" id="page-headline">{{ page_intro_headline }}</h1>
+        {% endif %} -->
+        {% if page_intro_headline.size > 0 and page_intro_body.size > 0 %}
           <h1 class="page-intro__headline" id="page-headline">{{ page_intro_headline }}</h1>
         {% endif %}
         {% if page_intro_body.size > 0 %}
