@@ -49,14 +49,22 @@
         {% endif %} -->
         {% if page_intro_headline.size > 0 and page_intro_body.size > 0 %}
           <h1 class="page-intro__headline" id="page-headline">{{ page_intro_headline }}</h1>
-        {% endif %}
-        {% if page_intro_body.size > 0 %}
+        
           {% if page.type_slug == 'donation' or page.type_slug == 'donation_v2' %}
             <div class="page-intro__body">{{ page_intro_body }}</div>
           {% else %}
             <p class="page-intro__body">{{ page_intro_body }}</p>
           {% endif %}
+        {% else %}
+          <h1 class="page-intro__headline" id="page-headline">{{ page_intro_headline }} Full width</h1>
         {% endif %}
+        <!-- {% if page_intro_body.size > 0 %}
+          {% if page.type_slug == 'donation' or page.type_slug == 'donation_v2' %}
+            <div class="page-intro__body">{{ page_intro_body }}</div>
+          {% else %}
+            <p class="page-intro__body">{{ page_intro_body }}</p>
+          {% endif %}
+        {% endif %} -->
       </div>
     </section>
     {% endif %}
