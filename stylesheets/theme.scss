@@ -814,11 +814,6 @@ body {
   font-weight: 500;
 }
 
-/* Bordered variant */
-.form-group__field--bordered {
-  border-color: var(--input-border);
-}
-
 /* Filled / active text */
 .form-group__field:not(:placeholder-shown) {
   font-weight: 500;
@@ -4127,6 +4122,14 @@ body:not(.homepage) main .container {
   .about-section__inner { gap: 48px; }
   .about-row__photos { flex-direction: column; }
   .about-row__photo { min-height: 220px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CONTACT PAGE
+   ═══════════════════════════════════════════════════════════ */
+
+.contact .form-control {
+  border-color: var(--input-border);
 }
 
 /* ═══════════════════════════════════════════════════════════
