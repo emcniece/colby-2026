@@ -4171,6 +4171,10 @@ body:not(.homepage) main .container {
   border-radius: var(--radius-input) !important;
 }
 
+.form-control-material.form-control-material-textarea {
+  border: 2px solid var(--input-border) !important;
+}
+
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
