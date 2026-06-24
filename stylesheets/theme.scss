@@ -3669,7 +3669,7 @@ body:not(.homepage) main .container {
   font-family: var(--font-quattrocento);
   font-weight: 400;
   color: var(--color-blue-900);
-  margin-top: 1.5em;
+  margin-top: 2em;
   margin-bottom: 0.5em;
 }
 .blog-post__body h2:first-child {
@@ -3728,6 +3728,13 @@ body:not(.homepage) main .container {
   padding: 0.5em 1.25em;
   color: var(--color-blue-700);
   font-style: italic;
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05), 4px 4px 50px rgba(12, 44, 139, 0.05);
+}
+.blog-post__body blockquote p {
+	margin: 0;
+    font-family: 'Quattrocento';
+    font-size: 22px;
+    line-height: 140%;
 }
 
 @media (max-width: 767px) {
