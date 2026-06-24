@@ -63,6 +63,12 @@
 
     </article>
   </div>
-
-  <!-- {% include "sidebar" %} -->
+    <!-- {% include "sidebar" %} -->
+  <div class="col-12 col-md-4">
+    {% if post_img %}
+        <div class="blog-post__image">
+          <img src="{{ post_img }}" alt="{{ page.headline | strip_html }}" />
+        </div>
+      {% endif %}
+  </div>
 </div>
