@@ -3226,7 +3226,7 @@ margin: 0 auto 2rem;
 }
 
 .page-intro__inner {
-  max-width: var(--container-std);
+  max-width: 1000px;
   margin: 0 auto;
   display: flex;
   align-items: flex-start;
@@ -3244,8 +3244,8 @@ margin: 0 auto 2rem;
   flex: 0 0 55%;
   font-family: var(--font-quattrocento);
   font-weight: 400;
-  font-size: 56px;
-  line-height: 72px;
+  font-size: 48px;
+  line-height: 150%;
   color: var(--color-white);
   margin: 0;
 }
@@ -3254,10 +3254,11 @@ margin: 0 auto 2rem;
   flex: 0 0 100%;
   font-family: var(--font-quattrocento);
   font-weight: 400;
-  font-size: 56px;
-  line-height: 72px;
+  font-size: 48px;
+  line-height: 150%px;
   color: var(--color-white);
   margin: 0;
+  text-align: center;
 }
 
 .page-intro__body {
