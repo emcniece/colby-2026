@@ -19,11 +19,11 @@
   <div class="col-12 col-md-8">
     <article class="blog-post">
 
-      {% if post_img %}
+      <!-- {% if post_img %}
         <div class="blog-post__image">
           <img src="{{ post_img }}" alt="{{ page.headline | strip_html }}" />
         </div>
-      {% endif %}
+      {% endif %} -->
 
       {% if page.tags.size > 0 %}
         <div class="blog-post__tags">
@@ -52,7 +52,8 @@
       {% endif %}
 
       <div class="blog-post__body">
-        {{ page.blog_post.content_full }}
+        <!-- {{ page.blog_post.content_full }} -->
+        {{ page.blog_post.content_flip }}
       </div>
 
       {% if page.author.has_bio? %}
@@ -65,4 +66,14 @@
   </div>
 
  <!-- {% include "sidebar" %} -->
+  <div class="col-12 col-md-4">
+    <div class="blog-post">
+    {% if post_img %}
+        <div class="blog-post__image">
+          <img src="{{ post_img }}" alt="{{ page.headline | strip_html }}" />
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  
 </div>
