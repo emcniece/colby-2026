@@ -3477,6 +3477,9 @@ body:not(.homepage) main .container {
   line-height: 1.4;
   color: var(--color-blue-900);
   margin: 0;
+
+  p:empty { display: none; }
+  p { margin: 0; }
 }
 
 .blog-grid__empty {
