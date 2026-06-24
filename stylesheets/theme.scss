@@ -3664,13 +3664,13 @@ body:not(.homepage) main .container {
   font-family: var(--font-quattrocento);
   font-weight: 400;
   color: var(--color-blue-900);
-  margin-top: 2em;
+  margin-top: 1em;
   margin-bottom: 0.5em;
 }
 
-.blog-post__body h1 { font-size: 32px; }
-.blog-post__body h2 { font-size: 26px; }
-.blog-post__body h3 { font-size: 20px; }
+.blog-post__body h1 { font-size: 48px; line-height: 140%;}
+.blog-post__body h2 { font-size: 32px; line-height: 140%;}
+.blog-post__body h3 { font-size: 26px; line-height: 140%;}
 
 .blog-post__body p { margin-bottom: 1.25em; }
 
