@@ -4172,6 +4172,10 @@ body:not(.homepage) main .container {
   border-radius: var(--radius-input) !important;
 }
 
+.page-slug-contact textarea.form-control {
+  border: none !important; /* remove double border */
+}
+
 .form-control-material.form-control-material-textarea {
   border: 2px solid var(--input-border) !important;
 }
