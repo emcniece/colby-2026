@@ -3368,7 +3368,6 @@ body:not(.homepage) main .container {
   padding: 32px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
   flex: 1;
 }
 
@@ -3377,6 +3376,7 @@ body:not(.homepage) main .container {
   align-items: start;
   justify-content: space-between;
   gap: 8px;
+	margin-bottom: 1rem;
 }
 
 .blog-card__tags-left {
@@ -3448,7 +3448,7 @@ body:not(.homepage) main .container {
   font-size: 24px;
   line-height: 32px;
   color: var(--color-blue-900);
-  margin: 0;
+  margin: 0 0 1rem 0;
 }
 
 .blog-card__title a {
