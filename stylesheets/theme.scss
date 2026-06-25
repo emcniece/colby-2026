@@ -3538,10 +3538,11 @@ body:not(.homepage) main .container {
 
 .blog-filter {
   display: flex;
-  align-items: center;
+  align-items: start;
   flex-wrap: wrap;
   gap: 16px;
   margin-bottom: 40px;
+  flex-direction: column;
 }
 
 .blog-filter__label {
@@ -3568,6 +3569,7 @@ body:not(.homepage) main .container {
 }
 
 .blog-filter__status-select {
+  display: none; /* temporary hide */
   appearance: none;
   -webkit-appearance: none;
   background: var(--color-pink-50);
