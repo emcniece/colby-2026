@@ -4448,7 +4448,7 @@ body:not(.homepage) main .container {
    Section and split-section backgrounds remain full-width.
    Inner content columns switch to 50/50 horizontal layout.
    ═══════════════════════════════════════════════════════════ */
-@media (min-width: 768px) and (max-width: 1279px) {
+@media (min-width: 768px) and (max-width: 991px) {
   /* Progress — col-text alongside col-counters */
   .section-progress__cols {
     flex-direction: row;
