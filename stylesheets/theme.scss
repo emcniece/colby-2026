@@ -2921,6 +2921,7 @@ margin: 0 auto 2rem;
   padding: 0;
   flex-grow: 0;   /* override Bootstrap .navbar-collapse { flex-grow: 1 } */
   flex-shrink: 0;
+  margin-left: auto;
 }
 
 .inner-page-header #primaryNav {
@@ -2930,7 +2931,7 @@ margin: 0 auto 2rem;
   gap: 46px;
   padding: 8px var(--page-pad-h);
   max-width: var(--container-std);
-  margin: 0 auto;
+  margin: 0 auto 0 auto;
   width: 100%;
 }
 
