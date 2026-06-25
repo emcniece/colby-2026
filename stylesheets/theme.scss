@@ -2236,6 +2236,7 @@ margin: 0 auto 2rem;
 .donation-selector__row {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
 }
@@ -2244,7 +2245,8 @@ margin: 0 auto 2rem;
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
-  flex: 1;
+  flex: 0 0 50%;
+  max-width: 50%;
 }
 
 .donation-amount {
