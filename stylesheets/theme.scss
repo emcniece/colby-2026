@@ -4592,7 +4592,7 @@ body:not(.homepage) main .container {
 
   /* Platform section */
   .split-section__content,
-  .split-section--right .split-section__content { padding-left: 0; }
+  .split-section--right .split-section__content { padding-left: 0; padding-right: 0; }
   .section-platform__priorities { padding: 0 2em; }
 }
 
