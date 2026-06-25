@@ -4426,6 +4426,7 @@ body:not(.homepage) main .container {
    Always force-checked via layout.html script.
    ═══════════════════════════════════════════════════════════ */
 
-.custom-control:has(input[id$="_is_private"]) {
+.custom-control:has(input[id$="_is_private"]),
+.form-group:has(input[id$="_is_private"]) {
   display: none;
 }
