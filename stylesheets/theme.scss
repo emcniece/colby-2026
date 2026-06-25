@@ -4688,8 +4688,8 @@ body:not(.homepage) main .container {
     display: block;
     position: absolute;
     bottom: 0;
-    left: var(--page-pad-h);
-    width: 280px;
+    left: -100px;
+    width: 440px;
     overflow: visible;
   }
 
