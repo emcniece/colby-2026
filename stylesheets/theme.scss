@@ -3592,6 +3592,7 @@ body:not(.homepage) main .container {
 }
 
 .blog-filter__status::after {
+  display: none; /* temporary hide */
   content: '\f078';
   font-family: 'Font Awesome 6 Free';
   font-weight: 900;
