@@ -3176,6 +3176,28 @@ margin: 0 auto 2rem;
     border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
 
+  .hero__header.is-nav-open #navbar-toolbar,
+  .inner-page-header.is-nav-open #navbar-toolbar {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    margin: 8px 0 0;
+    padding: 0;
+  }
+
+  .hero__header.is-nav-open #navbar-toolbar .navbar-toolbar-item,
+  .inner-page-header.is-nav-open #navbar-toolbar .navbar-toolbar-item {
+    width: 100%;
+    margin: 0;
+  }
+
+  .hero__header.is-nav-open #navbar-toolbar .btn,
+  .inner-page-header.is-nav-open #navbar-toolbar .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
   .hero__header .navbar-nav,
   .inner-page-header .navbar-nav {
     flex-direction: column;
