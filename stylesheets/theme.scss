@@ -1710,7 +1710,7 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 46px;
+  gap: 20px;
   width: 100%;
   max-width: var(--container-std);
   margin: 0 auto;
@@ -2921,7 +2921,7 @@ margin: 0 auto 2rem;
 .hero__header #primaryNav {
   flex-direction: row;
   align-items: center;
-  gap: 46px;
+  gap: 30px;
   padding: 0;
   flex-grow: 0;   /* override Bootstrap .navbar-collapse { flex-grow: 1 } */
   flex-shrink: 0;
@@ -4491,28 +4491,62 @@ body:not(.homepage) main .container {
    Inner content columns switch to 50/50 horizontal layout.
    ═══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) and (max-width: 991px) {
-  /* Progress — col-text alongside col-counters */
+  /* Progress — col-text full row (text left / photo right), col-counters full row below */
   .section-progress__cols {
+    flex-direction: column;
+    gap: 48px;
+  }
+
+  .section-progress__col-text {
     flex-direction: row;
     align-items: flex-start;
-    gap: 64px;
+    gap: 48px;
+    width: 100%;
+    flex: none;
   }
 
-  .section-progress__col-text,
+  .section-progress__col-text > div {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .section-progress__photo {
+    flex: 1;
+    min-width: 0;
+  }
+
   .section-progress__col-counters {
-    flex: 1;
-    width: auto;
+    width: 100%;
+    flex: none;
   }
 
-  /* FAQs — col-intro alongside col-accordion */
+  /* FAQs — col-intro full row (text left / photo right), col-accordion full row below */
   .section-faqs__cols {
-    flex-direction: row;
+    flex-direction: column;
+    gap: 48px;
   }
 
-  .section-faqs__col-intro,
-  .section-faqs__col-accordion {
+  .section-faqs__col-intro {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 48px;
+    width: 100%;
+    flex: none;
+  }
+
+  .section-faqs__col-intro > div {
     flex: 1;
-    width: auto;
+    min-width: 0;
+  }
+
+  .section-faqs__photo {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .section-faqs__col-accordion {
+    width: 100%;
+    flex: none;
   }
 
   /* Hero diagonal: full-width solid block, no angled cut */
