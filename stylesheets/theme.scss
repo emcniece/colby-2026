@@ -2297,6 +2297,9 @@ margin: 0 auto 2rem;
   opacity: 0;
   transform: translateY(8px);
 }
+.priorities-pane .btn {
+  float: right;
+}
 
 .priorities-pane.is-active {
   opacity: 1;
