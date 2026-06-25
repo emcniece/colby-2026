@@ -4193,6 +4193,11 @@ body:not(.homepage) main .container {
 
 .form-control-material.form-control-material-textarea {
   border: 2px solid var(--input-border) !important;
+	
+}
+.form-control-material-textarea {
+	border-radius: 2rem;
+    height: 200px;
 }
 
 /* ═══════════════════════════════════════════════════════════
