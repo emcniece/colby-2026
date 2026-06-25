@@ -131,12 +131,13 @@
 <script>
   ;(function () {
     if (!window.colbySessionUUID) {
-      window.colbySessionUUID = (window.crypto && crypto.randomUUID)
-        ? crypto.randomUUID()
-        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-            var r = Math.random() * 16 | 0;
-            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-          });
+      if (window.crypto && crypto.getRandomValues) {
+        var _arr = new Uint8Array(4);
+        crypto.getRandomValues(_arr);
+        window.colbySessionUUID = Array.from(_arr, function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
+      } else {
+        window.colbySessionUUID = Math.floor(Math.random() * 0xFFFFFFFF).toString(16).padStart(8, '0');
+      }
       console.log('[colby] Session UUID:', window.colbySessionUUID);
     }
 
