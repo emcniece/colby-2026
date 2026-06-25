@@ -4675,6 +4675,23 @@ body:not(.homepage) main .container {
   .split-section--right .split-section__content { padding-left: 0; padding-right: 0; }
   .section-platform__priorities { padding: 0 2em; }
 
+  /* Hero sub photo — visible at tablet, anchored to bottom of the bar */
+  .hero__sub-photo {
+    display: block;
+    width: 280px;
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+
+  .hero__sub-photo img {
+    position: relative;
+    bottom: auto;
+    right: auto;
+    height: auto;
+    width: 100%;
+    object-fit: contain;
+  }
+
   /* Progress clinic photo — show on tablet and below */
   .section-progress__clinic-photo { display: block; margin-bottom: 2rem; }
 
