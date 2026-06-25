@@ -3249,6 +3249,8 @@ margin: 0 auto 2rem;
   .hero__header .dropdown-menu,
   .inner-page-header .dropdown-menu {
     display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
     height: auto !important;
     overflow: visible !important;
     position: static !important;
