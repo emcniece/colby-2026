@@ -4324,7 +4324,8 @@ body:not(.homepage) main .container {
 		border-radius: 20px;
 	}
 	.hero__content {
-		margin-top: 60%;
+		margin-top: 75%;
+		padding-bottom: 0;
 	}
 	.hero__diagonal {
 		display: none;
@@ -4335,12 +4336,15 @@ body:not(.homepage) main .container {
 	.hero__sub-photo-mobile {
 		display: block;
 		position: absolute;
-		top: 0;
+		top: 48px;
 	}
 	.hero__sub-photo-mobile-base {
 		background-color: var(--color-yellow-300); 
 		width: 100%; 
-		height: 500px;
+		height: 1000px;
+	}
+	.hero__sub-quote {
+		text-align: center;
 	}
 }
 	
