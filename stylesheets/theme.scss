@@ -4618,11 +4618,16 @@ body:not(.homepage) main .container {
     align-self: flex-end;
   }
 
-  /* Hero sub-content: 50% width, pushed right */
+  /* Hero sub-content: 50% width, pushed right; stacked with button right-aligned */
   .hero__sub-content {
     flex: 0 0 50%;
     margin-left: auto;
+    flex-direction: column;
+    align-items: flex-end;
   }
+
+  .hero__headline,
+  .hero__sub-headline { text-align: center; }
 
   /* Powered section — heading/body left, photo right, then donor-progress + selector full-width below */
   .section-powered .section-inner {
