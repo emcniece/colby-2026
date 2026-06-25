@@ -3001,6 +3001,11 @@ margin: 0 auto 2rem;
   border-radius: 999px;
 }
 
+/* Redundant duplicate Get Involved link — hide */
+.navbar-nav a.nav-link[href*="get-involved"] {
+  display: none;
+}
+
 /* Donate nav link — styled as yellow pill button */
 .hero__header .navbar-nav a.nav-link[href*="donate"],
 .inner-page-header .navbar-nav a.nav-link[href*="donate"] {
@@ -3226,6 +3231,8 @@ margin: 0 auto 2rem;
   .hero__header .dropdown-menu,
   .inner-page-header .dropdown-menu {
     display: block !important;
+    height: auto !important;
+    overflow: visible !important;
     position: static !important;
     float: none;
     transform: none !important;
