@@ -2270,6 +2270,11 @@ margin: 0 auto 2rem;
   object-fit: cover;
 }
 
+/* donation page overrides */
+.donation-v2-amounts label.btn {
+	font-size: 18px;
+}
+
 /* ═══════════════════════════════════════════════════════════
    PRIORITIES SECTION
    ═══════════════════════════════════════════════════════════ */
