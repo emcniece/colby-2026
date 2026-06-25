@@ -13,7 +13,7 @@ $color-5: #fff9fc; /* light-pink */
  * Bootstrap v4.3.1 (https://getbootstrap.com/)
  * Copyright 2011-2019 The Bootstrap Authors
  * Copyright 2011-2019 Twitter, Inc.
- * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)f
  */
 
 @import 'functions';
@@ -4318,7 +4318,7 @@ body:not(.homepage) main .container {
     margin-left: 0;
   }
 
-/* Mobile styling for hero section */
+/* Mobile styling for homepage */
 @media (max-width: 767px) {
 	.hero__text {
 		background-color: var(--color-pink-500);
@@ -4347,6 +4347,10 @@ body:not(.homepage) main .container {
 	}
 	.hero__sub-quote {
 		text-align: center;
+	}
+	.progress-counter__label {
+		font-size: 18px;
+		line-height: 150%;
 	}
 }
 	
