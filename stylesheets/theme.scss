@@ -3002,7 +3002,7 @@ margin: 0 auto 2rem;
 }
 
 /* Redundant duplicate Get Involved link — hide */
-.navbar-nav a.nav-link[href*="get-involved"] {
+.navbar-nav .dropdown-menu a.nav-link[href*="get-involved"] {
   display: none;
 }
 
@@ -3111,6 +3111,8 @@ margin: 0 auto 2rem;
   }
 
   .inner-page-header {
+    flex-wrap: wrap;
+    align-items: stretch;
     background-color: var(--color-pink-50);
     overflow: visible;
   }
@@ -3125,12 +3127,6 @@ margin: 0 auto 2rem;
     order: 2;
     flex: 0 0 auto;
     margin-left: auto;
-  }
-
-  .inner-page-header {
-    flex-wrap: wrap;
-    align-items: stretch;
-    background-color: var(--color-pink-500);
   }
 
   .inner-page-header__brand {
