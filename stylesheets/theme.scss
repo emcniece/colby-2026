@@ -4368,6 +4368,9 @@ body:not(.homepage) main .container {
 		font-size: 18px;
 		line-height: 150%;
 	}
+	.hero__sub-content .btn {
+		width: 100%;
+	}
 }
 	
 @media (max-width: 399px) {
