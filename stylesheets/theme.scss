@@ -977,7 +977,7 @@ body {
     "name email btn"
     "disclaimer disclaimer volunteer";
   column-gap: var(--size-base);
-  row-gap: var(--size-three-quarters);
+  /* row-gap: var(--size-three-quarters); */
   align-items: center;
   width: 626px;
   max-width: 100%;
@@ -4322,6 +4322,21 @@ body:not(.homepage) main .container {
 	}
 	.hero__diagonal {
 		display: none;
+	}
+	.hero__headline {
+		margin-top: 8px;
+	}
+}
+	
+@media (max-width: 399px) {
+	.hero__text {
+		padding: 24px;
+	}
+	.hero__headline {
+	    margin-bottom: 16px;
+	    margin-top: 0px;
+	    font-size: 32px;
+	    line-height: 130%;
 	}
 }
 	
