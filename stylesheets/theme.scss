@@ -4600,10 +4600,10 @@ body:not(.homepage) main .container {
   .signup-form {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "disclaimer"
       "name"
       "email"
       "volunteer"
+      "disclaimer"
       "btn";
     width: 100%;
   }
