@@ -3104,6 +3104,14 @@ margin: 0 auto 2rem;
     background-color: var(--color-pink-500);
   }
 
+  /* Tablet: light pink header bar */
+  @media (min-width: 768px) {
+    .hero__header,
+    .inner-page-header {
+      background-color: var(--color-pink-50);
+    }
+  }
+
   .hero__header > .site-header__logo {
     order: 1;
     flex: 0 1 auto;
@@ -3141,6 +3149,8 @@ margin: 0 auto 2rem;
     left: 0;
     right: 0;
     z-index: 100;
+    /* Hidden by default — shown via is-nav-open on the parent */
+    display: none;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -3149,8 +3159,6 @@ margin: 0 auto 2rem;
     max-width: none;
     margin: 0;
     padding: 0;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
   }
 
   .hero__header.is-nav-open,
@@ -3158,8 +3166,12 @@ margin: 0 auto 2rem;
     background-color: var(--color-blue-900);
   }
 
+  /* Show nav panel, override Bootstrap collapse height animation */
   .hero__header.is-nav-open > #primaryNav,
   .inner-page-header.is-nav-open > #primaryNav {
+    display: flex !important;
+    height: auto !important;
+    overflow: visible !important;
     background-color: var(--color-blue-900);
     padding: 8px var(--page-pad-h) 24px;
     border-radius: 0 0 var(--radius-card) var(--radius-card);
