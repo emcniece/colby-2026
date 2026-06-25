@@ -3101,20 +3101,13 @@ margin: 0 auto 2rem;
     align-items: center;
     gap: 0;
     padding: 8px var(--page-pad-h) 0;
-    background-color: var(--color-pink-500);
+    background-color: var(--color-pink-50);
     overflow: visible;
   }
 
   .inner-page-header {
+    background-color: var(--color-pink-50);
     overflow: visible;
-  }
-
-  /* Tablet: light pink header bar */
-  @media (min-width: 768px) {
-    .hero__header,
-    .inner-page-header {
-      background-color: var(--color-pink-50);
-    }
   }
 
   .hero__header > .site-header__logo {
