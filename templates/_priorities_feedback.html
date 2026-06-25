@@ -130,6 +130,16 @@
 
 <script>
   ;(function () {
+    if (!window.colbySessionUUID) {
+      window.colbySessionUUID = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0;
+            return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+          });
+      console.log('[colby] Session UUID:', window.colbySessionUUID);
+    }
+
     var root = document.getElementById('priorities-survey-{{ page.id }}');
     if (!root) return;
 
@@ -193,6 +203,11 @@
       if (q3) {
         lines.push('');
         lines.push(q3);
+      }
+
+      if (window.colbySessionUUID) {
+        lines.push('');
+        lines.push('Session: ' + window.colbySessionUUID);
       }
 
       return lines.join('\n');

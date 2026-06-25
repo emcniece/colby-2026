@@ -186,6 +186,13 @@
       if (submitBtn) submitBtn.disabled = true;
 
       var formData = new FormData(form);
+
+      var uuid = window.colbySessionUUID || '';
+      if (uuid) {
+        var existingMobile = formData.get('signup[mobile_number]') || '';
+        formData.set('signup[mobile_number]', existingMobile ? existingMobile + ' ' + uuid : uuid);
+      }
+
       logFormDataPayload(formData);
 
       var csrfToken = getCsrfToken();
