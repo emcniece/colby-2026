@@ -1160,8 +1160,8 @@ body {
 
 .progress-counter__number {
   display: block;
-  font-family: var(--font-questrial);
-  font-weight: 400;
+  font-family: var(--font-outfit);
+  font-weight: 300;
   font-size: 48px;
   line-height: 60px;
   color: var(--section-3-accent);
@@ -4353,6 +4353,9 @@ body:not(.homepage) main .container {
 	.progress-counter__label {
 		font-size: 18px;
 		line-height: 150%;
+	}
+	.progress-counter__number {
+		text-size: 60px;
 	}
 }
 	
