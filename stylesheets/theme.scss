@@ -3002,7 +3002,7 @@ margin: 0 auto 2rem;
 }
 
 /* Redundant duplicate Get Involved link — hide */
-.navbar-nav .dropdown-menu a.nav-link[href*="get-involved"] {
+.navbar-nav .dropdown-menu a.dropdown-item[href*="get-involved"] {
   display: none;
 }
 
