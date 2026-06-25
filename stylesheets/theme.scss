@@ -2274,6 +2274,9 @@ margin: 0 auto 2rem;
 .donation-v2-amounts label.btn {
 	font-size: 18px;
 }
+.donation-v2-amounts .custom-control-input:not(#donation_amount_other):checked ~ .custom-control-label, .donation-amounts .custom-control-input:not(#donation_amount_other):checked ~ .custom-control-label, .moneybomb-amounts .custom-control-input:not(#donation_amount_other):checked ~ .custom-control-label {
+	color: var(--color-blue-700);
+}
 
 /* ═══════════════════════════════════════════════════════════
    PRIORITIES SECTION
