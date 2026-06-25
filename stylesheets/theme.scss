@@ -1777,7 +1777,8 @@ body {
 }
 
 .hero-signup__field:has(.hero-signup__field-error:not([hidden])) {
-  padding-bottom: 44px;
+  /* padding-bottom: 44px; I think this is meant to be margin? */
+	margin-bottom: 44px;
 }
 
 .hero-signup__field-error {
@@ -4311,6 +4312,13 @@ body:not(.homepage) main .container {
     width: 100%;
     margin-left: 0;
   }
+
+@media (max-width: 767px) {
+	.hero__text {
+	background-color: red;
+	}
+}
+	
 
   .section-faqs__cols { flex-direction: column; }
   .section-faqs__col-intro,
