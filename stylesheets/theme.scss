@@ -4657,6 +4657,8 @@ body:not(.homepage) main .container {
   /* Progress counters — 2-up grid */
   .section-progress__counter-row { flex-wrap: wrap; }
   .progress-counter { flex: 0 0 calc(50% - 8px); width: calc(50% - 8px); }
+
+  .progress-slider { width: 100%; max-width: none; }
 }
 
 @media (max-width: 767px) {
