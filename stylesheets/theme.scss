@@ -815,12 +815,12 @@ body {
 .form-group__field:focus {
   background-color: var(--input-bg-active);
   color: var(--input-text);
-  font-weight: 500;
+  font-weight: 300;
 }
 
 /* Filled / active text */
 .form-group__field:not(:placeholder-shown) {
-  font-weight: 500;
+  font-weight: 300;
   color: var(--input-text);
 }
 
