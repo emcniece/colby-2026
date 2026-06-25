@@ -948,6 +948,9 @@ body {
 	border-width: 2px;
 	border-color: var(--input-border);
 }
+.custom-control-input:checked ~ .custom-control-label::before {
+	background-color: var(--blue-500);
+}
 
 
 /* ═══════════════════════════════════════════════════════════
