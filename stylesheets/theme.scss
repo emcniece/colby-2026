@@ -4255,7 +4255,9 @@ body:not(.homepage) main .container {
 
   .split-section__photo { display: none; }
 
-  .split-section__panel {
+  .split-section__panel,
+  .split-section--left .split-section__panel,
+  .split-section--right .split-section__panel {
     display: block;
     clip-path: none;
     inset: 0;
