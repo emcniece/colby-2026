@@ -3088,9 +3088,7 @@ margin: 0 auto 2rem;
   color: var(--color-white);
 }
 
-/* NB toolbar (login/donate buttons) — hide; we manage donate via NB nav tags */
-.hero__header #navbar-toolbar,
-.inner-page-header #navbar-toolbar { display: none !important; }
+/* NB toolbar hidden on mobile closed state; shown via is-nav-open; desktop shows naturally */
 
 /* Mobile / collapsed nav — Bootstrap navbar-expand-lg (<992px) */
 /* Alt logo: hidden by default, shown on tablet/mobile */
@@ -3159,6 +3157,10 @@ margin: 0 auto 2rem;
     margin: 0;
     padding: 0;
   }
+
+  /* Hide toolbar when nav is closed; is-nav-open overrides this below */
+  .hero__header #navbar-toolbar,
+  .inner-page-header #navbar-toolbar { display: none; }
 
   .hero__header.is-nav-open,
   .inner-page-header.is-nav-open {
