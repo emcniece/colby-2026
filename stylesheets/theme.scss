@@ -417,7 +417,7 @@ h1 {
   --checkbox-unchecked-bg:    var(--color-pink-50);
   --checkbox-checked-bg:      var(--color-yellow-300);
   --checkbox-checked-bg-hover: #c19c03;
-  --checkbox-checkmark:       var(--color-blue-500);
+  --checkbox-checkmark:       var(--color-blue-700);
 
   /* ── Sizes / spacing ─────────────────────────────────────── */
   --size-half:         8px;
@@ -942,6 +942,11 @@ body {
 
 .checkbox-group__label--reverse {
   color: var(--color-white);
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+	border-width: 2px;
+	border-color: var(--input-border);
 }
 
 
