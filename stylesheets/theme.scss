@@ -4323,6 +4323,9 @@ body:not(.homepage) main .container {
 		padding: 32px;
 		border-radius: 20px;
 	}
+	.hero__content {
+		margin-top: 60%;
+	}
 	.hero__diagonal {
 		display: none;
 	}
@@ -4333,6 +4336,11 @@ body:not(.homepage) main .container {
 		display: block;
 		position: absolute;
 		top: 0;
+	}
+	.hero__sub-photo-mobile-base {
+		background-color: var(--color-yellow-300); 
+		width: 100%; 
+		height: 500px;
 	}
 }
 	
