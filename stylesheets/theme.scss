@@ -4653,6 +4653,10 @@ body:not(.homepage) main .container {
 
   /* Progress clinic photo — show on tablet and below */
   .section-progress__clinic-photo { display: block; }
+
+  /* Progress counters — 2-up grid */
+  .section-progress__counter-row { flex-wrap: wrap; }
+  .progress-counter { flex: 0 0 calc(50% - 8px); width: calc(50% - 8px); }
 }
 
 @media (max-width: 767px) {
