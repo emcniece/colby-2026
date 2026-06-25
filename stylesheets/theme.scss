@@ -771,8 +771,8 @@ body {
 .form-group {
   display: flex;
   flex-direction: column;
-  gap: var(--size-half);
-  /* min-height: 48px; Not sure if needed - NP */
+  /* gap: var(--size-half); */
+  /* min-height: 48px; Not sure if needed */
   width: 100%;
 }
 
