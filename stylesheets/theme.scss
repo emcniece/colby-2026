@@ -4331,6 +4331,8 @@ body:not(.homepage) main .container {
 	}
 	.hero__sub-photo-mobile {
 		display: block;
+		position: absolute;
+		top: 0;
 	}
 }
 	
