@@ -771,7 +771,7 @@ body {
   width: 100%;
 }
 
-.form-group__label {
+.form-group__label, .form-group label {
   font-family: var(--font-outfit);
   font-weight: 400;
   font-size: 14px;
