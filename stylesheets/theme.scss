@@ -3243,6 +3243,11 @@ margin: 0 auto 2rem;
     display: none;
   }
 
+  .hero__header .dropdown-item.copy,
+  .inner-page-header .dropdown-item.copy {
+    display: none;
+  }
+
   .hero__header .dropdown-menu::before,
   .inner-page-header .dropdown-menu::before {
     display: none;
