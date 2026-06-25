@@ -4387,21 +4387,21 @@ body:not(.homepage) main .container {
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  color: var(--input-placeholder);
+  /* color: var(--input-placeholder); */
 }
 
 /* Floated: shrink to 75% and sit at top of input */
 .hero-signup .form-control-material .floating-label--float-above,
 .platform-notify .form-control-material .floating-label--float-above,
 .priorities-survey .form-control-material .floating-label--float-above {
-  transform: translate(0, -115%) scale(0.75);
+  transform: translate(0, -90%) scale(0.75);
 }
 
 /* Extra top padding to prevent text overlapping the floated label */
 .hero-signup .form-control-material .form-group__field,
 .platform-notify .form-control-material .form-group__field,
 .priorities-survey .form-control-material .form-group__field {
-  padding-top: 22px;
+  padding-top: 18px;
   padding-bottom: 4px;
 }
 
