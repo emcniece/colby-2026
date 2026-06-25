@@ -2818,6 +2818,7 @@ margin: 0 auto 2rem;
   width: 100%;
   margin-top: 2em;
   text-transform: uppercase;
+	font-weight: 600;
 }
 
 
@@ -3794,9 +3795,20 @@ body:not(.homepage) main .container {
   color: var(--footer-text);
   flex: 1;
 }
+.site-footer__disclaimer a {
+	color: var(--yellow-300);
+}
+
+@media (max-width: 767px) {
+	.site-footer__inner {
+		flex-direction: column;
+	}
+}
 
 .site-footer__disclaimer p {
 	margin-bottom: 10px;
+    font-size: 14px;
+    line-height: 130%;
 }
 
 .site-footer__socials {
