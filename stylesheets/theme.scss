@@ -4680,20 +4680,25 @@ body:not(.homepage) main .container {
   .split-section--right .split-section__content { padding-left: 0; padding-right: 0; }
   .section-platform__priorities { padding: 0 2em; }
 
-  /* Hero sub photo — visible at tablet, anchored to bottom of the bar */
+  /* Hero sub photo — absolutely anchored to bottom of yellow bar, overlaps up into hero__inner */
+  .hero__sub { overflow: visible; }
+  .hero__sub-inner { overflow: visible; }
+
   .hero__sub-photo {
     display: block;
+    position: absolute;
+    bottom: 0;
+    left: var(--page-pad-h);
     width: 280px;
-    flex-shrink: 0;
-    align-self: flex-end;
+    overflow: visible;
   }
 
   .hero__sub-photo img {
     position: relative;
     bottom: auto;
     right: auto;
-    height: auto;
     width: 100%;
+    height: auto;
     object-fit: contain;
   }
 
