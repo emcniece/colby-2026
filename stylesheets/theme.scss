@@ -806,6 +806,10 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
   outline: none;
 }
+.custom-select {
+	font-family: var(--font-outfit);
+}
+	
 
 .form-group__field::placeholder {
   color: var(--input-text);
