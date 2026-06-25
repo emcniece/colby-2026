@@ -3100,7 +3100,7 @@ margin: 0 auto 2rem;
     justify-content: space-between;
     align-items: center;
     gap: 0;
-    padding: 8px var(--page-pad-h) 0;
+    padding: 8px var(--page-pad-h) 10px;
     background-color: var(--color-pink-50);
     overflow: visible;
   }
@@ -3131,7 +3131,7 @@ margin: 0 auto 2rem;
   .inner-page-header__brand {
     width: 100%;
     flex: 0 0 auto;
-    padding: 8px var(--page-pad-h);
+    padding: 8px var(--page-pad-h) 10px;
   }
 
   .inner-page-header__brand .navbar-toggler.btn-hamburger {
