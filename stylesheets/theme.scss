@@ -944,7 +944,7 @@ body {
   color: var(--color-white);
 }
 
-.custom-control-input:checked ~ .custom-control-label::before {
+.custom-control-input:checked ~ .custom-control-label::before, .custom-control-input:focus:not(:checked) ~ .custom-control-label::before {
 	border-width: 2px;
 	border-color: var(--input-border);
 }
