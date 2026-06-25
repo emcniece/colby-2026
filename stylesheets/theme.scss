@@ -3225,6 +3225,7 @@ margin: 0 auto 2rem;
 
   .hero__header .dropdown-menu,
   .inner-page-header .dropdown-menu {
+    display: block !important;
     position: static !important;
     float: none;
     transform: none !important;
@@ -3235,6 +3236,11 @@ margin: 0 auto 2rem;
     padding: 0 0 8px 16px;
     margin: 0;
     min-width: 0;
+  }
+
+  .hero__header .nav-link__chevron,
+  .inner-page-header .nav-link__chevron {
+    display: none;
   }
 
   .hero__header .dropdown-menu::before,
