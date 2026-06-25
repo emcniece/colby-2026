@@ -718,7 +718,11 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 .site-header__logo {
   padding-top: 8px;
   flex-shrink: 0;
+  margin-left: auto;
 }
+
+/* Hide login button globally — desktop and mobile */
+#navbar-toolbar [data-target="#supporter-nav"] { display: none !important; }
 
 .site-header__nav {
   display: flex;
@@ -2921,7 +2925,6 @@ margin: 0 auto 2rem;
   padding: 0;
   flex-grow: 0;   /* override Bootstrap .navbar-collapse { flex-grow: 1 } */
   flex-shrink: 0;
-  margin-left: auto;
 }
 
 .inner-page-header #primaryNav {
@@ -3199,11 +3202,6 @@ margin: 0 auto 2rem;
   .inner-page-header.is-nav-open #navbar-toolbar .btn {
     width: 100%;
     justify-content: center;
-  }
-
-  .hero__header #navbar-toolbar [data-target="#supporter-nav"],
-  .inner-page-header #navbar-toolbar [data-target="#supporter-nav"] {
-    display: none !important;
   }
 
   .hero__header .navbar-nav,
