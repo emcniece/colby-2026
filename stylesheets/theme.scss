@@ -4313,9 +4313,15 @@ body:not(.homepage) main .container {
     margin-left: 0;
   }
 
+/* Mobile styling for hero section */
 @media (max-width: 767px) {
 	.hero__text {
-	background-color: red;
+		background-color: var(--color-pink-500);
+		padding: 32px;
+		border-radius: 20px;
+	}
+	.hero__diagonal {
+		display: none;
 	}
 }
 	
