@@ -3127,8 +3127,12 @@ margin: 0 auto 2rem;
 
   .hero__header > #primaryNav,
   .inner-page-header > #primaryNav {
-    order: 3;
-    flex: 1 1 100%;
+    /* Overlay: removed from flex flow, drops below the logo bar */
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 100;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -3144,13 +3148,13 @@ margin: 0 auto 2rem;
   .hero__header.is-nav-open,
   .inner-page-header.is-nav-open {
     background-color: var(--color-blue-900);
-    border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
 
   .hero__header.is-nav-open > #primaryNav,
   .inner-page-header.is-nav-open > #primaryNav {
     background-color: var(--color-blue-900);
     padding: 8px var(--page-pad-h) 24px;
+    border-radius: 0 0 var(--radius-card) var(--radius-card);
   }
 
   .hero__header .navbar-nav,
