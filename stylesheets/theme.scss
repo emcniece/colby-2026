@@ -4589,6 +4589,10 @@ body:not(.homepage) main .container {
     flex: 0 0 50%;
     margin-left: auto;
   }
+
+  /* Platform section */
+  .split-section__content { padding-left: 0; }
+  .section-platform__priorities { padding: 0 2em; }
 }
 
 @media (max-width: 767px) {
