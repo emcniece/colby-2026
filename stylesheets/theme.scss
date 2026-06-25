@@ -1839,6 +1839,9 @@ body {
   overflow: visible;
   align-self: flex-end;
 }
+.hero__sub-photo-mobile {
+	display: none;
+}
 
 .hero__sub-photo img {
   position: absolute;
@@ -4325,6 +4328,9 @@ body:not(.homepage) main .container {
 	}
 	.hero__headline {
 		margin-top: 8px;
+	}
+	.hero__sub-photo-mobile {
+		display: block;
 	}
 }
 	
