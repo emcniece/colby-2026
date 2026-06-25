@@ -4262,6 +4262,11 @@ body:not(.homepage) main .container {
 	float: right;
 }
 
+#feedback_content{
+  height: 100% !important;
+  border-radius: 0px !important;
+}
+
 /* ═══════════════════════════════════════════════════════════
    RESPONSIVE
    ═══════════════════════════════════════════════════════════ */
