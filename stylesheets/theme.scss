@@ -2325,6 +2325,20 @@ margin: 0 auto 2rem;
   color: var(--color-white);
 }
 
+/* Tablet-only inline photo — hidden on desktop and mobile */
+.section-priorities__tablet-photo {
+  display: none;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+.section-priorities__tablet-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* AJAX form pane crossfades (hero signup, priorities survey → signup → complete) */
 .priorities-pane {
   opacity: 0;
@@ -4662,6 +4676,41 @@ body:not(.homepage) main .container {
   .progress-counter { flex: 0 0 calc(50% - 8px); width: calc(50% - 8px); }
 
   .progress-slider { width: 100%; max-width: none; }
+
+  /* Priorities section — heading/body left, photo right, form full-width below */
+  .section-priorities .split-section__content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    align-items: start;
+  }
+
+  .section-priorities .kicker {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .section-priorities__heading {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .section-priorities__body {
+    grid-column: 1;
+    grid-row: 3;
+    margin-bottom: 0;
+  }
+
+  .section-priorities__tablet-photo {
+    display: block;
+    grid-column: 2;
+    grid-row: 1 / 4;
+  }
+
+  .priorities-forms {
+    grid-column: 1 / -1;
+    grid-row: 4;
+  }
 }
 
 @media (max-width: 767px) {
