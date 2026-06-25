@@ -3795,7 +3795,7 @@ body:not(.homepage) main .container {
 }
 
 .site-footer__disclaimer p {
-	margin-bottom: 0;
+	margin-bottom: 10px;
 }
 
 .site-footer__socials {
@@ -4373,60 +4373,24 @@ body:not(.homepage) main .container {
 
 /* ═══════════════════════════════════════════════════════════
    TABLET ONLY (768–1279px)
-   Split sections: 50/50 horizontal layout, photo visible.
-   FAQs: keep columns side-by-side.
+   Section and split-section backgrounds remain full-width.
+   Inner content columns switch to 50/50 horizontal layout.
    ═══════════════════════════════════════════════════════════ */
 @media (min-width: 768px) and (max-width: 1279px) {
-  /* Restore horizontal row layout */
-  .split-section__inner {
+  /* Progress — col-text alongside col-counters */
+  .section-progress__cols {
     flex-direction: row;
-    padding-top: 0;
-    padding-bottom: 0;
+    align-items: flex-start;
+    gap: 64px;
   }
 
-  .split-section--right .split-section__inner {
-    flex-direction: row-reverse;
-  }
-
-  /* Content column: 50% width, vertical padding restored */
-  .split-section__content {
-    flex: 0 0 50%;
+  .section-progress__col-text,
+  .section-progress__col-counters {
+    flex: 1;
     width: auto;
-    padding-top: var(--section-pad-v);
-    padding-bottom: var(--section-pad-v);
   }
 
-  /* Right-variant content: reduce left padding for narrower column */
-  .split-section--right .split-section__content {
-    padding-left: 48px;
-  }
-
-  /* Gap: show and match photo side (50%) */
-  .split-section__gap {
-    display: block;
-    flex: 0 0 50%;
-  }
-
-  /* Photo: visible, constrained to its side at 50% */
-  .split-section__photo {
-    display: block;
-  }
-
-  .split-section--right .split-section__photo,
-  .split-section--left .split-section__photo {
-    width: 50%;
-  }
-
-  /* Colour panel: covers content side only, no diagonal */
-  .split-section--left .split-section__panel {
-    right: 50%;
-  }
-
-  .split-section--right .split-section__panel {
-    left: 50%;
-  }
-
-  /* FAQs — keep columns side by side at tablet */
+  /* FAQs — col-intro alongside col-accordion */
   .section-faqs__cols {
     flex-direction: row;
   }
