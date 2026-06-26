@@ -25,7 +25,7 @@
     }, { threshold: 0.1 });
 
     document.querySelectorAll(selector).forEach(function (img) {
-      if (img.closest('.hero__sub-photo, .hero__sub-photo-mobile, .site-header__logo, .colby-logo-img') || img.classList.contains('hero__bg')) return;
+      if (img.closest('.hero__sub-photo, .hero__sub-photo-mobile, .site-header__logo, .colby-logo-img, .navbar-nav, #primaryNav') || img.classList.contains('hero__bg')) return;
       img.classList.add('img-fade');
       observer.observe(img);
     });
