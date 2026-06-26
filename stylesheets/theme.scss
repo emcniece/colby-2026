@@ -3876,6 +3876,7 @@ body:not(.homepage) main .container {
 }
 .site-footer__disclaimer a {
 	color: var(--color-yellow-300);
+	text-decoration: underline;
 }
 
 @media (max-width: 767px) {
