@@ -243,6 +243,11 @@
 
       contentField.value = buildFeedbackPayload();
 
+      var emailField = form.querySelector('.priorities-feedback__email');
+      if (emailField && !emailField.value.trim()) {
+        emailField.value = 'anonymous-' + (window.colbySessionUUID || Date.now()) + '@survey.colbyharder.ca';
+      }
+
       if (submitBtn) submitBtn.disabled = true;
 
       var formData = new FormData(form);

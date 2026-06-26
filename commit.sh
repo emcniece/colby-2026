@@ -10,7 +10,7 @@ if [ -z "${1:-}" ]; then
   exit 1
 fi
 
-git add -u
+git add .
 git commit -m "$1"
 git rev-parse HEAD > .last-deploy-sha
 rm -rf ./upload-to-nb/*
