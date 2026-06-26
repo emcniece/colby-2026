@@ -101,7 +101,7 @@
   {% comment %} Hidden NB feedback form — only identity + content payload {% endcomment %}
   {% form_for feedback, html: { class: "priorities-feedback__form", autocomplete: "off" } %}
     {% hidden_field_tag "page_id", page.id %}
-    {% text_field "content", class: "priorities-feedback__content" %}
+    {% text_field "content", class: "priorities-feedback__content", aria-hidden: "true" %}
 
     {% if request.current_signup.first_name.size > 0 %}
       {% hidden_field_tag "feedback[first_name]", request.current_signup.first_name %}
@@ -118,6 +118,7 @@
     {% if request.sorta_logged_in? and request.current_signup.email.size > 0 %}
       {% hidden_field_tag "feedback[email]", request.current_signup.email %}
     {% else %}
+      <label for="feedback_email" class="visually-hidden">Email address</label>
       {% email_field "email", class: "priorities-feedback__email" %}
     {% endif %}
   {% endform_for %}
