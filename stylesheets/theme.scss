@@ -4254,6 +4254,10 @@ body:not(.homepage) main .container {
   display: block;
 }
 
+.about-row__photo:first-child img[alt="Colby with firefighters"] {
+  object-position: right center;
+}
+
 /* About CTA split section */
 .about-cta {
   --split-bg: var(--section-3-bg);
