@@ -61,11 +61,17 @@
 
     <link href="theme.scss" rel="stylesheet" />
 
+    <!-- Preload LCP image on homepage -->
+    {% if page.is_homepage? and page.type_slug == 'basic' %}
+      <link rel="preload" as="image" href="{{ theme['hero-background.png'] }}" />
+    {% endif %}
+
     <!-- Colby 2026 custom fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lexend:wght@700;800&family=Quattrocento&family=Questrial&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" /></noscript>
 
     <!-- start of content for header -->
     {{ content_for_header }}
@@ -76,22 +82,22 @@
       NB.appConfig.pageTagsList = "{{ tags_list }}";
     </script>
 
-    <!-- Bootstrap -->
-    <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=NodeList.prototype.forEach%2CMap%2CObject.values%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CMutationObserver"></script>
+    <!-- Bootstrap polyfill -->
+    <script defer src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=NodeList.prototype.forEach%2CMap%2CObject.values%2CArray.from%2CElement.prototype.closest%2CElement.prototype.matches%2CMutationObserver"></script>
 
     <!-- VCS dependencies -->
-    <script src="simple-scrollbar.js"></script>
-    <script src="lodash.custom.min.js"></script>
-    <script src="bezier-easing.js"></script>
+    <script defer src="simple-scrollbar.js"></script>
+    <script defer src="lodash.custom.min.js"></script>
+    <script defer src="bezier-easing.js"></script>
     <!--/-->
 
     <!-- VCS main scripts -->
-    <script src="vcs-helper.js"></script>
-    <script src="vcs-media.js"></script>
-    <script src="vcs-nav.js"></script>
+    <script defer src="vcs-helper.js"></script>
+    <script defer src="vcs-media.js"></script>
+    <script defer src="vcs-nav.js"></script>
     <!--/-->
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.4/ofi.min.js" integrity="sha384-GOTasnp7a/eSjnwcNDne3AqLTCR1Ax6dwWrZsPhBvSGDwp6XkOyJ2dTvSM2IGOnE" crossorigin="anonymous"></script>
   </head>
   <body class="bootstrap-theme v3-theme {%if page.is_homepage? %}homepage{% elsif is_session %}session-page{% endif %} {{ page.page_class_name }} page-{{ request.template | replace: '_', '-' }} page-slug-{{ page.slug }} js {% if homepage_tags_list contains "site: disable sticky nav" or tags_list contains "disable sticky nav" %}disable-sticky-nav{% endif %}">
 
