@@ -35,9 +35,6 @@
               <div class="dropdown-menu" aria-labelledby="{{child.slug}}{{child.id}}">
                 <a class="dropdown-item copy" href="{{ child.url }}">{{ child.name }}</a>
 
-                {% if site.show_parent_in_nav_dropdown? %}
-                  <a class="dropdown-item d-none d-md-block" href="{{ child.url }}">{{ child.name }}</a>
-                {% endif %}
                 {% for child2 in child.nav_children %}
                   <a class="dropdown-item{% if child2.is_or_is_ancestor_of_current_page? %} active{% endif %}" href="{{ child2.url }}">{{ child2.name }}</a>
                 {% endfor %}
