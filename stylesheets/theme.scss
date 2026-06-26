@@ -3034,11 +3034,6 @@ margin: 0 auto 2rem;
   border-radius: 999px;
 }
 
-/* Redundant duplicate Get Involved link — hide */
-.navbar-nav .dropdown-menu a.dropdown-item[href*="get-involved"] {
-  display: none !important;
-}
-
 /* Donate nav link — styled as yellow pill button */
 .hero__header .navbar-nav a.nav-link[href*="donate"],
 .inner-page-header .navbar-nav a.nav-link[href*="donate"] {
