@@ -4862,3 +4862,18 @@ body:not(.homepage) main .container {
 .form-group:has(input[id$="_is_private"]) {
   display: none;
 }
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL FADE-IN — content images only
+   ═══════════════════════════════════════════════════════════ */
+
+.js-img-fade .img-fade {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.js-img-fade .img-fade--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
