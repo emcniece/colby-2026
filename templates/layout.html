@@ -63,7 +63,7 @@
 
     <!-- Preload LCP image on homepage -->
     {% if page.is_homepage? and page.type_slug == 'basic' %}
-      <link rel="preload" as="image" href="{{ theme['hero-background.png'] }}" />
+      <link rel="preload" as="image" href="{{ theme['hero-background.webp'] }}" type="image/webp" />
     {% endif %}
 
     <!-- Colby 2026 custom fonts -->

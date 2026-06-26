@@ -5,11 +5,14 @@
 <section class="hero page-section">
 
   <!-- Full-bleed photo background -->
-  <img class="hero__bg"
-       src="{{ theme['hero-background.png'] }}"
-       alt=""
-       role="presentation"
-       loading="eager" />
+  <picture>
+    <source srcset="{{ theme['hero-background.webp'] }}" type="image/webp" />
+    <img class="hero__bg"
+         src="{{ theme['hero-background.png'] }}"
+         alt=""
+         role="presentation"
+         loading="eager" />
+  </picture>
 
   <!-- Pink diagonal overlay -->
   <div class="hero__diagonal" aria-hidden="true">
@@ -97,7 +100,10 @@
     <!-- Sub-hero yellow bar with quote -->
     <div class="hero__sub">
       <div class="hero__sub-photo" aria-hidden="true">
-        <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+        <picture>
+          <source srcset="{{ theme['colby-portrait.webp'] }}" type="image/webp" />
+          <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+        </picture>
       </div>
 
       <div class="hero__sub-content">
@@ -128,7 +134,10 @@
           <h2 class="heading-h2">Delivering results for Langford</h2>
 
           <div class="section-progress__photo">
-            <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
+            <picture>
+              <source srcset="{{ theme['progress-landscape.webp'] }}" type="image/webp" />
+              <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
+            </picture>
           </div>
 
           <!-- 2×2 counter grid -->
@@ -228,7 +237,10 @@
 
     <!-- Right photo -->
     <div class="section-powered__photo">
-      <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+      <picture>
+        <source srcset="{{ theme['people-powered.webp'] }}" type="image/webp" />
+        <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+      </picture>
     </div>
   </div>
 

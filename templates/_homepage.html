@@ -68,17 +68,23 @@
 <section class="hero page-section">
 
   <!-- Full-bleed photo background -->
-  <img class="hero__bg"
-       src="{{ theme['hero-background.png'] }}"
-       alt=""
-       role="presentation"
-       loading="eager" />
+  <picture>
+    <source srcset="{{ theme['hero-background.webp'] }}" type="image/webp" />
+    <img class="hero__bg"
+         src="{{ theme['hero-background.png'] }}"
+         alt=""
+         role="presentation"
+         loading="eager" />
+  </picture>
 
   <!-- Pink diagonal overlay -->
   <div class="hero__diagonal" aria-hidden="true"></div>
   <!-- mobile profile photo -->
   <div class="hero__sub-photo-mobile" aria-hidden="true">
-    <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+    <picture>
+      <source srcset="{{ theme['colby-portrait.webp'] }}" type="image/webp" />
+      <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+    </picture>
     <div class="hero__sub-photo-mobile-base">&nbsp;</div>
   </div>
 
@@ -493,7 +499,10 @@
   <div class="hero__sub">
     <div class="hero__sub-inner">
       <div class="hero__sub-photo" aria-hidden="true">
-        <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+        <picture>
+          <source srcset="{{ theme['colby-portrait.webp'] }}" type="image/webp" />
+          <img src="{{ theme['colby-portrait.png'] }}" alt="Colby Harder" />
+        </picture>
       </div>
 
       <div class="hero__sub-content">
@@ -536,7 +545,10 @@
             <p class="section-progress__body">From prioritizing public safety to protecting our natural environment, here is how we've turned bold ideas into real, lasting progress for Langford.</p>
           </div>
           <div class="section-progress__photo">
-            <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
+            <picture>
+              <source srcset="{{ theme['progress-landscape.webp'] }}" type="image/webp" />
+              <img src="{{ theme['progress-landscape.png'] }}" alt="Langford community" loading="lazy" />
+            </picture>
           </div>
         </div>
 
@@ -700,7 +712,10 @@
 
     <!-- Right photo -->
     <div class="section-powered__photo">
-      <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+      <picture>
+        <source srcset="{{ theme['people-powered.webp'] }}" type="image/webp" />
+        <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+      </picture>
     </div>
   </div>
 
