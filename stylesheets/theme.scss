@@ -75,7 +75,7 @@ $color-5: #fff9fc; /* light-pink */
   z-index: 9994;
 }
 #recaptcha-input {
-	margin-top: 0rem; /* Was 3rem, not sure how this impacts display */
+	margin-top: 0;
 }
 .g-recaptcha {
 	> * {
@@ -235,7 +235,6 @@ $color-5: #fff9fc; /* light-pink */
 .actionbutton-moved {
   margin-bottom: 3rem;
   margin-top: -6rem;
-  /* Ensure it appears above other content */
   position: relative;
   z-index: 10;
 }
@@ -260,38 +259,6 @@ $color-5: #fff9fc; /* light-pink */
   }
 }
 
-/* Custom CSS for Colby Harder 
--------------------------------------------------*/
-.hero-homepage {
-  display: none !important;
-}
-.homepage #sign-up {
-  background-size: cover;
-  background-position: center top;
-  background-image: url("https://assets.nationbuilder.com/langford2026electioncampaign/pages/34/attachments/original/1776306364/colby-banner.jpg?1776306364");
-}
-.homepage #sign-up .col-lg-9 {
-  max-width: 50%;
-  margin-right: 0 !important;
-}
-body {
-  color: $color-4;
-  background-color: $color-5;
-  font-size: 1.3rem;
-}
-p {
-  line-height: 1.6rem;
-}
-.btn-primary, .subnav li>a:hover, .analytics-consent .analytics-banner .submit button, .btn-color-1 {
-  color: $color-3;
-}
-h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-  color: $color-4;
-  font-weight: 500;
-}
-h1 {
-  margin-bottom: 2rem;
-}
 @media (min-width: 576px) {
     .donation-v2-amounts label.btn, .donation-amounts label.btn, .moneybomb-amounts label.btn {
         width: auto ;
@@ -301,7 +268,7 @@ h1 {
   color: $color-4;
 }
 /* ═══════════════════════════════════════════════════════════
-   COLBY 2026 CUSTOM STYLES — 2026-06-22q
+   COLBY 2026 CUSTOM STYLES
    ═══════════════════════════════════════════════════════════ */
 /* Design tokens extracted from Figma — "resources and components" section */
 :root {
@@ -320,10 +287,10 @@ h1 {
   --color-white:     #ffffff;
 
   /* ── Section backgrounds ─────────────────────────────────── */
-  --section-1-bg:    var(--color-pink-50);    /* light pink */
-  --section-2-bg:    var(--color-yellow-300); /* yellow */
-  --section-3-bg:    var(--color-blue-700);   /* blue */
-  --section-4-bg:    var(--color-pink-500);   /* pink */
+  --section-1-bg:    var(--color-pink-50);
+  --section-2-bg:    var(--color-yellow-300);
+  --section-3-bg:    var(--color-blue-700);
+  --section-4-bg:    var(--color-pink-500);
   --section-3-heading: var(--color-white);
   --section-3-accent:  var(--color-yellow-300);
   --section-2-body:  var(--color-blue-900);
@@ -484,11 +451,6 @@ h1 {
   --container-wide:   1440px;
   --container-std:    1280px;
 }
-/* Base reset and typography */
-
-/* Google Fonts — load in layout template head */
-/* @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Lexend:wght@700;800&family=Quattrocento&family=Questrial&display=swap'); */
-/* Font Awesome 6 Free — load via CDN in layout template head */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -546,7 +508,6 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 .section-2 { background-color: var(--section-2-bg); }
 .section-3 { background-color: var(--section-3-bg); color: var(--color-white); }
 .section-4 { background-color: var(--section-4-bg); color: var(--color-white); }
-/* Component styles — mirrors Figma "resources and components" */
 
 /* ═══════════════════════════════════════════════════════════
    BUTTON
@@ -782,8 +743,6 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 .form-group {
   display: flex;
   flex-direction: column;
-  /* gap: var(--size-half); */
-  /* min-height: 48px; Not sure if needed */
   width: 100%;
 }
 
@@ -792,7 +751,6 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   font-weight: 500;
   font-size: 16px;
   line-height: 24px;
-  /* color: var(--input-text); */
 }
 
 .form-group__field {
@@ -961,7 +919,7 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   font-size: 16px;
   line-height: 22px;
   color: var(--input-text);
-  width: auto; /* was 156px */
+  width: auto;
 }
 
 .checkbox-group__label--reverse {
@@ -988,7 +946,6 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
     "name email btn"
     "disclaimer disclaimer volunteer";
   column-gap: var(--size-base);
-  /* row-gap: var(--size-three-quarters); */
   align-items: center;
   width: 626px;
   max-width: 100%;
@@ -1789,7 +1746,6 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 }
 
 .hero-signup__field:has(.hero-signup__field-error:not([hidden])) {
-  /* padding-bottom: 44px; I think this is meant to be margin? */
 	margin-bottom: 44px;
 }
 
@@ -4862,7 +4818,6 @@ body:not(.homepage) main .container {
   font-weight: 700;
   font-size: 16px;
   line-height: 20px;
-  /* color: var(--input-placeholder); */
 }
 
 /* Floated: shrink to 75% and sit at top of input */
