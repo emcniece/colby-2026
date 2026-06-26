@@ -3428,6 +3428,11 @@ margin: 0 auto 2rem;
   margin-bottom: 0;
 }
 
+.page-intro__body a {
+  color: var(--color-white);
+  text-decoration: underline;
+}
+
 @media (max-width: 767px) {
   .page-intro__inner {
     flex-direction: column;
