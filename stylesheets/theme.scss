@@ -4444,6 +4444,10 @@ body:not(.homepage) main .container {
 		position: absolute;
 		top: 48px;
 	}
+	.hero__sub-photo-mobile img {
+		max-width: 100%;
+		height: auto;
+	}
 	.hero__sub-photo-mobile-base {
 		background-color: var(--color-yellow-300); 
 		width: 100%; 
