@@ -4676,8 +4676,10 @@ body:not(.homepage) main .container {
   .section-powered__photo {
     grid-column: 2;
     grid-row: 1;
-    height: 300px;
+    align-self: stretch;
+    height: 100%;
     width: 100%;
+    min-height: 300px;
   }
 
   .donor-progress {
