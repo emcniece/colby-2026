@@ -675,7 +675,7 @@
             <button class="donation-amount" type="button" data-amount="500">$500</button>
             <button class="donation-amount" type="button" data-amount="1429.70">$1,429.70</button>
           </div>
-          <a href="/pages/donate" class="btn btn-v1 js-donate-btn">Donate</a>
+          <a href="/donate" class="btn btn-v1 js-donate-btn">Donate</a>
         </div>
       </div>
     </div>
@@ -684,7 +684,7 @@
 (function() {
   var amountBtns = document.querySelectorAll('.donation-amount');
   var donateLink = document.querySelector('.js-donate-btn');
-  var baseHref = donateLink ? donateLink.getAttribute('href') : '/pages/donate';
+  var baseHref = donateLink ? donateLink.getAttribute('href') : '/donate';
 
   amountBtns.forEach(function(btn) {
     btn.addEventListener('click', function() {
