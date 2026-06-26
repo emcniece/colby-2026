@@ -162,7 +162,7 @@
               <input type="hidden" name="signup[last_name]" class="hero-signup__field-last" value="" />
               <input type="hidden" name="signup[email]" class="hero-signup__field-email" value="" />
               <input type="hidden" name="signup[email_opt_in]" value="1" />
-              <input type="checkbox" name="signup[is_volunteer]" value="1" class="hero-signup__field-volunteer visually-hidden" aria-hidden="true" />
+              <input type="checkbox" name="signup[is_volunteer]" value="1" class="hero-signup__field-volunteer visually-hidden" aria-hidden="true" aria-label="Sign up as a volunteer" />
             </form>
           {% endif %}
         </div>
@@ -915,8 +915,8 @@
       </div>
 
       <!-- 3 priority cards -->
-      <div class="section-platform__priorities" role="list">
-        <article class="priority-card" role="listitem">
+      <ul class="section-platform__priorities">
+        <li class="priority-card">
           <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
             <i class="fa-solid fa-house-chimney"></i>
           </div>
@@ -924,9 +924,9 @@
           <p class="priority-card__body">
             Partner with non-profit housing providers to deliver homes working people can actually afford and create vibrant spaces with free community events so you can connect, play and stay active without breaking the bank.
           </p>
-        </article>
+        </li>
 
-        <article class="priority-card" role="listitem">
+        <li class="priority-card">
           <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
             <i class="fa-solid fa-tree-city"></i>
           </div>
@@ -934,9 +934,9 @@
           <p class="priority-card__body">
             Build safe and reliable infrastructure that gives you real choices in how you move, while pushing for fast and frequent transit to help you slash your commuting costs.
           </p>
-        </article>
+        </li>
 
-        <article class="priority-card" role="listitem">
+        <li class="priority-card">
           <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
             <i class="fa-solid fa-stethoscope"></i>
           </div>
@@ -944,8 +944,8 @@
           <p class="priority-card__body">
             Bring more essential public services directly to Langford and support the expansion of community-led medical clinics so everyone can find a family doctor.
           </p>
-        </article>
-      </div>
+        </li>
+      </ul>
 
       <!-- Notify me form -->
       <div class="section-platform__notify platform-notify">
