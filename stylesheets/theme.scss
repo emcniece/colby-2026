@@ -4540,11 +4540,17 @@ body:not(.homepage) main .container {
     flex: 1;
     min-width: 0;
     align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
+
+  .section-progress__body { margin-top: 0; }
 
   .section-progress__photo {
     flex: 1;
     min-width: 0;
+    align-self: flex-start;
   }
 
   .section-progress__col-counters {
@@ -4570,11 +4576,17 @@ body:not(.homepage) main .container {
     flex: 1;
     min-width: 0;
     align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
+
+  .section-faqs__body { margin: 0; }
 
   .section-faqs__photo {
     flex: 1;
     min-width: 0;
+    align-self: flex-start;
   }
 
   .section-faqs__col-accordion {
