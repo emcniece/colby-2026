@@ -4787,6 +4787,7 @@ body:not(.homepage) main .container {
   .section-platform__priorities { flex-direction: column; height: auto; }
   .section-platform__priorities .priority-card { width: 100%; height: auto; min-height: 318px; }
   .priority-card__content { flex: 0 0 auto; }
+  .priority-card__body { flex: 0 0 auto; }
   .priority-card__heading { margin-top: 1.5em; }
 
   .section-platform__notify-form {
