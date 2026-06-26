@@ -111,5 +111,13 @@
           });
       }
     })();
+
+    // Relabel the "Get Involved" dropdown copy link to "Volunteer"
+    document.querySelectorAll('.dropdown-item.copy').forEach(function (link) {
+      if (/get-involved/i.test(link.getAttribute('href') || '') ||
+          /get.?involved/i.test(link.textContent)) {
+        link.textContent = 'Volunteer';
+      }
+    });
   </script>
 </nav>

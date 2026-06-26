@@ -1231,7 +1231,7 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   flex-direction: column;
   align-items: stretch;
   width: 239px;
-  height: 318px;
+  min-height: 318px;
   padding: var(--size-one-half);
   background-color: var(--section-4-bg);
   border-radius: var(--radius-card);
@@ -3307,10 +3307,7 @@ margin: 0 auto 2rem;
     display: none;
   }
 
-  .hero__header .dropdown-item.copy,
-  .inner-page-header .dropdown-item.copy {
-    display: none;
-  }
+  /* .dropdown-item.copy is shown but relabelled by JS in _nav.html */
 
   .hero__header .dropdown-menu::before,
   .inner-page-header .dropdown-menu::before {
@@ -4292,9 +4289,9 @@ body:not(.homepage) main .container {
 }
 
 .about-cta__card {
-  flex: 1 1 239px;
+  flex: 1 1 100%;
   max-width: 100%;
-  width: auto;
+  width: 100%;
   height: auto;
   min-height: 318px;
 }
@@ -4804,16 +4801,6 @@ body:not(.homepage) main .container {
   .about-cta__cards {
     flex-direction: column;
     align-items: center;
-  }
-
-  .about-cta__card {
-    flex: none;
-    width: 100%;
-    max-width: 239px;
-    min-width: 0;
-    min-height: 318px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .para-banner__text { font-size: 28px; }
