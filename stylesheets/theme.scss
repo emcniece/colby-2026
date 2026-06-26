@@ -724,6 +724,9 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 /* Hide login button globally — desktop and mobile */
 #navbar-toolbar [data-target="#supporter-nav"] { display: none !important; }
 
+/* Override NB _vcs-nav.scss which hides .dropdown-item.copy by default */
+.navbar-nav .dropdown-item.copy { display: block !important; }
+
 .site-header__nav {
   display: flex;
   position: relative;
@@ -4783,6 +4786,7 @@ body:not(.homepage) main .container {
 
   .section-platform__priorities { flex-direction: column; height: auto; }
   .section-platform__priorities .priority-card { width: 100%; height: auto; min-height: 318px; }
+  .priority-card__content { flex: 0 0 auto; }
 
   .section-platform__notify-form {
     flex-direction: column;
