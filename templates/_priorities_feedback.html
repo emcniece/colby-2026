@@ -101,7 +101,8 @@
   {% comment %} Hidden NB feedback form — only identity + content payload {% endcomment %}
   {% form_for feedback, html: { class: "priorities-feedback__form", autocomplete: "off" } %}
     {% hidden_field_tag "page_id", page.id %}
-    {% text_field "content", class: "priorities-feedback__content", aria-hidden: "true" %}
+    <label for="feedback_content" class="visually-hidden">Survey response</label>
+    {% text_field "content", class: "priorities-feedback__content" %}
 
     {% if request.current_signup.first_name.size > 0 %}
       {% hidden_field_tag "feedback[first_name]", request.current_signup.first_name %}
