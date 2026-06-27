@@ -37,6 +37,7 @@
     {% assign og_description = page.excerpt | strip_html | truncate: 200 %}
     {% if og_description.size == 0 %}{% assign og_description = site.description %}{% endif %}
     {% assign og_url = site.url | append: page.url %}
+    {% unless og_url contains "://" %}{% assign og_url = "https://" | append: og_url %}{% endunless %}
     {% assign og_image = page.featured_image | default: "" %}
 
     {% if page.excerpt.size > 0 %}
