@@ -77,7 +77,7 @@
   </ul>
 
   <script>
-    ;(function() {
+    document.addEventListener('DOMContentLoaded', function () {
       if (navigator.userAgent.match(/Android/i)
         || navigator.userAgent.match(/webOS/i)
         || navigator.userAgent.match(/iPhone/i)
@@ -107,14 +107,13 @@
             if (headerShell) headerShell.classList.remove('is-nav-open');
           });
       }
-    })();
 
-    // Relabel the "Get Involved" dropdown copy link to "Volunteer"
-    document.querySelectorAll('.dropdown-item.copy').forEach(function (link) {
-      if (/get-involved/i.test(link.getAttribute('href') || '') ||
-          /get.?involved/i.test(link.textContent)) {
-        link.textContent = 'Volunteer';
-      }
+      document.querySelectorAll('.dropdown-item.copy').forEach(function (link) {
+        if (/get-involved/i.test(link.getAttribute('href') || '') ||
+            /get.?involved/i.test(link.textContent)) {
+          link.textContent = 'Volunteer';
+        }
+      });
     });
   </script>
 </nav>
