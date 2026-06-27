@@ -35,14 +35,14 @@
 
     {% assign og_title = page.headline | default: site.name %}
     {% assign og_description = page.excerpt | strip_html | truncate: 200 %}
-    {% if og_description.size == 0 %}{% assign og_description = site.description %}{% endif %}
+    {% if og_description == blank %}{% assign og_description = site.description %}{% endif %}
     {% assign og_url = site.url | append: page.url %}
     {% unless og_url contains "://" %}{% assign og_url = "https://" | append: og_url %}{% endunless %}
     {% assign og_image = page.featured_image | default: "" %}
 
-    {% if page.excerpt.size > 0 %}
-      <meta name="description" content="{{ page.excerpt | strip_html | truncate: 160 }}" />
-    {% endif %}
+    {% unless og_description == blank %}
+      <meta name="description" content="{{ og_description | truncate: 160 }}" />
+    {% endunless %}
     <link rel="canonical" href="{{ og_url }}" />
 
     <meta property="og:type" content="website" />
