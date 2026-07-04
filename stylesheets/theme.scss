@@ -3730,6 +3730,21 @@ body:not(.homepage) main .container {
   aspect-ratio: 16 / 9;
 }
 
+@media (min-width: 768px) {
+  .blog-post__image {
+    float: right;
+    width: 50%;
+    margin-left: 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .blog-post::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
 .blog-post__image img {
   width: 100%;
   height: 100%;
