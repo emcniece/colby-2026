@@ -57,7 +57,7 @@
 
     <article class="blog-card" data-tags="{{ card_tags }}" data-status="{{ card_status }}">
 
-      <div class="blog-card__image-link" aria-hidden="true">
+      <a href="{{ post.url }}" class="blog-card__image-link" tabindex="-1" aria-hidden="true">
         {% if post_img %}
           <div class="blog-card__image">
             <img src="{{ post_img }}" alt="" />
@@ -65,7 +65,7 @@
         {% else %}
           <div class="blog-card__image blog-card__image--placeholder"></div>
         {% endif %}
-      </div>
+      </a>
 
       <div class="blog-card__body">
 
@@ -95,7 +95,7 @@
           </div>
         {% endif %}
 
-        <h2 class="blog-card__title">{{ post.headline }}</h2>
+        <h2 class="blog-card__title"><a href="{{ post.url }}">{{ post.headline }}</a></h2>
 
         {% if post.blog_post.content.size > 0 %}
           <div class="blog-card__excerpt">{{ post.blog_post.content }}</div>
