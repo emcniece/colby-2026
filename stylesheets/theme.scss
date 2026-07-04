@@ -3767,8 +3767,7 @@ body:not(.homepage) main .container {
   font-size: 16px;
   line-height: 1.7;
   color: var(--color-blue-900);
-  display: flex;
-  gap: 64px;
+  display: block;
 }
 
 .blog-post__body h1,
