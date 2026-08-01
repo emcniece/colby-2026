@@ -584,7 +584,7 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
 .btn-v2-outline:active { border-color: var(--btn-v2-outline-border-pressed); color: var(--btn-v2-outline-text-pressed); }
 
 /* Variant 3 — yellow solid */
-.btn-v3 {
+.btn-v3, .btn-color-1 {
   background-color: var(--btn-v3-solid-bg);
   color: var(--btn-v3-solid-text);
 }
