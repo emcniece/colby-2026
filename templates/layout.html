@@ -145,6 +145,15 @@
           </div>
         </main>
 
+      {% elsif page.slug == 'media' %}
+
+        <main id="content" class="py-3 mb-5" role="main">
+          {{ content_for_notifications }}
+          <div class="container">
+            {% include "media_page" %}
+          </div>
+        </main>
+
       {% else %}
 
         <main id="content"

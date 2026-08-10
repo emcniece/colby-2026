@@ -1,0 +1,136 @@
+{% assign all_tags = "" %}
+{% for post in page.blog.most_recent_blog_posts %}
+  {% for tag in post.tags %}
+    {% unless all_tags contains tag.name %}
+      {% assign all_tags = all_tags | append: tag.name | append: "|||" %}
+    {% endunless %}
+  {% endfor %}
+{% endfor %}
+{% assign filter_tags = all_tags | split: "|||" %}
+
+{% if filter_tags.size > 0 %}
+<div class="blog-filter">
+  <span class="blog-filter__label">Filter by:</span>
+  <div class="blog-filter__chips">
+    <button class="blog-chip blog-chip--active" data-tag="">All</button>
+    {% for tag in filter_tags %}
+      <button class="blog-chip" data-tag="{{ tag }}">{{ tag }}</button>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
+
+<div class="blog-grid" id="blog-page-{{ page.id }}">
+  {% for post in page.blog.most_recent_blog_posts %}
+
+    {% assign mime_image_types = "image/jpeg,image/png,image/gif,image/webp" | split:"," %}
+    {% assign post_img = nil %}
+    {% for attachment in post.attachments %}
+      {% assign file_name = attachment.file_name | downcase | split:"." | first %}
+      {% if mime_image_types contains attachment.content_type and file_name == "thumbnail" %}
+        {% assign post_img = attachment.url %}
+        {% break %}
+      {% endif %}
+    {% endfor %}
+    {% if post_img == nil and post.meta_image_url %}
+      {% assign post_img = post.meta_image_url %}
+    {% endif %}
+
+    {% assign card_tags = "" %}
+    {% for tag in post.tags %}
+      {% assign card_tags = card_tags | append: tag.name | append: "," %}
+    {% endfor %}
+
+    <article class="blog-card" data-tags="{{ card_tags }}">
+
+      <a href="{{ post.url }}" class="blog-card__image-link" tabindex="-1" aria-hidden="true">
+        {% if post_img %}
+          <div class="blog-card__image">
+            <img src="{{ post_img }}" alt="" />
+          </div>
+        {% else %}
+          <div class="blog-card__image blog-card__image--placeholder"></div>
+        {% endif %}
+      </a>
+
+      <div class="blog-card__body">
+
+        {% if post.tags.size > 0 %}
+          <div class="blog-card__tags">
+            <div class="blog-card__tags-left">
+              {% assign media_source = post.tags | first %}
+              <span class="blog-card__tag">{{ media_source.name }}</span>
+            </div>
+          </div>
+        {% endif %}
+
+        <h2 class="blog-card__title"><a href="{{ post.url }}">{{ post.headline }}</a></h2>
+
+        {% if post.blog_post.content.size > 0 %}
+          <div class="blog-card__excerpt">{{ post.blog_post.content | strip_html | truncatewords: 25 }}</div>
+        {% endif %}
+
+        <div class="blog-card__footer">
+          <span class="blog-card__date">{{ post.published_at | date: "%B %-d, %Y" }}</span>
+          <a href="{{ post.url }}" class="blog-card__link">Read More <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+        </div>
+
+      </div>
+    </article>
+
+  {% endfor %}
+</div>
+
+{% if page.blog.most_recent_blog_posts.size == 0 %}
+  <p class="blog-grid__empty">No media coverage yet.</p>
+{% endif %}
+
+<div class="blog-pagination">
+  {% include "pagination" source: page.blog.most_recent_blog_posts %}
+</div>
+
+<script>
+(function() {
+  var chips = document.querySelectorAll('.blog-chip');
+  var cards = document.querySelectorAll('#blog-page-{{ page.id }} .blog-card');
+
+  var activeTag = '';
+
+  function applyFilters() {
+    cards.forEach(function(card) {
+      var tagMatch = !activeTag || card.dataset.tags.indexOf(activeTag) !== -1;
+      if (tagMatch) {
+        showCard(card);
+      } else {
+        hideCard(card);
+      }
+    });
+  }
+
+  function showCard(card) {
+    card.style.display = '';
+    requestAnimationFrame(function() {
+      card.classList.remove('blog-card--hiding');
+    });
+  }
+
+  function hideCard(card) {
+    card.classList.add('blog-card--hiding');
+    card.addEventListener('transitionend', function handler() {
+      card.removeEventListener('transitionend', handler);
+      if (card.classList.contains('blog-card--hiding')) {
+        card.style.display = 'none';
+      }
+    });
+  }
+
+  chips.forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      activeTag = this.dataset.tag;
+      chips.forEach(function(c) { c.classList.remove('blog-chip--active'); });
+      this.classList.add('blog-chip--active');
+      applyFilters();
+    });
+  });
+})();
+</script>
