@@ -64,18 +64,18 @@
           </div>
         {% endif %}
 
-        <h2 class="blog-card__title"><a href="{{ post.url }}">{{ post.headline }}</a></h2>
-
-        {% if post.blog_post.content.size > 0 %}
-          <div class="blog-card__excerpt">{{ post.blog_post.content }}</div>
-        {% endif %}
-
         {% assign media_article_url = post.url %}
         {% assign flip_content = post.blog_post.content_flip %}
         {% if flip_content contains 'href="' %}
           {% assign media_article_url = flip_content | split: 'href="' | last | split: '"' | first %}
         {% elsif flip_content.size > 0 %}
           {% assign media_article_url = flip_content | strip_html | strip %}
+        {% endif %}
+
+        <h2 class="blog-card__title"><a href="{{ media_article_url }}" target="_blank" rel="noopener">{{ post.headline }}</a></h2>
+
+        {% if post.blog_post.content.size > 0 %}
+          <div class="blog-card__excerpt">{{ post.blog_post.content }}</div>
         {% endif %}
 
         <div class="blog-card__footer">
