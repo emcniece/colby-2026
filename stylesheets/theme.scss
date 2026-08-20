@@ -3453,7 +3453,12 @@ body:not(.homepage) main .container {
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.blog-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 4px 8px 24px rgba(0, 0, 0, 0.08), 4px 8px 60px rgba(12, 44, 139, 0.08);
 }
 
 .blog-card--hiding {
@@ -3478,6 +3483,11 @@ body:not(.homepage) main .container {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.3s ease;
+}
+
+.blog-card:hover .blog-card__image img {
+  transform: scale(1.04);
 }
 
 .blog-card__body {
