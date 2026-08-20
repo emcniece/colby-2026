@@ -3575,6 +3575,18 @@ body:not(.homepage) main .container {
 
 .blog-card__title a:hover { color: var(--color-pink-500); }
 
+.blog-card__quote {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-style: italic;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--color-blue-900);
+  margin: 0;
+  padding-left: 16px;
+  border-left: 2px solid var(--color-pink-500);
+}
+
 .blog-card__excerpt {
   font-family: var(--font-outfit);
   font-weight: 300;
