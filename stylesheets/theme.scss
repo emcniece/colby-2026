@@ -2939,6 +2939,10 @@ margin: 0 auto 2rem;
   padding: 0;
 }
 
+.hero__header .navbar-nav {
+  gap: 28px;
+}
+
 .hero__header .navbar-nav .nav-item,
 .inner-page-header .navbar-nav .nav-item { list-style: none; }
 
