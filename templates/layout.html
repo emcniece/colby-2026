@@ -136,6 +136,13 @@
           {% include "about" %}
         </main>
 
+      {% elsif page.slug == 'platform' %}
+
+        <main id="content" role="main">
+          {{ content_for_notifications }}
+          {% include "platform_page" %}
+        </main>
+
       {% elsif page.slug == 'progress' %}
 
         <main id="content" class="py-3 mb-5" role="main">
@@ -223,6 +230,8 @@
     {% if page.is_homepage? and page.type_slug == 'basic' %}
       <script src="accordion.js"></script>
       <script src="counter-animation.js"></script>
+    {% elsif page.slug == 'platform' %}
+      <script src="accordion.js"></script>
     {% endif %}
 
     {% if request.template contains "signups_edit"
