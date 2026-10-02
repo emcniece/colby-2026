@@ -33,9 +33,14 @@
                 <i class="fa-solid fa-chevron-down nav-link__chevron" aria-hidden="true"></i>
               </a>
               <div class="dropdown-menu" aria-labelledby="{{child.slug}}{{child.id}}">
+                {% if child.slug == 'contact' %}
+                  <a class="dropdown-item{% if page.slug == 'get-involved' %} active{% endif %}" href="/get-involved">Volunteer</a>
+                {% endif %}
+
                 <a class="dropdown-item copy" href="{{ child.url }}">{{ child.name }}</a>
 
                 {% for child2 in child.nav_children %}
+                  {% if child.slug == 'contact' and child2.slug == 'get-involved' %}{% continue %}{% endif %}
                   <a class="dropdown-item{% if child2.is_or_is_ancestor_of_current_page? %} active{% endif %}" href="{{ child2.url }}">{{ child2.name }}</a>
                 {% endfor %}
               </div>
