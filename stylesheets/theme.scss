@@ -4402,6 +4402,61 @@ body:not(.homepage) main .container {
   margin: 0;
 }
 
+/* Preamble — personal letter between the intro and the pillar accordion */
+.platform-preamble {
+  font-family: var(--font-outfit);
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28px;
+  color: var(--color-blue-900);
+}
+
+.platform-preamble p {
+  margin: 0 0 20px;
+}
+
+.platform-preamble__heading {
+  font-family: var(--font-outfit);
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 30px;
+  color: var(--color-blue-700);
+  margin: 40px 0 12px;
+}
+
+.platform-preamble__quote {
+  margin: 0 0 24px;
+  padding: 24px 32px;
+  border-left: 4px solid var(--color-pink-500);
+  border-radius: 0 var(--radius-card) var(--radius-card) 0;
+  background-color: var(--color-white);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.05), 4px 4px 50px rgba(12, 44, 139, 0.05);
+}
+
+.platform-preamble .platform-preamble__quote p {
+  margin: 0;
+  font-family: var(--font-quattrocento);
+  font-style: italic;
+  font-size: 24px;
+  line-height: 1.4;
+  color: var(--color-blue-900);
+}
+
+.platform-preamble__signoff {
+  padding-top: 24px;
+  border-top: 1px solid var(--color-pink-100);
+  font-weight: 500;
+}
+
+.platform-preamble p.platform-preamble__signoff {
+  margin: 24px 0 0;
+}
+
+.platform-preamble__signoff a {
+  color: var(--color-pink-500);
+  text-decoration: underline;
+}
+
 /* Pillar accordion — reuses the homepage FAQ .accordion (single-open via
    accordion.js), restyled for the light section-1 background. */
 .platform-accordion {
@@ -4564,6 +4619,19 @@ body:not(.homepage) main .container {
 
   .platform-page__heading {
     font-size: 32px;
+  }
+
+  .platform-preamble {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .platform-preamble__quote {
+    padding: 20px 24px;
+  }
+
+  .platform-preamble .platform-preamble__quote p {
+    font-size: 20px;
   }
 
   .platform-pillar__title {
