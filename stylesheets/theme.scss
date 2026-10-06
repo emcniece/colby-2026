@@ -4381,7 +4381,13 @@ body:not(.homepage) main .container {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 64px;
+  --platform-main-gap: 64px;
+  gap: var(--platform-main-gap);
+}
+
+/* Keep the preamble close to the intro; the larger gap separates topics */
+.platform-page__intro + .platform-preamble {
+  margin-top: calc(24px - var(--platform-main-gap));
 }
 
 .platform-page__heading {
@@ -4594,7 +4600,7 @@ body:not(.homepage) main .container {
   }
 
   .platform-page__main {
-    gap: 48px;
+    --platform-main-gap: 48px;
   }
 
   .platform-topic__header {
