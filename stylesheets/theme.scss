@@ -4944,9 +4944,8 @@ body:not(.homepage) main .container {
     width: 100%;
   }
 
-  /* Hero signup: 2/3 width, right-aligned */
-  .hero-signup {
-    width: 66.667%;
+  /* Hero CTA: right-aligned, clear of the foreground photo */
+  .hero__cta {
     align-self: flex-end;
   }
 
