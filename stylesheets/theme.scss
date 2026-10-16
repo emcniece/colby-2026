@@ -1719,6 +1719,10 @@ h1, h2, h3, h4, h5, .form-errors .errorExplanation h2, h6, .h1, .h2, .h3, .h4, .
   color: var(--color-white);
 }
 
+.hero__cta {
+  align-self: flex-start;
+}
+
 .hero-signup {
   display: grid;
   align-items: start;
@@ -2659,6 +2663,10 @@ margin: 0 auto 2rem;
   width: auto;
   height: auto;
   min-height: 318px;
+}
+
+.section-platform__cta {
+  align-self: flex-start;
 }
 
 .section-platform__notify {
@@ -4800,7 +4808,8 @@ body:not(.homepage) main .container {
 		font-size: 18px;
 		line-height: 150%;
 	}
-	.hero__sub-content .btn {
+	.hero__sub-content .btn,
+	.hero__cta {
 		width: 100%;
 	}
 }

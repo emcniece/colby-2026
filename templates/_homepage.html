@@ -114,382 +114,7 @@
         <h1 class="heading-h1 hero__headline">Moving Langford forward, together</h1>
         <p class="hero__sub-headline">From a new medical clinic to safe routes to school, we've spent the last four years doing the heavy lifting to fix our city's foundation. Let's keep the momentum!</p>
 
-        <!-- Sign-up form (UI submits via hidden NB signup form below) -->
-        <div class="hero-signup">
-          <form class="signup-form hero-signup__ui priorities-pane is-active" aria-hidden="false" novalidate>
-            <div class="form-errors hero-signup__errors" role="alert" hidden></div>
-            <div class="form-group signup-form__disclaimer-group">
-              <p class="signup-form__disclaimer">Sign up to receive campaign updates. Opt out anytime.</p>
-            </div>
-            <div class="form-group hero-signup__field" data-field="name">
-              <div class="form-control-material">
-                <label for="hero-name" class="floating-label">Name</label>
-                <input class="form-group__field hero-signup__name" id="hero-name" type="text" autocomplete="name" aria-describedby="hero-name-error" required />
-              </div>
-              <p class="hero-signup__field-error" id="hero-name-error" role="alert" hidden>Please enter your name.</p>
-            </div>
-            <div class="form-group hero-signup__field" data-field="email">
-              <div class="form-control-material">
-                <label for="hero-email" class="floating-label">Email</label>
-                <input class="form-group__field hero-signup__email" id="hero-email" type="email" autocomplete="email" inputmode="email" aria-describedby="hero-email-error" required />
-              </div>
-              <p class="hero-signup__field-error" id="hero-email-error" role="alert" hidden>Please enter a valid email address.</p>
-            </div>
-            <div class="form-group signup-form__volunteer-group">
-              <label class="signup-form__volunteer checkbox-group">
-                <input type="checkbox" class="hero-signup__volunteer" value="1" />
-                <span class="checkbox-group__control"></span>
-                <span class="checkbox-group__label checkbox-group__label--reverse">I want to volunteer</span>
-              </label>
-            </div>
-            <div class="form-group signup-form__btn-group">
-              <button class="btn btn-white-ghost hero-signup__submit" type="submit">Get involved</button>
-            </div>
-          </form>
-
-          <div class="hero-signup__success priorities-pane" hidden aria-hidden="true">
-            <p class="hero-signup__success-message">Thanks for signing up! We'll be in touch soon.</p>
-          </div>
-
-          {% if signup_priorities_page_id %}
-            <form class="hero-signup__nb-form" action="/forms/signups" method="post" autocomplete="off" enctype="multipart/form-data">
-              <input type="hidden" name="authenticity_token" class="hero-signup__csrf" value="" />
-              <input type="hidden" name="page_id" value="{{ signup_priorities_page_id }}" />
-              {% if signup_priorities_return_to %}
-                <input type="hidden" name="return_to" value="{{ signup_priorities_return_to }}" />
-              {% endif %}
-              <input type="hidden" name="signup[first_name]" class="hero-signup__field-first" value="" />
-              <input type="hidden" name="signup[last_name]" class="hero-signup__field-last" value="" />
-              <input type="hidden" name="signup[email]" class="hero-signup__field-email" value="" />
-              <input type="hidden" name="signup[email_opt_in]" value="1" />
-              <input type="checkbox" name="signup[is_volunteer]" value="1" class="hero-signup__field-volunteer visually-hidden" aria-hidden="true" aria-label="Sign up as a volunteer" />
-            </form>
-          {% endif %}
-        </div>
-
-        <script>
-          ;(function () {
-            var wrap = document.querySelector('.hero-signup');
-            if (!wrap) return;
-
-            var ui = wrap.querySelector('form.hero-signup__ui');
-            var success = wrap.querySelector('.hero-signup__success');
-            var nameInput = wrap.querySelector('.hero-signup__name');
-            var emailInput = wrap.querySelector('.hero-signup__email');
-            var volunteerInput = wrap.querySelector('.hero-signup__volunteer');
-            var submitBtn = wrap.querySelector('.hero-signup__submit');
-            var errorsBox = wrap.querySelector('.hero-signup__errors');
-
-            if (!ui) return;
-
-            function getNbForm() {
-              var heroForm = wrap.querySelector('form.hero-signup__nb-form');
-              if (heroForm) return heroForm;
-
-              var prioritiesForm = document.querySelector('form.priorities-signup-embed__form');
-              if (prioritiesForm) return prioritiesForm;
-
-              var pageIdField = document.querySelector('form[action="/forms/signups"] input[name="page_id"][value="{{ signup_priorities_page_id }}"]');
-              return pageIdField ? pageIdField.closest('form') : null;
-            }
-
-            function getCsrfToken(nbForm) {
-              nbForm = nbForm || getNbForm();
-              if (nbForm) {
-                var field = nbForm.querySelector('[name="authenticity_token"]');
-                if (field && field.value) return field.value;
-              }
-
-              var meta = document.querySelector('meta[name="csrf-token"]');
-              return meta ? meta.getAttribute('content') : '';
-            }
-
-            function prepareNbForm(nbForm) {
-              nbForm = nbForm || getNbForm();
-              if (!nbForm) return false;
-
-              var token = getCsrfToken(nbForm);
-              var tokenField = nbForm.querySelector('[name="authenticity_token"]');
-
-              if (tokenField && token && !tokenField.value) {
-                tokenField.value = token;
-              }
-
-              if (!nbForm.getAttribute('action')) {
-                console.error('[hero-signup] Form missing action URL');
-                return false;
-              }
-
-              if (!getCsrfToken(nbForm)) {
-                console.error('[hero-signup] CSRF token missing');
-                return false;
-              }
-
-              return true;
-            }
-
-            function parseName(value) {
-              var parts = value.trim().split(/\s+/).filter(Boolean);
-              if (parts.length === 0) return { first: '', last: '' };
-              if (parts.length === 1) return { first: parts[0], last: 'n/a' };
-              return { first: parts[0], last: parts.slice(1).join(' ') };
-            }
-
-            function getFormValues() {
-              var names = parseName(nameInput ? nameInput.value : '');
-              return {
-                name: nameInput ? nameInput.value : '',
-                first_name: names.first,
-                last_name: names.last,
-                email: emailInput ? emailInput.value.trim() : '',
-                is_volunteer: volunteerInput ? volunteerInput.checked : false
-              };
-            }
-
-            function logHeroFormValues() {
-              console.log('[hero-signup] Form values:', getFormValues());
-            }
-
-            var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            function clearFieldError(fieldName) {
-              var group = wrap.querySelector('.hero-signup__field[data-field="' + fieldName + '"]');
-              if (!group) return;
-
-              group.classList.remove('form-group--error');
-              var input = group.querySelector('input');
-              if (input) input.setAttribute('aria-invalid', 'false');
-
-              var err = group.querySelector('.hero-signup__field-error');
-              if (err) err.hidden = true;
-            }
-
-            function showFieldError(fieldName) {
-              var group = wrap.querySelector('.hero-signup__field[data-field="' + fieldName + '"]');
-              if (!group) return;
-
-              group.classList.add('form-group--error');
-              var input = group.querySelector('input');
-              if (input) input.setAttribute('aria-invalid', 'true');
-
-              var err = group.querySelector('.hero-signup__field-error');
-              if (err) err.hidden = false;
-            }
-
-            function validateHeroForm() {
-              var valid = true;
-
-              clearFieldError('name');
-              clearFieldError('email');
-              if (errorsBox) {
-                errorsBox.textContent = '';
-                errorsBox.hidden = true;
-              }
-
-              var name = nameInput ? nameInput.value.trim() : '';
-              if (!name) {
-                showFieldError('name');
-                valid = false;
-              }
-
-              var email = emailInput ? emailInput.value.trim() : '';
-              if (!email || !emailPattern.test(email)) {
-                showFieldError('email');
-                valid = false;
-              }
-
-              if (!valid) {
-                if (!name && nameInput) {
-                  nameInput.focus();
-                } else if (emailInput) {
-                  emailInput.focus();
-                }
-                console.error('[hero-signup] Validation failed');
-              }
-
-              return valid;
-            }
-
-            function setNbField(nbForm, name, value) {
-              var field = nbForm.querySelector('[name="' + name + '"]');
-              if (field) field.value = value;
-            }
-
-            function syncToNbForm(nbForm) {
-              var values = getFormValues();
-
-              setNbField(nbForm, 'signup[first_name]', values.first_name);
-              setNbField(nbForm, 'signup[last_name]', values.last_name);
-              setNbField(nbForm, 'signup[email]', values.email);
-
-              var volunteerField = nbForm.querySelector('[name="signup[is_volunteer]"]');
-              if (volunteerField) volunteerField.checked = values.is_volunteer;
-
-              var emailOptIn = nbForm.querySelector('[name="signup[email_opt_in]"]');
-              if (emailOptIn) {
-                if (emailOptIn.type === 'checkbox') {
-                  emailOptIn.checked = true;
-                } else {
-                  emailOptIn.value = '1';
-                }
-              }
-            }
-
-            function logFormDataPayload(formData) {
-              var payload = {};
-              formData.forEach(function (value, key) {
-                payload[key] = value;
-              });
-              console.log('[hero-signup] Submit payload:', payload);
-            }
-
-            function showSuccess() {
-              if (window.colbyPrioritiesPane) {
-                window.colbyPrioritiesPane.swap(success, ui);
-              } else {
-                ui.hidden = true;
-                if (success) success.hidden = false;
-              }
-            }
-
-            function handleSubmit(e) {
-              if (e) e.preventDefault();
-
-              logHeroFormValues();
-
-              if (!validateHeroForm()) {
-                return;
-              }
-
-              var nbForm = getNbForm();
-              if (!nbForm) {
-                console.error('[hero-signup] Cannot submit — NationBuilder form missing', {
-                  signup_priorities_slug: '{{ signup_priorities_slug }}',
-                  signup_priorities_page_id: '{{ signup_priorities_page_id }}',
-                  heroForm: !!wrap.querySelector('form.hero-signup__nb-form'),
-                  prioritiesForm: !!document.querySelector('form.priorities-signup-embed__form')
-                });
-                return;
-              }
-
-              if (errorsBox) {
-                errorsBox.textContent = '';
-                errorsBox.hidden = true;
-              }
-
-              syncToNbForm(nbForm);
-
-              if (!prepareNbForm(nbForm)) {
-                return;
-              }
-
-              if (submitBtn) submitBtn.disabled = true;
-
-              var formData = new FormData(nbForm);
-              logFormDataPayload(formData);
-
-              var action = nbForm.getAttribute('action');
-              var csrfToken = getCsrfToken(nbForm);
-
-              fetch(action, {
-                method: 'POST',
-                body: formData,
-                credentials: 'same-origin',
-                redirect: 'manual',
-                headers: {
-                  'X-Requested-With': 'XMLHttpRequest',
-                  'X-CSRF-Token': csrfToken,
-                  'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
-                }
-              }).then(function (response) {
-                if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
-                  return { success: true, status: response.status };
-                }
-
-                return response.text().then(function (html) {
-                  var doc = new DOMParser().parseFromString(html, 'text/html');
-                  var remoteErrors = doc.querySelector('.form-errors');
-                  var errorText = remoteErrors ? remoteErrors.textContent.replace(/\s+/g, ' ').trim() : '';
-                  var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
-
-                  if (hasErrors) {
-                    return {
-                      success: false,
-                      status: response.status,
-                      errors: errorText || ('HTTP ' + response.status)
-                    };
-                  }
-
-                  return { success: true, status: response.status };
-                });
-              }).then(function (result) {
-                if (submitBtn) submitBtn.disabled = false;
-                if (!result) return;
-
-                if (result.success) {
-                  showSuccess();
-                  console.log('[hero-signup] Submitted successfully');
-                  return;
-                }
-
-                console.error('[hero-signup] Submit failed', {
-                  status: result.status,
-                  action: nbForm.getAttribute('action'),
-                  errors: result.errors || 'Unknown error'
-                });
-
-                if (errorsBox && result.errors) {
-                  errorsBox.textContent = result.errors;
-                  errorsBox.hidden = false;
-                }
-              }).catch(function (err) {
-                if (submitBtn) submitBtn.disabled = false;
-                console.error('[hero-signup] Network error', err);
-              });
-            }
-
-            document.addEventListener('DOMContentLoaded', function () {
-              var nbForm = getNbForm();
-              if (!nbForm) {
-                console.error('[hero-signup] NationBuilder form not found on load — paste _hero_signup_form.html or check signup-priorities is a homepage child');
-                return;
-              }
-
-              nbForm.querySelectorAll('.form-submit, input[type="submit"], button[type="submit"]').forEach(function (el) {
-                el.remove();
-              });
-
-              nbForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-                e.stopImmediatePropagation();
-              }, true);
-
-              prepareNbForm(nbForm);
-              console.log('[hero-signup] Ready', {
-                source: nbForm.classList.contains('hero-signup__nb-form') ? 'hero' : 'priorities-embed',
-                action: nbForm.getAttribute('action'),
-                hasCsrf: !!getCsrfToken(nbForm)
-              });
-            });
-
-            ui.addEventListener('submit', handleSubmit);
-
-            if (nameInput) {
-              nameInput.addEventListener('input', function () {
-                clearFieldError('name');
-                logHeroFormValues();
-              });
-            }
-
-            if (emailInput) {
-              emailInput.addEventListener('input', function () {
-                clearFieldError('email');
-                logHeroFormValues();
-              });
-            }
-            if (volunteerInput) volunteerInput.addEventListener('change', logHeroFormValues);
-          })();
-        </script>
+        <a href="/platform" class="btn btn-white-ghost hero__cta">See My Platform</a>
       </div>
     </div>
 
@@ -653,119 +278,64 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════
-     PEOPLE POWERED SECTION
+     PLATFORM SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section class="section-powered page-section section-1">
-
-  <div class="section-inner">
-    <div class="section-powered__content">
-      <h2 class="heading-h2 section-powered__heading">100% People Powered</h2>
-      <p class="section-powered__body">
-        Help keep the interests of Langford residents — not corporations — at the forefront in city hall. My campaign is funded entirely by dedicated volunteers and donations from people like you.
-      </p>
-
-      <!-- Donor progress bar (NationBuilder moneybomb page — set a pledger or amount goal in admin) -->
-      {% assign donor_progress_slug = nil %}
-      {% for p in page.descendants %}
-        {% if p.type_slug == 'moneybomb' %}
-          {% assign donor_progress_slug = p.slug %}
-        {% endif %}
-      {% endfor %}
-      {% if donor_progress_slug %}
-        {% subpage donor_progress_slug with 'donor_progress' %}
-      {% endif %}
-
-      <!-- Donation amount selector -->
-      <div class="donation-selector">
-        <p class="donation-selector__label">Select an amount:</p>
-        <div class="donation-selector__row">
-          <div class="donation-selector__amounts" role="group" aria-label="Donation amounts">
-            <button class="donation-amount" type="button" data-amount="20">$20</button>
-            <button class="donation-amount" type="button" data-amount="50">$50</button>
-            <button class="donation-amount" type="button" data-amount="100">$100</button>
-            <button class="donation-amount" type="button" data-amount="200">$200</button>
-            <button class="donation-amount" type="button" data-amount="500">$500</button>
-            <button class="donation-amount" type="button" data-amount="1429.70">$1,429.70</button>
-          </div>
-          <a href="/donate" class="btn btn-v1 js-donate-btn">Donate</a>
-        </div>
-      </div>
-    </div>
-
-<script>
-(function() {
-  var amountBtns = document.querySelectorAll('.donation-amount');
-  var donateLink = document.querySelector('.js-donate-btn');
-  var baseHref = donateLink ? donateLink.getAttribute('href') : '/donate';
-
-  amountBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      amountBtns.forEach(function(b) { b.classList.remove('donation-amount--active'); });
-      btn.classList.add('donation-amount--active');
-      if (donateLink) {
-        donateLink.setAttribute('href', baseHref + '?amount=' + btn.dataset.amount);
-      }
-    });
-  });
-})();
-</script>
-
-    <!-- Right photo -->
-    <div class="section-powered__photo">
-      <picture>
-        <source srcset="{{ theme['people-powered.webp'] }}" type="image/webp" />
-        <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
-      </picture>
-    </div>
-  </div>
-
-</section>
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     PRIORITIES / SURVEY SECTION
-     ═══════════════════════════════════════════════════════════ -->
-<section class="split-section split-section--right section-priorities page-section" id="priorities">
+<section class="split-section split-section--right section-platform page-section" id="platform">
 
   <!-- Full-bleed background photo -->
   <div class="split-section__photo" aria-hidden="true">
-    <img src="{{ theme['priorities-photo.png'] }}" alt="" loading="lazy" />
+    <img src="{{ theme['platform-photo.png'] }}" alt="" loading="lazy" />
   </div>
 
-  <!-- Pink colour panel with diagonal cut -->
+  <!-- Yellow colour panel with diagonal cut -->
   <div class="split-section__panel" aria-hidden="true"></div>
 
   <!-- Centred content (right 2/3) -->
   <div class="split-section__inner">
     <div class="split-section__content">
-      <span class="kicker kicker--on-4">Priorities</span>
-      <div class="section-priorities__col-text">
-        <h2 class="heading-h2 section-priorities__heading">I want to know what's important to you</h2>
-        <p class="section-priorities__body">
-          My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
+      <span class="kicker kicker--on-2">Platform</span>
+
+      <div class="section-platform__intro">
+        <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
+        <p class="section-platform__intro-body">
+          My aim is to make Langford more affordable, connected, and fun. I'm focusing on bringing the right people and ideas together to keep us moving forward, together.
         </p>
       </div>
 
-      <div class="section-priorities__tablet-photo">
-        <img src="https://assets.nationbuilder.com/themes/6a35a28b1c12ee3267034f74/attachments/original/1782173997/priorities-photo.png" alt="Priorities" loading="lazy" />
-      </div>
-
-      {% if priorities_slug %}
-        <div class="priorities-forms">
-          {% subpage priorities_slug with 'priorities_feedback' %}
-          {% if signup_priorities_slug %}
-            <div class="priorities-forms__signup priorities-pane" hidden aria-hidden="true">
-              {% subpage signup_priorities_slug with 'signup_priorities_embed' %}
-            </div>
-          {% endif %}
-          <div class="priorities-forms__complete priorities-pane" hidden aria-hidden="true">
-            <p class="priorities-forms__complete-body">I'll be in touch soon to let you know how I'm working to address the issues you're most interested in. In the meantime, feel free to follow my campaign on social media to keep the conversation going.</p>
-            <div class="priorities-forms__complete-socials">
-              {% include "social_icons" %}
-            </div>
+      <!-- 3 priority cards -->
+      <ul class="section-platform__priorities">
+        <li class="priority-card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-house-chimney"></i>
           </div>
-        </div>
-      {% endif %}
+          <h3 class="priority-card__heading">Livable neighbourhoods</h3>
+          <p class="priority-card__body">
+            Partner with non-profit housing providers to deliver homes working people can actually afford and create vibrant spaces with free community events so you can connect, play and stay active without breaking the bank.
+          </p>
+        </li>
+
+        <li class="priority-card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-tree-city"></i>
+          </div>
+          <h3 class="priority-card__heading">Connected streets</h3>
+          <p class="priority-card__body">
+            Build safe and reliable infrastructure that gives you real choices in how you move, while pushing for fast and frequent transit to help you slash your commuting costs.
+          </p>
+        </li>
+
+        <li class="priority-card">
+          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
+            <i class="fa-solid fa-stethoscope"></i>
+          </div>
+          <h3 class="priority-card__heading">Accessible services</h3>
+          <p class="priority-card__body">
+            Bring more essential public services directly to Langford and support the expansion of community-led medical clinics so everyone can find a family doctor.
+          </p>
+        </li>
+      </ul>
+
+      <a href="/platform" class="btn btn-v2 section-platform__cta">See My Full Platform</a>
     </div>
     <div class="split-section__gap" aria-hidden="true"></div>
   </div>
@@ -890,329 +460,125 @@
 
 
 <!-- ═══════════════════════════════════════════════════════════
-     PLATFORM SECTION
+     PRIORITIES / SURVEY SECTION
      ═══════════════════════════════════════════════════════════ -->
-<section class="split-section split-section--right section-platform page-section" id="platform">
+<section class="split-section split-section--right section-priorities page-section" id="priorities">
 
   <!-- Full-bleed background photo -->
   <div class="split-section__photo" aria-hidden="true">
-    <img src="{{ theme['platform-photo.png'] }}" alt="" loading="lazy" />
+    <img src="{{ theme['priorities-photo.png'] }}" alt="" loading="lazy" />
   </div>
 
-  <!-- Yellow colour panel with diagonal cut -->
+  <!-- Pink colour panel with diagonal cut -->
   <div class="split-section__panel" aria-hidden="true"></div>
 
   <!-- Centred content (right 2/3) -->
   <div class="split-section__inner">
     <div class="split-section__content">
-      <span class="kicker kicker--on-2">Platform</span>
-
-      <div class="section-platform__intro">
-        <h2 class="heading-h2 section-platform__heading">The future is bright</h2>
-        <p class="section-platform__intro-body">
-          My aim is to make Langford more affordable, connected, and fun. I'm focusing on bringing the right people and ideas together to keep us moving forward, together.
+      <span class="kicker kicker--on-4">Priorities</span>
+      <div class="section-priorities__col-text">
+        <h2 class="heading-h2 section-priorities__heading">I want to know what's important to you</h2>
+        <p class="section-priorities__body">
+          My work is driven by your priorities. Please take a moment to share your feedback so I can ensure my focus for the next four years is on the issues that matter most to you and your family.
         </p>
       </div>
 
-      <!-- 3 priority cards -->
-      <ul class="section-platform__priorities">
-        <li class="priority-card">
-          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
-            <i class="fa-solid fa-house-chimney"></i>
-          </div>
-          <h3 class="priority-card__heading">Livable neighbourhoods</h3>
-          <p class="priority-card__body">
-            Partner with non-profit housing providers to deliver homes working people can actually afford and create vibrant spaces with free community events so you can connect, play and stay active without breaking the bank.
-          </p>
-        </li>
-
-        <li class="priority-card">
-          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
-            <i class="fa-solid fa-tree-city"></i>
-          </div>
-          <h3 class="priority-card__heading">Connected streets</h3>
-          <p class="priority-card__body">
-            Build safe and reliable infrastructure that gives you real choices in how you move, while pushing for fast and frequent transit to help you slash your commuting costs.
-          </p>
-        </li>
-
-        <li class="priority-card">
-          <div class="feature-icon feature-icon--lg feature-icon--c4" aria-hidden="true">
-            <i class="fa-solid fa-stethoscope"></i>
-          </div>
-          <h3 class="priority-card__heading">Accessible services</h3>
-          <p class="priority-card__body">
-            Bring more essential public services directly to Langford and support the expansion of community-led medical clinics so everyone can find a family doctor.
-          </p>
-        </li>
-      </ul>
-
-      <!-- Notify me form -->
-      <div class="section-platform__notify platform-notify">
-        <p class="section-platform__notify-text">My full platform is coming soon. Sign up to be notified when it's ready.</p>
-        <div class="section-platform__notify-form-wrap">
-          <form class="section-platform__notify-form platform-notify__ui priorities-pane is-active" aria-hidden="false" novalidate>
-            <div class="form-errors platform-notify__errors" role="alert" hidden></div>
-            <div class="form-group platform-notify__field" data-field="email">
-              <div class="form-control-material">
-                <label for="platform-notify-email" class="floating-label">Email</label>
-                <input class="form-group__field platform-notify__email"
-                       id="platform-notify-email"
-                       type="email"
-                       autocomplete="email"
-                       inputmode="email"
-                       aria-describedby="platform-notify-email-error"
-                       required />
-              </div>
-              <p class="platform-notify__field-error" id="platform-notify-email-error" role="alert" hidden>Please enter a valid email address.</p>
-            </div>
-            <button class="btn btn-v2 platform-notify__submit" type="submit">Notify me</button>
-          </form>
-          <div class="platform-notify__success priorities-pane section-platform__notify-success" hidden aria-hidden="true">
-            <p class="platform-notify__success-message">Thanks for signing up! We'll let you know when the platform is ready.</p>
-          </div>
-        </div>
+      <div class="section-priorities__tablet-photo">
+        <img src="https://assets.nationbuilder.com/themes/6a35a28b1c12ee3267034f74/attachments/original/1782173997/priorities-photo.png" alt="Priorities" loading="lazy" />
       </div>
 
-      <script>
-        ;(function () {
-          var wrap = document.querySelector('.platform-notify');
-          if (!wrap) return;
-
-          var ui = wrap.querySelector('form.platform-notify__ui');
-          var success = wrap.querySelector('.platform-notify__success');
-          var emailInput = wrap.querySelector('.platform-notify__email');
-          var submitBtn = wrap.querySelector('.platform-notify__submit');
-          var errorsBox = wrap.querySelector('.platform-notify__errors');
-
-          if (!ui) return;
-
-          var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-          function getNbForm() {
-            var heroForm = document.querySelector('form.hero-signup__nb-form');
-            if (heroForm) return heroForm;
-
-            var prioritiesForm = document.querySelector('form.priorities-signup-embed__form');
-            if (prioritiesForm) return prioritiesForm;
-
-            var pageIdField = document.querySelector('form[action="/forms/signups"] input[name="page_id"][value="{{ signup_priorities_page_id }}"]');
-            return pageIdField ? pageIdField.closest('form') : null;
-          }
-
-          function getCsrfToken(nbForm) {
-            nbForm = nbForm || getNbForm();
-            if (nbForm) {
-              var field = nbForm.querySelector('[name="authenticity_token"]');
-              if (field && field.value) return field.value;
-            }
-
-            var meta = document.querySelector('meta[name="csrf-token"]');
-            return meta ? meta.getAttribute('content') : '';
-          }
-
-          function prepareNbForm(nbForm) {
-            nbForm = nbForm || getNbForm();
-            if (!nbForm) return false;
-
-            var token = getCsrfToken(nbForm);
-            var tokenField = nbForm.querySelector('[name="authenticity_token"]');
-
-            if (tokenField && token && !tokenField.value) {
-              tokenField.value = token;
-            }
-
-            if (!nbForm.getAttribute('action')) {
-              console.error('[platform-notify] Form missing action URL');
-              return false;
-            }
-
-            if (!getCsrfToken(nbForm)) {
-              console.error('[platform-notify] CSRF token missing');
-              return false;
-            }
-
-            return true;
-          }
-
-          function clearFieldError() {
-            var group = wrap.querySelector('.platform-notify__field[data-field="email"]');
-            if (!group) return;
-
-            group.classList.remove('form-group--error');
-            if (emailInput) emailInput.setAttribute('aria-invalid', 'false');
-
-            var err = group.querySelector('.platform-notify__field-error');
-            if (err) err.hidden = true;
-          }
-
-          function showFieldError() {
-            var group = wrap.querySelector('.platform-notify__field[data-field="email"]');
-            if (!group) return;
-
-            group.classList.add('form-group--error');
-            if (emailInput) emailInput.setAttribute('aria-invalid', 'true');
-
-            var err = group.querySelector('.platform-notify__field-error');
-            if (err) err.hidden = false;
-          }
-
-          function validateForm() {
-            clearFieldError();
-            if (errorsBox) {
-              errorsBox.textContent = '';
-              errorsBox.hidden = true;
-            }
-
-            var email = emailInput ? emailInput.value.trim() : '';
-            if (!email || !emailPattern.test(email)) {
-              showFieldError();
-              if (emailInput) emailInput.focus();
-              console.error('[platform-notify] Validation failed');
-              return false;
-            }
-
-            return true;
-          }
-
-          function setNbField(nbForm, name, value) {
-            var field = nbForm.querySelector('[name="' + name + '"]');
-            if (field) field.value = value;
-          }
-
-          function syncToNbForm(nbForm) {
-            var email = emailInput ? emailInput.value.trim() : '';
-
-            setNbField(nbForm, 'signup[first_name]', 'n/a');
-            setNbField(nbForm, 'signup[last_name]', 'n/a');
-            setNbField(nbForm, 'signup[email]', email);
-
-            var volunteerField = nbForm.querySelector('[name="signup[is_volunteer]"]');
-            if (volunteerField) volunteerField.checked = false;
-
-            var emailOptIn = nbForm.querySelector('[name="signup[email_opt_in]"]');
-            if (emailOptIn) {
-              if (emailOptIn.type === 'checkbox') {
-                emailOptIn.checked = true;
-              } else {
-                emailOptIn.value = '1';
-              }
-            }
-          }
-
-          function showSuccess() {
-            if (window.colbyPrioritiesPane) {
-              window.colbyPrioritiesPane.swap(success, ui);
-            } else {
-              ui.hidden = true;
-              if (success) success.hidden = false;
-            }
-          }
-
-          function handleSubmit(e) {
-            if (e) e.preventDefault();
-
-            if (!validateForm()) return;
-
-            var nbForm = getNbForm();
-            if (!nbForm) {
-              console.error('[platform-notify] Cannot submit — NationBuilder form missing', {
-                signup_priorities_page_id: '{{ signup_priorities_page_id }}'
-              });
-              return;
-            }
-
-            syncToNbForm(nbForm);
-
-            if (!prepareNbForm(nbForm)) return;
-
-            if (submitBtn) submitBtn.disabled = true;
-
-            var formData = new FormData(nbForm);
-            var action = nbForm.getAttribute('action');
-            var csrfToken = getCsrfToken(nbForm);
-
-            fetch(action, {
-              method: 'POST',
-              body: formData,
-              credentials: 'same-origin',
-              redirect: 'manual',
-              headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'X-CSRF-Token': csrfToken,
-                'Accept': 'text/html, application/xhtml+xml, */*; q=0.01'
-              }
-            }).then(function (response) {
-              if (response.type === 'opaqueredirect' || (response.status >= 300 && response.status < 400)) {
-                return { success: true, status: response.status };
-              }
-
-              return response.text().then(function (html) {
-                var doc = new DOMParser().parseFromString(html, 'text/html');
-                var remoteErrors = doc.querySelector('.form-errors');
-                var errorText = remoteErrors ? remoteErrors.textContent.replace(/\s+/g, ' ').trim() : '';
-                var hasErrors = errorText.length > 0 || response.status === 422 || response.status >= 400;
-
-                if (hasErrors) {
-                  return {
-                    success: false,
-                    status: response.status,
-                    errors: errorText || ('HTTP ' + response.status)
-                  };
-                }
-
-                return { success: true, status: response.status };
-              });
-            }).then(function (result) {
-              if (submitBtn) submitBtn.disabled = false;
-              if (!result) return;
-
-              if (result.success) {
-                showSuccess();
-                console.log('[platform-notify] Submitted successfully');
-                return;
-              }
-
-              console.error('[platform-notify] Submit failed', {
-                status: result.status,
-                errors: result.errors || 'Unknown error'
-              });
-
-              if (errorsBox && result.errors) {
-                errorsBox.textContent = result.errors;
-                errorsBox.hidden = false;
-              }
-            }).catch(function (err) {
-              if (submitBtn) submitBtn.disabled = false;
-              console.error('[platform-notify] Network error', err);
-            });
-          }
-
-          ui.addEventListener('submit', handleSubmit);
-
-          if (emailInput) {
-            emailInput.addEventListener('input', clearFieldError);
-          }
-
-          document.addEventListener('DOMContentLoaded', function () {
-            var nbForm = getNbForm();
-            if (!nbForm) {
-              console.error('[platform-notify] NationBuilder signup form not found — check signup-priorities is a homepage child');
-              return;
-            }
-
-            console.log('[platform-notify] Ready', {
-              action: nbForm.getAttribute('action'),
-              hasCsrf: !!getCsrfToken(nbForm)
-            });
-          });
-        })();
-      </script>
+      {% if priorities_slug %}
+        <div class="priorities-forms">
+          {% subpage priorities_slug with 'priorities_feedback' %}
+          {% if signup_priorities_slug %}
+            <div class="priorities-forms__signup priorities-pane" hidden aria-hidden="true">
+              {% subpage signup_priorities_slug with 'signup_priorities_embed' %}
+            </div>
+          {% endif %}
+          <div class="priorities-forms__complete priorities-pane" hidden aria-hidden="true">
+            <p class="priorities-forms__complete-body">I'll be in touch soon to let you know how I'm working to address the issues you're most interested in. In the meantime, feel free to follow my campaign on social media to keep the conversation going.</p>
+            <div class="priorities-forms__complete-socials">
+              {% include "social_icons" %}
+            </div>
+          </div>
+        </div>
+      {% endif %}
     </div>
     <div class="split-section__gap" aria-hidden="true"></div>
   </div>
 
 </section>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     PEOPLE POWERED SECTION
+     ═══════════════════════════════════════════════════════════ -->
+<section class="section-powered page-section section-1">
+
+  <div class="section-inner">
+    <div class="section-powered__content">
+      <h2 class="heading-h2 section-powered__heading">100% People Powered</h2>
+      <p class="section-powered__body">
+        Help keep the interests of Langford residents — not corporations — at the forefront in city hall. My campaign is funded entirely by dedicated volunteers and donations from people like you.
+      </p>
+
+      <!-- Donor progress bar (NationBuilder moneybomb page — set a pledger or amount goal in admin) -->
+      {% assign donor_progress_slug = nil %}
+      {% for p in page.descendants %}
+        {% if p.type_slug == 'moneybomb' %}
+          {% assign donor_progress_slug = p.slug %}
+        {% endif %}
+      {% endfor %}
+      {% if donor_progress_slug %}
+        {% subpage donor_progress_slug with 'donor_progress' %}
+      {% endif %}
+
+      <!-- Donation amount selector -->
+      <div class="donation-selector">
+        <p class="donation-selector__label">Select an amount:</p>
+        <div class="donation-selector__row">
+          <div class="donation-selector__amounts" role="group" aria-label="Donation amounts">
+            <button class="donation-amount" type="button" data-amount="20">$20</button>
+            <button class="donation-amount" type="button" data-amount="50">$50</button>
+            <button class="donation-amount" type="button" data-amount="100">$100</button>
+            <button class="donation-amount" type="button" data-amount="200">$200</button>
+            <button class="donation-amount" type="button" data-amount="500">$500</button>
+            <button class="donation-amount" type="button" data-amount="1429.70">$1,429.70</button>
+          </div>
+          <a href="/donate" class="btn btn-v1 js-donate-btn">Donate</a>
+        </div>
+      </div>
+    </div>
+
+<script>
+(function() {
+  var amountBtns = document.querySelectorAll('.donation-amount');
+  var donateLink = document.querySelector('.js-donate-btn');
+  var baseHref = donateLink ? donateLink.getAttribute('href') : '/donate';
+
+  amountBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      amountBtns.forEach(function(b) { b.classList.remove('donation-amount--active'); });
+      btn.classList.add('donation-amount--active');
+      if (donateLink) {
+        donateLink.setAttribute('href', baseHref + '?amount=' + btn.dataset.amount);
+      }
+    });
+  });
+})();
+</script>
+
+    <!-- Right photo -->
+    <div class="section-powered__photo">
+      <picture>
+        <source srcset="{{ theme['people-powered.webp'] }}" type="image/webp" />
+        <img src="{{ theme['people-powered.png'] }}" alt="Colby with Langford residents" loading="lazy" />
+      </picture>
+    </div>
+  </div>
+
+</section>
+
 
 <!-- ═══════════════════════════════════════════════════════════
      CTA SECTION
