@@ -144,7 +144,7 @@ This seeds `upload-to-nb/` with the complete NB theme baseline, then overwrites 
 
 ```bash
 python3 tools/nb-to-static.py        # crawl www.colbyharder.ca → site/
-cd site && python3 -m http.server    # preview locally
+npx serve@14.2.4 site                # preview locally (clean URLs + 404.html)
 ```
 
 - Pages are `site/<slug>/index.html` (clean URLs); `site/404.html` is the not-found page. Deploy the `site/` folder to any static host.
