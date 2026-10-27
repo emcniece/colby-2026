@@ -1,3 +1,7 @@
+# DISABLED 2026-10-26: NationBuilder is deprecated; the site is now the static site in site/.
+# GitHub only runs workflows in .github/workflows/, so this file never runs here.
+# See AGENTS.md before moving it back.
+
 name: Deploy to NationBuilder
 
 on:
