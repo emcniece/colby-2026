@@ -7,7 +7,8 @@ SDKs, Cloudflare scripts), downloads all theme/content assets locally and
 rewrites URLs to point at them, decodes Cloudflare-obfuscated emails, and
 makes every form inert (see site/assets/static/static-forms.js).
 
-Usage:  python3 tools/nb-to-static.py [output_dir]     (default: site/)
+Usage:  python3 tools/nb-to-static.py https://www.example.ca [output_dir]
+        (output_dir defaults to site/ next to this tools/ directory)
 
 Stdlib only. Re-running overwrites the output directory's generated files
 but leaves site/assets/static/ (hand-written files) untouched.
@@ -22,12 +23,15 @@ import urllib.parse
 import urllib.request
 from collections import deque
 
-SITE = "https://www.colbyharder.ca"
-NB_HOST = "https://langford2026electioncampaign.nationbuilder.com"
+if len(sys.argv) < 2 or not sys.argv[1].startswith("http"):
+    sys.exit(__doc__)
+SITE = sys.argv[1].rstrip("/")
+SITE_HOST = urllib.parse.urlsplit(SITE).netloc
+NB_HOST = None  # e.g. https://<nation>.nationbuilder.com; detected from the homepage in main()
 SKIP_PATHS = ("/login", "/logout", "/cdn-cgi", "/forms", "/utils", "/admin", "/users", "/auth", "/assets")
 JQUERY = "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
 
-OUT = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else os.path.join(os.path.dirname(__file__), "..", "site"))
+OUT = os.path.abspath(sys.argv[2] if len(sys.argv) > 2 else os.path.join(os.path.dirname(__file__), "..", "site"))
 assets = {}  # remote url (no query) -> local site path
 
 
@@ -58,17 +62,17 @@ def local_asset_path(url):
     # Theme attachments, served from either the NB host or the asset CDN
     m = re.match(r"^/themes/\d+/[0-9a-f]+/\d+/attachments/\d+/default/(.+)$", p) \
         or re.match(r"^/themes/[0-9a-f]+/attachments/original/\d+/(.+)$", p)
-    if m and u.netloc in ("langford2026electioncampaign.nationbuilder.com", "assets.nationbuilder.com"):
+    if m and u.netloc.endswith(".nationbuilder.com"):
         name = m.group(1)
         if name == "theme.scss":
             name = "theme.css"
         return "/assets/theme/" + name
     # Page/site content images uploaded through the NB admin
-    m = re.match(r"^/langford2026electioncampaign/(.+)$", p)
+    m = re.match(r"^/(?!assets/|themes/)[a-z0-9_]+/(.+)$", p)
     if m and u.netloc == "assets.nationbuilder.com":
         return "/assets/content/" + m.group(1).replace("/original/", "/")
     # NB platform assets referenced by the compiled theme CSS (payment icons etc.)
-    if u.netloc in ("langford2026electioncampaign.nationbuilder.com", "assets.nationbuilder.com") \
+    if u.netloc.endswith(".nationbuilder.com") \
             and p.startswith("/assets/") and not p.endswith(".js"):
         return "/assets/nb" + p[len("/assets"):]
     return None
@@ -84,6 +88,10 @@ def asset(url, base=None):
     if key not in assets:
         assets[key] = local
         status, _, data = fetch(html.unescape(full))
+        fallback = os.path.join(os.path.dirname(OUT), "files", os.path.basename(local))
+        if status != 200 and local.startswith("/assets/theme/") and os.path.isfile(fallback):
+            print(f"  WARN asset {status}, using repo copy files/{os.path.basename(local)}: {full}")
+            status, data = 200, open(fallback, "rb").read()
         if status != 200:
             print(f"  WARN asset {status}: {full}")
         else:
@@ -117,7 +125,7 @@ def strip_block(text, start_pat, end_pat):
 
 def clean_head_injection(page):
     """Reduce NB's {{ content_for_header }} to the meta/link tags worth keeping."""
-    m = re.search(r"<!-- start of content for header -->(.*?)<!-- end of content for header -->", page, re.S)
+    m = re.search(r"<!-- start of content[ _]for[ _]header -->(.*?)<!-- end of content[ _]for[ _]header -->", page, re.S)
     if not m:
         return page
     block = m.group(1)
@@ -129,6 +137,8 @@ def clean_head_injection(page):
     gtag = re.search(r"<!-- Global site tag.*?</script>\s*<script>.*?</script>", block, re.S)
     if gtag:
         keep.append(gtag.group(0))
+    # jQuery + NB stand-ins replace the NB bundles, before any theme script runs
+    keep += [f'<script src="{JQUERY}"></script>', '<script src="/assets/static/nb-shim.js"></script>']
     return page[:m.start()] + "\n    ".join(keep) + page[m.end():]
 
 
@@ -166,21 +176,17 @@ def clean(page, path):
     page = clean_head_injection(page)
     page = dedupe_meta(page)
 
-    # NB runtime config + bundles → jQuery and a tiny shim
-    page = re.sub(r"<script>\s*NB\.appConfig\.userIsLoggedIn.*?</script>",
-                  f'<script src="{JQUERY}"></script>\n    <script src="/assets/static/nb-shim.js"></script>',
-                  page, count=1, flags=re.S)
-    page = re.sub(r'<script[^>]*src="https://assets\.nationbuilder\.com/assets/liquid[^"]*"[^>]*></script>', "", page)
+    # NB runtime bundles (jQuery + shim were added in place of content_for_header)
+    page = re.sub(r'<script[^>]*src="https://assets\.nationbuilder\.com/assets/[^"]*"[^>]*></script>', "", page)
 
     # Third-party / platform scripts that have no purpose off NationBuilder
     page = re.sub(r'<script[^>]*src="(?:/cdn-cgi/[^"]*|/assets/liquid/[^"]*|https://js\.stripe\.com/[^"]*|'
                   r'https://www\.recaptcha\.net/[^"]*|https://ga\.jspm\.io/[^"]*|'
-                  r'https://assets\.nationbuilder\.com/assets/payments/[^"]*|'
                   r'https://static\.cloudflareinsights\.com/[^"]*|/javascripts/[^"]*)"[^>]*></script>', "", page)
     page = strip_block(page, r'<div id="fb-root"></div>\s*', r"\}\(document, 'script', 'facebook-jssdk'\)\);\s*</script>")
     page = re.sub(r"<script>\s*if \( window\.self !== window\.top \).*?</script>", "", page, flags=re.S)
     page = re.sub(r"<script>\(function\(\)\{function c\(\).*?</script>", "", page, flags=re.S)
-    page = re.sub(r"<script[^>]*>(?:(?!</script>).)*grecaptcha(?:(?!</script>).)*</script>", "", page, flags=re.S)
+    page = re.sub(r"<script[^>]*>(?:(?!</script>).)*(?:grecaptcha|TinyMCERails)(?:(?!</script>).)*</script>", "", page, flags=re.S)
 
     # Login button + supporter-nav modal (no accounts on a static site)
     page = re.sub(r'<li class="navbar-toolbar-item[^"]*">\s*<button(?:(?!</li>).)*data-target="#supporter-nav".*?</li>',
@@ -210,9 +216,12 @@ def clean(page, path):
     page = re.sub(r'\b(src|href|srcset|content|data-src|poster)="([^"]+)"', attr, page)
     page = re.sub(r"url\((&quot;|['\"]?)(https://[^)'\"&]+)\1\)",
                   lambda m: f"url({m.group(1)}{asset(m.group(2))}{m.group(1)})", page)
+    # Any remaining NB asset URLs, e.g. in data-* attributes or inline JS strings
+    page = re.sub(r"https://[a-z0-9-]+\.nationbuilder\.com/[^\s\"'<>)]+", lambda m: asset(m.group(0)), page)
 
     # Absolute links to our own domain become root-relative (keep canonical/og:url absolute)
-    page = re.sub(r'href="https?://(?:www\.)?colbyharder\.ca(/[^"]*)?"',
+    bare_host = re.escape(re.sub(r"^www\.", "", SITE_HOST))
+    page = re.sub(rf'href="https?://(?:www\.)?{bare_host}(/[^"]*)?"',
                   lambda m: f'href="{m.group(1) or "/"}"', page)
     page = re.sub(r'(<link rel="canonical" href=")(/[^"]*)"', lambda m: f'{m.group(1)}{SITE}{m.group(2)}"', page)
     page = re.sub(r'(<link rel="image_src" href="|content=")(/assets/)', rf'\1{SITE}\2', page)
@@ -242,6 +251,13 @@ def out_path(path):
 
 
 def main():
+    global NB_HOST
+    _, _, home = fetch(SITE + "/")
+    m = re.search(r"https://([a-z0-9-]+\.nationbuilder\.com)/themes/", home.decode("utf-8"))
+    if not m:
+        sys.exit(f"No NationBuilder theme URL found on {SITE}/")
+    NB_HOST = "https://" + m.group(1)
+    print(f"site {SITE}  (NationBuilder host {NB_HOST})")
     queue, seen = deque(["/"]), {"/"}
     status, _, sm = fetch(SITE + "/sitemap.xml")
     if status == 200:
