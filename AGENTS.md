@@ -34,6 +34,7 @@ site/                       THE WEBSITE — deploy this folder as the web root
     nb-shim.js              stubs the NB JS globals the theme scripts expect
     static-forms.js         makes every form inert (see Forms)
 tools/nb-to-static.py       the one-off NB → static mirroring script (needs a live NB site; see below)
+tools/toggle-forms.py       comments the forms out / restores them (see Forms)
 docs/nationbuilder-theme.md archived NB-era developer guide (Liquid conventions, Figma tokens, components)
 .github/disabled-workflows/ archived NB deploy Action
 templates/ stylesheets/ javascripts/ files/ downloaded-from-nb/   archived NB theme source
@@ -85,6 +86,10 @@ Search before relaunching:
   - Google Fonts (`fonts.googleapis.com` / `fonts.gstatic.com`)
 
 ## Forms
+
+**As of 2026-10-31 the forms are commented out.** `python3 tools/toggle-forms.py disable` wrapped every submission form in an HTML comment (`<!--FORM-DISABLED ... FORM-DISABLED-->`) and put a `<p class="static-form-email">` with a `mailto:` link in its place. Where the visible UI lived outside the `<form>` (a scripted multi-step widget), the whole wrapper was commented out instead. `python3 tools/toggle-forms.py enable` restores the exact original markup (verified byte-for-byte). Inside a disabled block, `-->` is stored as `--&gt;`; do not hand-edit those blocks. The email lines get small contrast fixes at the end of `site/assets/theme/theme.css` (search for `static-form-email`), which can stay or go once the forms are back. Some page copy still says "use the form below".
+
+The rest of this section describes the forms as they behave when enabled.
 
 Nothing is submitted anywhere. `site/assets/static/static-forms.js`:
 

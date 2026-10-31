@@ -172,7 +172,8 @@
     <div class="row">
       <div class="col-12 col-lg-8 mb-4">
         <div class="donation-form-container card shadow px-3 pb-5 pt-3 px-md-5">
-          <form id="donate_page_new_donation_form" class="donation_form" method="POST" data-form="donation" action="#" data-static-form><input name="page_id" type="hidden" value="1"/><input name="return_to" type="hidden" value="https://www.colbyharder.ca/donate"/><div class="email_address_form" style="display:none;" aria-hidden="true"><p><label for="email_address">Optional email code</label><br/><input name="email_address" type="text" class="text" id="email_address" autocomplete="off"/></p></div>
+          <!--FORM-DISABLED (restore: python3 tools/toggle-forms.py enable)
+<form id="donate_page_new_donation_form" class="donation_form" method="POST" data-form="donation" action="#" data-static-form><input name="page_id" type="hidden" value="1"/><input name="return_to" type="hidden" value="https://www.colbyharder.ca/donate"/><div class="email_address_form" style="display:none;" aria-hidden="true"><p><label for="email_address">Optional email code</label><br/><input name="email_address" type="text" class="text" id="email_address" autocomplete="off"/></p></div>
           <div class="form-errors" role="alert">
           </div>
           <div id="donation-announcement" class="sr-only" role="status"></div>
@@ -374,7 +375,7 @@
                   </div>
                 </div>
               </div>
-            </div> <!-- /#demographics-info -->
+            </div> <!-- /#demographics-info --&gt;
             <div class="form-group custom-control custom-checkbox">
               <input name="donation[email_opt_in]" type="hidden" value="0" /><input class="custom-control-input checkbox" checked="checked" id="donation_email_opt_in" name="donation[email_opt_in]" type="checkbox" value="1" />
               <label class="custom-control-label checkbox" for="donation_email_opt_in">Send me email updates</label>
@@ -430,7 +431,7 @@
                   </div>
                 </div>
               </div>
-            </div> <!-- /#address-info -->
+            </div> <!-- /#address-info --&gt;
             </section>
             <div class="form-group mt-2">Contributions are not tax deductible.</div>
             </section>
@@ -451,6 +452,8 @@
               <input class="btn btn-lg btn-block btn-primary submit-button" type="submit" name="commit" value="Process Payment" />
             </div>
           </form>
+FORM-DISABLED-->
+<p class="static-form-email">To make a donation, please email us at <a href="mailto:hello@colbyharder.ca?subject=Donation">hello@colbyharder.ca</a>.</p><!--/FORM-DISABLED-EMAIL-->
         </div><!--/.donation-form-container -->
       </div><!--/.col-md -->
       <div class="col-12 col-lg-4">
