@@ -35,6 +35,8 @@ site/                       THE WEBSITE — deploy this folder as the web root
     static-forms.js         makes every form inert (see Forms)
 tools/nb-to-static.py       the one-off NB → static mirroring script (needs a live NB site; see below)
 tools/toggle-forms.py       comments the forms out / restores them (see Forms)
+tools/set-base-path.py      build step for GitHub Pages: copies site/ to _site/, prefixing root-relative URLs with a sub-path
+.github/workflows/pages.yml deploys site/ to GitHub Pages (see Hosting)
 docs/nationbuilder-theme.md archived NB-era developer guide (Liquid conventions, Figma tokens, components)
 .github/disabled-workflows/ archived NB deploy Action
 templates/ stylesheets/ javascripts/ files/ downloaded-from-nb/   archived NB theme source
@@ -128,7 +130,9 @@ Requirements for any static host:
 
 - Serve `site/` as the **domain root** (paths are root-relative `/assets/...`; a sub-path such as `user.github.io/repo/` breaks them unless rewritten).
 - Directory index (`/about` → `/about/index.html`, with or without trailing slash) and `404.html` as the not-found page. GitHub Pages, Netlify, Cloudflare Pages and `npx serve` all do this by default.
-- GitHub Pages notes: it cannot publish from `site/` directly (only `/` or `/docs`), so use a Pages Actions workflow that uploads `site/`; private repos need a paid plan; add `site/CNAME` containing `www.colbyharder.ca`.
+- **GitHub Pages (set up 2026-10-31):** `.github/workflows/pages.yml` deploys `site/` on every push to `main` that touches `site/`, and on demand (Actions → Deploy to GitHub Pages → Run workflow). One-time repo setting: Settings → Pages → Source: **GitHub Actions** (private repos need a paid GitHub plan). Each campaign site deploys from its own repo.
+  - Until a custom domain is set, the site is served from a sub-path, `https://emcniece.github.io/colby-2026/`. Root-relative URLs would break there, so the workflow runs `tools/set-base-path.py`, which copies `site/` to `_site/` and prefixes the URLs with the base path that Pages reports. `site/` itself keeps plain root-relative URLs. Links to pages that don't exist in `site/` (the dead NB RSS/login links) are left unprefixed.
+  - To switch to the real domain: add `site/CNAME` containing `www.colbyharder.ca`, set the custom domain in Settings → Pages, and update DNS. Pages then reports an empty base path and `site/` is published unchanged.
 - DNS (as of 2026-10-26): `www.colbyharder.ca` was a CNAME to a NationBuilder proxy. Repoint it (and the apex domain) to the new host before NB is shut off, or the site goes down.
 
 ## NationBuilder reference (archived)

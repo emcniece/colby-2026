@@ -1,0 +1,49 @@
+name: Deploy to GitHub Pages
+
+# Publishes site/ (the static website) to GitHub Pages.
+# One-time setup: Settings -> Pages -> Source: "GitHub Actions".
+# Without a custom domain the site is served from a subpath
+# (https://<owner>.github.io/<repo>/), so tools/set-base-path.py prefixes the
+# site's root-relative URLs with that path. Once a custom domain is set
+# (add site/CNAME and configure it in Settings -> Pages), the reported base
+# path is empty and site/ is published unchanged.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'tools/set-base-path.py'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build _site with the Pages base path
+        run: python3 tools/set-base-path.py site _site "${{ steps.pages.outputs.base_path }}"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
